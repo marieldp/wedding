@@ -2,10 +2,9 @@
 const params = new URLSearchParams(window.location.search);
 const token = params.get("t");
 
-fetch(`https://script.google.com/macros/s/AKfycbzoOgcuBy6LzaSWAfKkorZ-Pk-4nORjJAfyoTufBMmcvZL2O22HelPJi8zMFLWZ8dtu/exect=${token}`)
+fetch(`YOUR_SCRIPT_URL?t=${token}`)
   .then(res => res.json())
   .then(data => {
-
     if (data.error) {
       document.getElementById("welcome").innerText = data.error;
       return;
@@ -14,26 +13,24 @@ fetch(`https://script.google.com/macros/s/AKfycbzoOgcuBy6LzaSWAfKkorZ-Pk-4nORjJA
     document.getElementById("welcome").innerText =
       `Welcome, ${data.name} 💍`;
 
-    // 🔒 STEP 2.4 — RSVP CLOSED CHECK
-    if (data.rsvpClosed) {
-      document.getElementById("welcome").innerText +=
-        "\n\nRSVP is now closed. We can’t wait to celebrate with you 💕";
-      return;
-    }
-
-    // 🛑 Already responded
     if (data.responded) {
       document.getElementById("welcome").innerText +=
         "\n\nWe’ve already received your RSVP 💕";
       return;
     }
 
-    // ✅ Show form
     document.getElementById("rsvpForm").style.display = "block";
 
     if (data.allowPlusOne === "YES") {
       document.getElementById("plusOneSection").style.display = "block";
     }
+
+    if (data.rsvpClosed) {
+  document.getElementById("welcome").innerText +=
+    "\n\nRSVP is now closed. We can’t wait to celebrate with you 💕";
+  return;
+}
+
   });
 
 document.getElementById("rsvpForm").addEventListener("submit", e => {
@@ -53,11 +50,10 @@ document.getElementById("rsvpForm").addEventListener("submit", e => {
   .then(res => res.json())
   .then(resp => {
     if (resp.error) {
-      alert(resp.error);
+      alert("RSVP already submitted.");
       return;
     }
-
-    alert("RSVP received 💕 See you there!");
+    alert("RSVP submitted 💕");
     document.getElementById("rsvpForm").style.display = "none";
   });
 });
