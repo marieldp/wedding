@@ -1,44 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Wedding Invitation</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-
-<h1 id="welcome">Loading...</h1>
-
-<form id="rsvpForm" style="display:none;">
-  <p>Will you attend?</p>
-  <select id="rsvp">
-    <option value="Yes">Yes</option>
-    <option value="No">No</option>
-  </select>
-
-  <div id="plusOneSection" style="display:none;">
-    <p>Will you bring a +1?</p>
-    <select id="bringingPlusOne">
-      <option value="Yes">Yes</option>
-      <option value="No">No</option>
-    </select>
-
-    <input type="text" id="plusOneName" placeholder="Plus one name">
-  </div>
-
-  <br><br>
-  <button type="submit">Submit RSVP</button>
-</form>
-
 <script>
 const params = new URLSearchParams(window.location.search);
 const token = params.get("t");
 
-if (!token) {
-  document.getElementById("welcome").innerText = "Invalid invitation link.";
-}
-
-fetch(`https://script.google.com/macros/s/AKfycbzoOgcuBy6LzaSWAfKkorZ-Pk-4nORjJAfyoTufBMmcvZL2O22HelPJi8zMFLWZ8dtu/exec?t=${token}`)
+fetch(`YOUR_SCRIPT_URL?t=${token}`)
   .then(res => res.json())
   .then(data => {
     if (data.error) {
@@ -48,6 +12,12 @@ fetch(`https://script.google.com/macros/s/AKfycbzoOgcuBy6LzaSWAfKkorZ-Pk-4nORjJA
 
     document.getElementById("welcome").innerText =
       `Welcome, ${data.name} 💍`;
+
+    if (data.responded) {
+      document.getElementById("welcome").innerText +=
+        "\n\nWe’ve already received your RSVP 💕";
+      return;
+    }
 
     document.getElementById("rsvpForm").style.display = "block";
 
@@ -59,7 +29,7 @@ fetch(`https://script.google.com/macros/s/AKfycbzoOgcuBy6LzaSWAfKkorZ-Pk-4nORjJA
 document.getElementById("rsvpForm").addEventListener("submit", e => {
   e.preventDefault();
 
-  fetch("https://script.google.com/macros/s/AKfycbzoOgcuBy6LzaSWAfKkorZ-Pk-4nORjJAfyoTufBMmcvZL2O22HelPJi8zMFLWZ8dtu/exec", {
+  fetch("YOUR_SCRIPT_URL", {
     method: "POST",
     body: JSON.stringify({
       token: token,
@@ -69,12 +39,15 @@ document.getElementById("rsvpForm").addEventListener("submit", e => {
       plusOneName:
         document.getElementById("plusOneName")?.value || ""
     })
-  }).then(() => {
+  })
+  .then(res => res.json())
+  .then(resp => {
+    if (resp.error) {
+      alert("RSVP already submitted.");
+      return;
+    }
     alert("RSVP submitted 💕");
     document.getElementById("rsvpForm").style.display = "none";
   });
 });
 </script>
-
-</body>
-</html>
