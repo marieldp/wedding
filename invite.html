@@ -2,7 +2,7 @@
 const params = new URLSearchParams(window.location.search);
 const token = params.get("t");
 
-fetch(`YOUR_SCRIPT_URL?t=${token}`)
+fetch(`https://script.google.com/macros/s/AKfycbzoOgcuBy6LzaSWAfKkorZ-Pk-4nORjJAfyoTufBMmcvZL2O22HelPJi8zMFLWZ8dtu/exec?t=${token}`)
   .then(res => res.json())
   .then(data => {
     if (data.error) {
@@ -36,7 +36,7 @@ fetch(`YOUR_SCRIPT_URL?t=${token}`)
 document.getElementById("rsvpForm").addEventListener("submit", e => {
   e.preventDefault();
 
-  fetch("YOUR_SCRIPT_URL", {
+  fetch("https://script.google.com/macros/s/AKfycbzoOgcuBy6LzaSWAfKkorZ-Pk-4nORjJAfyoTufBMmcvZL2O22HelPJi8zMFLWZ8dtu/exec", {
     method: "POST",
     body: JSON.stringify({
       token: token,
