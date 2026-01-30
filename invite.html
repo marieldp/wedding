@@ -28,11 +28,13 @@
 @keyframes flap-bob {
     0%, 100% { 
         transform: translateY(0px); 
-        filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+        /* One shadow: X-offset, Y-offset, Blur, Color */
+        filter: drop-shadow(0 4px 4px rgba(0,0,0,0.4));
     }
     50% { 
-        transform: translateY(-5px); /* Reduced from 15px to 5px */
-        filter: drop-shadow(0 8px 6px rgba(0,0,0,0.15));
+        transform: translateY(-5px); 
+        /* Increased Y-offset and Blur for the "lift" */
+        filter: drop-shadow(0 10px 8px rgba(0,0,0,0.3));
     }
 }
 
