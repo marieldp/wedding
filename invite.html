@@ -11,56 +11,78 @@
 
         /* --- ENVELOPE STYLES --- */
         #envelope-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 9999; background-color: #f4f1ea;
-            transition: all 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045);
-        }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    background-color: #f4f1ea;
+    transition: all 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
 
-        .envelope {
-            position: relative; width: 85vw; max-width: 500px; height: 56.6vw; max-height: 333px;
-            background: url('6938.jpg') center/cover; z-index: 1;
-        }
+.envelope {
+    position: relative;
+    /* This makes the envelope automatically adjust based on the screen size */
+    width: 95vw; 
+    height: 65vh; 
+    max-width: 800px; /* Limits size on very large monitors */
+    max-height: 500px;
+    background: url('6938.jpg') center/cover;
+    z-index: 1;
+    perspective: 1000px; /* Adds depth for the flap flip */
+}
 
-        .envelope-lines {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='3'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='3'/%3E%3Cline x1='0' y1='100%25' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.15' stroke-width='1.2'/%3E%3Cline x1='100%25' y1='100%25' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.15' stroke-width='1.2'/%3E%3C/svg%3E");
-            background-size: 100% 100%;
-        }
+/* Ensure all internal layers match the new responsive size */
+.envelope-lines, .envelope-pocket-main, .top-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
 
-        .top-flap {
-            position: absolute; top: 0; left: 0; width: 100%; height: 60%; z-index: 6;
-            background: url('6938.jpg') center/cover; clip-path: polygon(0 0, 100% 0, 50% 100%);
-            transition: transform 0.8s ease; transform-origin: top;
-        }
+.top-flap {
+    height: 60%; /* The flap only covers the top half */
+    z-index: 6;
+    background: url('6938.jpg') center/cover;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transition: transform 0.8s ease;
+    transform-origin: top;
+}
 
-        #seal {
-            position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);
-            width: 80px; height: 80px; z-index: 100; cursor: pointer; transition: 0.3s;
-        }
+#seal {
+    position: absolute;
+    top: 60%; /* Positioned exactly at the tip of the triangle flap */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(60px, 15vw, 100px); /* Adjusts size based on screen width */
+    height: auto;
+    z-index: 100;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
 
-        #seal img { width: 100%; height: 100%; object-fit: contain; }
+#seal img { width: 100%; height: auto; }
 
-        .envelope-pocket-main { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3;
-            background: url('6938.jpg') center/cover; clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
-        }    
-
-        /* --- ANIMATION STATES --- */
-        .open .top-flap { transform: rotateX(180deg); z-index: 0; }
-        .open #seal { opacity: 0; pointer-events: none; }
-        #envelope-wrapper.envelope-exit { transform: translateY(100vh) scale(0.9); opacity: 0; pointer-events: none; }
-
-        #main-site { opacity: 0; display: none; transition: opacity 1.5s ease; }
-        .show-site #main-site { opacity: 1; display: block; }
-
-        /* --- CONTENT STYLING --- */
-        .rsvp-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-top: 20px; text-align: left; }
-        .hidden { display: none !important; }
-        label { font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: #8b7d6b; display: block; margin-bottom: 5px; margin-top: 15px; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
-        .btn { background: #043927; color: white; border: none; padding: 18px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-top: 20px; transition: 0.3s; }
-        .btn:hover { background: #d4af37; }
+/* The 'Letter' inside that peeks out */
+.letter {
+    position: absolute;
+    bottom: 5%;
+    left: 5%;
+    width: 90%;
+    height: 80%;
+    background: white;
+    z-index: 2;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Playfair Display', serif;
+}
     </style>
 </head>
 <body style="overflow: hidden;">
