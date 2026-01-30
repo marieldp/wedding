@@ -9,7 +9,7 @@
         :root { --paper: #fcfaf7; --gold: #bfa17a; --text: #4a4a4a; --accent: #043927; --pink: #f4cfe0; }
         body, html { margin: 0; padding: 0; background-color: #e5e0d8; font-family: 'Montserrat', sans-serif; color: var(--text); overflow-x: hidden; height: 100%; }
 
-        /* ENVELOPE STYLES */
+        /* --- ENVELOPE STYLES --- */
         #envelope-wrapper {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             display: flex; justify-content: center; align-items: center;
@@ -36,7 +36,7 @@
 
         #seal {
             position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);
-            width: 80px; height: 80px; z-index: 10; cursor: pointer; transition: 0.3s;
+            width: 80px; height: 80px; z-index: 100; cursor: pointer; transition: 0.3s;
         }
 
         #seal img { width: 100%; height: 100%; object-fit: contain; }
@@ -46,13 +46,7 @@
             background: url('6938.jpg') center/cover; clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
         }    
 
-        .letter {
-            position: absolute; top: 10%; left: 5%; width: 90%; height: 80%;
-            background: white; z-index: 2; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; box-shadow: 0 0 15px rgba(0,0,0,0.05);
-        }
-
-        /* ANIMATION STATES */
+        /* --- ANIMATION STATES --- */
         .open .top-flap { transform: rotateX(180deg); z-index: 0; }
         .open #seal { opacity: 0; pointer-events: none; }
         #envelope-wrapper.envelope-exit { transform: translateY(100vh) scale(0.9); opacity: 0; pointer-events: none; }
@@ -60,8 +54,8 @@
         #main-site { opacity: 0; display: none; transition: opacity 1.5s ease; }
         .show-site #main-site { opacity: 1; display: block; }
 
-        /* RSVP STYLING */
-        .rsvp-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin: 20px auto; max-width: 500px; text-align: left; }
+        /* --- CONTENT STYLING --- */
+        .rsvp-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-top: 20px; text-align: left; }
         .hidden { display: none !important; }
         label { font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: #8b7d6b; display: block; margin-bottom: 5px; margin-top: 15px; }
         input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
@@ -73,7 +67,6 @@
 
 <div id="envelope-wrapper">
     <div class="envelope">
-        <div class="letter">...</div>
         <div class="envelope-pocket-main"></div>
         <div class="envelope-lines"></div> 
         <div class="top-flap"></div>
@@ -84,23 +77,58 @@
 </div>
 
 <div id="main-site">
-    <section style="height: 100vh; width: 100%; background: url('1.jpg') center/cover no-repeat; display: flex; align-items: center; justify-content: flex-end; position: relative;">
+    <section style="height: 100vh; width: 100%; background: url('1.jpg') center/cover no-repeat; display: flex; align-items: center; justify-content: flex-end; position: relative; overflow: hidden;">
         <div style="position: absolute; top: 0; right: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(4, 57, 39, 0) 20%, rgba(4, 57, 39, 0.3) 50%, rgba(4, 57, 39, 0.8) 100%); z-index: 1;"></div>
         <div style="position: relative; padding-right: 10vw; text-align: right; z-index: 2;">
-            <h1 style="font-family: 'Great Vibes', cursive; font-size: clamp(55px, 8vw, 110px); color: #d4af37; margin: 0; line-height: 1.1;">
-                Mariel <br> 
-                <span style="font-family: 'Georgia', serif; font-size: 0.3em; letter-spacing: 10px; color: #f4cfe0; vertical-align: middle;">&</span> <br>
-                Jasper
+            <h1 style="font-family: 'Great Vibes', cursive; font-size: clamp(55px, 8vw, 110px); color: #d4af37; margin: 0; line-height: 1.1; text-shadow: 2px 2px 15px rgba(0,0,0,0.6);">
+                Mariel <br> <span style="font-family: 'Georgia', serif; font-size: 0.3em; letter-spacing: 10px; color: #f4cfe0; vertical-align: middle;">&</span> <br> Jasper
             </h1>
-            <p style="font-family: 'Georgia', serif; letter-spacing: 5px; color: #fff; text-transform: uppercase; margin-top: 20px;">November 06, 2027</p>
-            <p style="font-family: 'Georgia', serif; font-style: italic; color: #f4cfe0;">Save the Date</p>
+            <div style="width: 80px; height: 1px; background: #d4af37; margin: 25px 0 25px auto;"></div>
+            <p style="font-family: 'Georgia', serif; letter-spacing: 5px; font-size: clamp(14px, 1.5vw, 18px); text-transform: uppercase; color: #fff;">November 06, 2027</p>
+            <p style="font-family: 'Georgia', serif; font-style: italic; color: #f4cfe0; font-size: 16px;">Save the Date</p>
+            <div style="margin-top: 60px; font-size: 11px; letter-spacing: 4px; color: #d4af37; text-transform: uppercase;">Scroll to RSVP <span style="display:block; margin-top: 10px;">↓</span></div>
+        </div>
+    </section>
+
+    <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
+        <h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; margin-bottom: 50px;">The Journey to Forever</h2>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; max-width: 1000px; margin: 0 auto;">
+            <div style="flex: 1; min-width: 300px;"><img src="2.jpg" style="width: 100%; border: 1px solid #d4af37; padding: 10px; background: #fff; box-shadow: 15px 15px 0px #043927;"></div>
+            <div style="flex: 1; min-width: 300px; margin-top: 80px;"><img src="3.jpg" style="width: 100%; border: 1px solid #d4af37; padding: 10px; background: #fff; box-shadow: -15px 15px 0px var(--pink);"></div>
+        </div>
+    </section>
+
+    <section style="padding: 80px 20px; background-color: #fcfaf7; color: #043927; text-align: center;">
+        <h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; color: #d4af37; margin-bottom: 40px;">The Celebration</h2>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; max-width: 900px; margin: 0 auto;">
+            <div style="flex: 1; min-width: 280px; padding: 30px; border: 1px solid #f4cfe0; background: white; box-shadow: 10px 10px 0px #043927;">
+                <h3 style="font-family: 'Playfair Display'; text-transform: uppercase; font-size: 1.2rem;">The Ceremony</h3>
+                <p style="color: #d4af37; font-weight: bold;">2:00 IN THE AFTERNOON</p>
+                <p><strong>Santuario de San Antonio Parish</strong><br>Makati City</p>
+            </div>
+            <div style="flex: 1; min-width: 280px; padding: 30px; border: 1px solid #f4cfe0; background: white; box-shadow: 10px 10px 0px #f4cfe0;">
+                <h3 style="font-family: 'Playfair Display'; text-transform: uppercase; font-size: 1.2rem;">The Reception</h3>
+                <p style="color: #d4af37; font-weight: bold;">4:00 IN THE AFTERNOON</p>
+                <p><strong>The Blue Leaf</strong><br>Taguig City</p>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 100px 0; background-color: #043927; text-align: center;">
+        <h2 style="font-family: 'Great Vibes', cursive; font-size: 40px; color: #d4af37; margin-bottom: 30px;">Our Story in Motion</h2>
+        <div style="max-width: 800px; margin: 0 auto; padding: 0 20px;">
+            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid #d4af37;">
+                <iframe src="https://www.youtube.com/embed/8RjcJXikhrk?rel=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allowfullscreen></iframe>
+            </div>
         </div>
     </section>
 
     <section style="padding: 80px 20px; background: white; text-align: center;">
-        <div id="loading" class="hidden">Checking invitation...</div>
-        <div id="content" class="rsvp-card hidden"></div>
-        <div id="error-msg" class="hidden rsvp-card"><p>Guest not found. Please use the original link.</p></div>
+        <div style="max-width: 500px; margin: 0 auto;">
+            <div id="loading" class="hidden">Checking invitation...</div>
+            <div id="content" class="rsvp-card hidden"></div>
+            <div id="error-msg" class="hidden rsvp-card"><p>Guest not found. Please use the original link.</p></div>
+        </div>
     </section>
 </div>
 
@@ -112,17 +140,17 @@
 
     function openInvitation() {
         const wrapper = document.getElementById('envelope-wrapper');
-        
-        // Start animation
+        const main = document.body;
+
         wrapper.classList.add('open'); 
         
         setTimeout(() => {
             wrapper.classList.add('envelope-exit');
-            document.body.classList.add('show-site');
-            document.body.style.overflow = 'auto';
+            main.classList.add('show-site');
+            document.getElementById('main-site').style.display = 'block';
+            main.style.overflow = 'auto';
         }, 1200);
 
-        // Fetch Data
         if (token) {
             document.getElementById('loading').classList.remove('hidden');
             checkGuestStatus();
