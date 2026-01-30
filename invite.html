@@ -1,60 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M & J Wedding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root { --paper: #fcfaf7; --gold: #bfa17a; --text: #4a4a4a; --accent: #043927; --pink: #f4cfe0; }
+        body, html { margin: 0; padding: 0; background-color: #e5e0d8; font-family: 'Montserrat', sans-serif; color: var(--text); overflow-x: hidden; height: 100%; }
+
+        /* ENVELOPE STYLES */
+        #envelope-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999; background-color: #f4f1ea;
+            transition: all 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+        }
+
+        .envelope {
+            position: relative; width: 85vw; max-width: 500px; height: 56.6vw; max-height: 333px;
+            background: url('6938.jpg') center/cover; z-index: 1;
+        }
+
+        .envelope-lines {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='3'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='3'/%3E%3Cline x1='0' y1='100%25' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.15' stroke-width='1.2'/%3E%3Cline x1='100%25' y1='100%25' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.15' stroke-width='1.2'/%3E%3C/svg%3E");
+            background-size: 100% 100%;
+        }
+
+        .top-flap {
+            position: absolute; top: 0; left: 0; width: 100%; height: 60%; z-index: 6;
+            background: url('6938.jpg') center/cover; clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transition: transform 0.8s ease; transform-origin: top;
+        }
+
+        #seal {
+            position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);
+            width: 80px; height: 80px; z-index: 10; cursor: pointer; transition: 0.3s;
+        }
+
+        #seal img { width: 100%; height: 100%; object-fit: contain; }
+
+        .envelope-pocket-main { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3;
+            background: url('6938.jpg') center/cover; clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+        }    
+
+        .letter {
+            position: absolute; top: 10%; left: 5%; width: 90%; height: 80%;
+            background: white; z-index: 2; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+
+        /* ANIMATION STATES */
+        .open .top-flap { transform: rotateX(180deg); z-index: 0; }
+        .open #seal { opacity: 0; pointer-events: none; }
+        #envelope-wrapper.envelope-exit { transform: translateY(100vh) scale(0.9); opacity: 0; pointer-events: none; }
+
+        #main-site { opacity: 0; display: none; transition: opacity 1.5s ease; }
+        .show-site #main-site { opacity: 1; display: block; }
+
+        /* RSVP STYLING */
+        .rsvp-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin: 20px auto; max-width: 500px; text-align: left; }
+        .hidden { display: none !important; }
+        label { font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: #8b7d6b; display: block; margin-bottom: 5px; margin-top: 15px; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
+        .btn { background: #043927; color: white; border: none; padding: 18px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-top: 20px; transition: 0.3s; }
+        .btn:hover { background: #d4af37; }
+    </style>
+</head>
+<body style="overflow: hidden;">
+
+<div id="envelope-wrapper">
+    <div class="envelope">
+        <div class="letter">...</div>
+        <div class="envelope-pocket-main"></div>
+        <div class="envelope-lines"></div> 
+        <div class="top-flap"></div>
+        <div id="seal" onclick="openInvitation()">
+            <img src="seal.png" alt="Seal">
+        </div>
+    </div>
+</div>
+
+<div id="main-site">
+    <section style="height: 100vh; width: 100%; background: url('1.jpg') center/cover no-repeat; display: flex; align-items: center; justify-content: flex-end; position: relative;">
+        <div style="position: absolute; top: 0; right: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(4, 57, 39, 0) 20%, rgba(4, 57, 39, 0.3) 50%, rgba(4, 57, 39, 0.8) 100%); z-index: 1;"></div>
+        <div style="position: relative; padding-right: 10vw; text-align: right; z-index: 2;">
+            <h1 style="font-family: 'Great Vibes', cursive; font-size: clamp(55px, 8vw, 110px); color: #d4af37; margin: 0; line-height: 1.1;">
+                Mariel <br> 
+                <span style="font-family: 'Georgia', serif; font-size: 0.3em; letter-spacing: 10px; color: #f4cfe0; vertical-align: middle;">&</span> <br>
+                Jasper
+            </h1>
+            <p style="font-family: 'Georgia', serif; letter-spacing: 5px; color: #fff; text-transform: uppercase; margin-top: 20px;">November 06, 2027</p>
+            <p style="font-family: 'Georgia', serif; font-style: italic; color: #f4cfe0;">Save the Date</p>
+        </div>
+    </section>
+
+    <section style="padding: 80px 20px; background: white; text-align: center;">
+        <div id="loading" class="hidden">Checking invitation...</div>
+        <div id="content" class="rsvp-card hidden"></div>
+        <div id="error-msg" class="hidden rsvp-card"><p>Guest not found. Please use the original link.</p></div>
+    </section>
+</div>
+
 <script>
-const params = new URLSearchParams(window.location.search);
-const token = params.get("t");
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbyUuEtZP-SXAsbamc-8oRGEf_qjsVYc2YFkbd8aakF7JA4WFxAVFLmhDBSAFFTI-p0Z/exec"; 
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('id');
+    let guestData = null;
 
-fetch(`https://script.google.com/macros/s/AKfycbzoOgcuBy6LzaSWAfKkorZ-Pk-4nORjJAfyoTufBMmcvZL2O22HelPJi8zMFLWZ8dtu/exec?t=${token}`)
-  .then(res => res.json())
-  .then(data => {
-    if (data.error) {
-      document.getElementById("welcome").innerText = data.error;
-      return;
+    function openInvitation() {
+        const wrapper = document.getElementById('envelope-wrapper');
+        
+        // Start animation
+        wrapper.classList.add('open'); 
+        
+        setTimeout(() => {
+            wrapper.classList.add('envelope-exit');
+            document.body.classList.add('show-site');
+            document.body.style.overflow = 'auto';
+        }, 1200);
+
+        // Fetch Data
+        if (token) {
+            document.getElementById('loading').classList.remove('hidden');
+            checkGuestStatus();
+        } else {
+            document.getElementById('error-msg').classList.remove('hidden');
+        }
     }
 
-    document.getElementById("welcome").innerText =
-      `Welcome, ${data.name} 💍`;
-
-    if (data.responded) {
-      document.getElementById("welcome").innerText +=
-        "\n\nWe’ve already received your RSVP 💕";
-      return;
+    function checkGuestStatus() {
+        fetch(`${webAppUrl}?id=${encodeURIComponent(token)}`)
+            .then(res => res.json())
+            .then(data => {
+                guestData = data;
+                document.getElementById('loading').classList.add('hidden');
+                if (data.name) {
+                    data.isDone ? showDoneView(data) : showMainForm();
+                } else {
+                    document.getElementById('error-msg').classList.remove('hidden');
+                }
+            })
+            .catch(() => {
+                document.getElementById('loading').innerHTML = "Connection Error. Please refresh.";
+            });
     }
 
-    document.getElementById("rsvpForm").style.display = "block";
+    function showMainForm() {
+        const content = document.getElementById('content');
+        content.classList.remove('hidden');
+        const canP1 = String(guestData.allowPlusOne).toLowerCase() === "true";
 
-    if (data.allowPlusOne === "YES") {
-      document.getElementById("plusOneSection").style.display = "block";
+        content.innerHTML = `
+            <h2 style="font-family: 'Playfair Display';">Hi ${guestData.name},</h2>
+            <label>Will you attend?</label>
+            <select id="attending-select" onchange="togglePlusOne(${canP1})">
+                <option value="Yes">Yes, I'll be there!</option>
+                <option value="No">No, I can't make it</option>
+            </select>
+            <div id="p1-area"></div>
+            <label>Email Address</label>
+            <input type="email" id="guest-email" value="${guestData.email || ''}">
+            <label>Message to the couple</label>
+            <textarea id="guest-note">${guestData.note || ''}</textarea>
+            <button class="btn" id="submit-btn" onclick="submitRSVP()">Confirm RSVP</button>`;
+        togglePlusOne(canP1);
     }
 
-    if (data.rsvpClosed) {
-  document.getElementById("welcome").innerText +=
-    "\n\nRSVP is now closed. We can’t wait to celebrate with you 💕";
-  return;
-}
-
-  });
-
-document.getElementById("rsvpForm").addEventListener("submit", e => {
-  e.preventDefault();
-
-  fetch("https://script.google.com/macros/s/AKfycbzoOgcuBy6LzaSWAfKkorZ-Pk-4nORjJAfyoTufBMmcvZL2O22HelPJi8zMFLWZ8dtu/exec", {
-    method: "POST",
-    body: JSON.stringify({
-      token: token,
-      rsvp: document.getElementById("rsvp").value,
-      bringingPlusOne:
-        document.getElementById("bringingPlusOne")?.value || "N/A",
-      plusOneName:
-        document.getElementById("plusOneName")?.value || ""
-    })
-  })
-  .then(res => res.json())
-  .then(resp => {
-    if (resp.error) {
-      alert("RSVP already submitted.");
-      return;
+    function togglePlusOne(canP1) {
+        const area = document.getElementById('p1-area');
+        const attending = document.getElementById('attending-select').value;
+        if (attending === "Yes" && canP1) {
+            area.innerHTML = `
+                <label>Bringing a plus one?</label>
+                <select id="bringing-p1" onchange="toggleP1Name()">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+                <div id="p1-name-wrapper"></div>`;
+        } else { area.innerHTML = ''; }
     }
-    alert("RSVP submitted 💕");
-    document.getElementById("rsvpForm").style.display = "none";
-  });
-});
+
+    function toggleP1Name() {
+        const wrapper = document.getElementById('p1-name-wrapper');
+        if (document.getElementById('bringing-p1').value === "Yes") {
+            wrapper.innerHTML = '<label>Plus One Name</label><input type="text" id="plus-one-name" placeholder="Guest Name">';
+        } else { wrapper.innerHTML = ''; }
+    }
+
+    function submitRSVP() {
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true; btn.innerHTML = "Saving...";
+        const p1NameInput = document.getElementById('plus-one-name');
+        
+        const payload = {
+            token: token,
+            name: guestData.name,
+            email: document.getElementById('guest-email').value,
+            attending: document.getElementById('attending-select').value,
+            plusOneName: p1NameInput ? p1NameInput.value : "None",
+            note: document.getElementById('guest-note').value
+        };
+
+        fetch(webAppUrl, {
+            method: "POST",
+            mode: "no-cors",
+            body: JSON.stringify(payload)
+        }).then(() => {
+            showDoneView({ ...guestData });
+        });
+    }
+
+    function showDoneView(data) {
+        const content = document.getElementById('content');
+        content.classList.remove('hidden');
+        content.innerHTML = `
+            <div style="text-align: center;">
+                <h2 style="font-family: 'Playfair Display';">Thank you!</h2>
+                <p>RSVP recorded for ${data.name}.</p>
+                <button class="btn" onclick="showMainForm()">Edit Response</button>
+            </div>`;
+    }
 </script>
+</body>
+</html>
