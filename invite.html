@@ -6,146 +6,177 @@
     <title>M & J Wedding</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
     <style>
-:root { 
-    --paper: #fcfaf7; 
-    --gold: #bfa17a; 
-    --text: #4a4a4a; 
-    --accent: #043927; 
-    --pink: #f4cfe0; 
-}
-
-body, html { 
-    margin: 0; padding: 0; 
-    background-color: #e5e0d8; 
-    font-family: 'Montserrat', sans-serif; 
-    color: var(--text); 
-    overflow-x: hidden; 
-    height: 100%; 
-}
-
-/* --- ANIMATIONS --- */
-@keyframes envelope-float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
-}
-
-@keyframes seal-breathe {
-    0%, 100% { filter: drop-shadow(0 0 5px rgba(191, 161, 122, 0.4)); }
-    50% { filter: drop-shadow(0 0 25px rgba(191, 161, 122, 0.8)); }
-}
-
-@keyframes nameReveal {
-    0% { opacity: 0; transform: translateY(15px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
-/* --- WRAPPER & ENVELOPE --- */
-#envelope-wrapper {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    background-color: #f4f1ea;
-    transition: all 0.8s ease-in-out;
-}
-
-.envelope {
-    position: relative;
-    width: 60vw;
-    height: 40vw;
-    max-width: 700px;
-    max-height: 460px;
-    background: url('6938.jpg') center/cover no-repeat;
-    z-index: 1;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-    animation: envelope-float 3s ease-in-out infinite;
-}
-
-/* Move Media Query here so it overrides the desktop width on small screens */
-@media (max-width: 768px) {
-    .envelope {
-        width: 90vw;
-        height: 60vw;
+    :root { 
+        --paper: #fcfaf7; 
+        --gold: #bfa17a; 
+        --text: #4a4a4a; 
+        --accent: #043927; 
+        --pink: #f4cfe0; 
     }
-}
 
-/* --- INTERNAL ELEMENTS --- */
-.envelope-lines {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 7;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='2'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='2'/%3E%3Cline x1='0' y1='100%25' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.1' stroke-width='1'/%3E%3Cline x1='100%25' y1='100%25' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.1' stroke-width='1'/%3E%3C/svg%3E");
-    background-size: 100% 100%;
-}
+    body, html { 
+        margin: 0; padding: 0; 
+        background-color: #e5e0d8; 
+        font-family: 'Montserrat', sans-serif; 
+        color: var(--text); 
+        overflow-x: hidden; 
+        height: 100%; 
+    }
 
-.top-flap {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 60%;
-    z-index: 6; 
-    background: url('6938.jpg') center/cover no-repeat;
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-    transition: transform 0.8s ease;
-    transform-origin: top;
-}
+    /* --- ANIMATIONS --- */
 
-/* This is what makes the flap open when the seal is clicked */
-.open .top-flap {
-    transform: rotateX(180deg);
-    z-index: 2; /* Moves behind the letter/pocket once open */
-}
+    /* 1. The Flap lifts and lowers */
+    @keyframes flap-bob {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
 
-.envelope-pocket-main { 
-    position: absolute; 
-    top: 0; left: 0; 
-    width: 100%; height: 100%; 
-    z-index: 3;
-    background: url('6938.jpg') center/cover no-repeat;
-    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
-}
+    /* 2. The Seal bobs with the flap AND glows */
+    @keyframes seal-bob-glow {
+        0%, 100% { 
+            transform: translate(-50%, -50%) translateY(0px); 
+            filter: drop-shadow(0 0 5px rgba(191, 161, 122, 0.4));
+        }
+        50% { 
+            transform: translate(-50%, -50%) translateY(-10px); 
+            filter: drop-shadow(0 0 25px rgba(191, 161, 122, 0.8));
+        }
+    }
 
-#seal {
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: clamp(80px, 15vw, 120px);
-    z-index: 100;
-    cursor: pointer;
-    animation: seal-breathe 3s ease-in-out infinite;
-    transition: transform 0.3s ease, opacity 0.5s ease;
-}
+    /* 3. The guest name reveal */
+    @keyframes nameReveal {
+        0% { opacity: 0; transform: translateY(15px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
 
-#seal:hover { transform: translate(-50%, -50%) scale(1.1); }
+    /* --- WRAPPER & ENVELOPE --- */
 
-/* Hide seal when envelope is opening */
-.open #seal { opacity: 0; pointer-events: none; }
+    #envelope-wrapper {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        background-color: #f4f1ea;
+        transition: all 0.8s ease-in-out;
+    }
 
-#envelope-label {
-    position: absolute;
-    bottom: 18%;
-    width: 100%;
-    text-align: center;
-    z-index: 8;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 3px;
-    font-size: 0.75rem;
-    color: rgba(74, 74, 74, 0.6);
-    text-transform: uppercase;
-    opacity: 0;
-    pointer-events: none;
-}
+    .envelope {
+        position: relative;
+        width: 60vw;
+        height: 40vw;
+        max-width: 700px;
+        max-height: 460px;
+        background: url('6938.jpg') center/cover no-repeat;
+        z-index: 1;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        /* Envelope body stays static */
+    }
 
-.reveal-active {
-    animation: nameReveal 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
+    .envelope-lines {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: 7;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='2'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='2'/%3E%3Cline x1='0' y1='100%25' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.1' stroke-width='1'/%3E%3Cline x1='100%25' y1='100%25' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.1' stroke-width='1'/%3E%3C/svg%3E");
+        background-size: 100% 100%;
+    }
 
-    
+    .top-flap {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 60%;
+        z-index: 6; 
+        background: url('6938.jpg') center/cover no-repeat;
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        transition: transform 0.8s ease;
+        transform-origin: top;
+        /* Bobbing animation applied specifically to the flap */
+        animation: flap-bob 3s ease-in-out infinite;
+    }
+
+    .envelope-pocket-main { 
+        position: absolute; 
+        top: 0; left: 0; 
+        width: 100%; height: 100%; 
+        z-index: 3;
+        background: url('6938.jpg') center/cover no-repeat;
+        clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+    }
+
+    #seal {
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        z-index: 100;
+        cursor: pointer;
+        width: clamp(80px, 15vw, 110px);
+        /* Bobbing and Glow applied specifically to the seal */
+        animation: seal-bob-glow 3s ease-in-out infinite;
+        transition: scale 0.3s ease, opacity 0.5s ease;
+    }
+
+    #seal img { width: 100%; height: auto; display: block; }
+
+    #seal:hover { scale: 1.1; }
+
+    /* --- GUEST LABEL --- */
+
+    #envelope-label {
+        position: absolute;
+        bottom: 18%;
+        width: 100%;
+        text-align: center;
+        z-index: 8;
+        font-family: 'Montserrat', sans-serif;
+        letter-spacing: 3px;
+        font-size: 0.75rem;
+        color: rgba(74, 74, 74, 0.6);
+        text-transform: uppercase;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .reveal-active {
+        animation: nameReveal 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* --- OPEN STATE --- */
+
+    /* Stop animations immediately when 'open' class is added */
+    .open .top-flap, .open #seal {
+        animation: none !important;
+    }
+
+    .open .top-flap {
+        transform: rotateX(180deg);
+        z-index: 2;
+    }
+
+    .open #seal {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    /* --- RESPONSIVE ADJUSTMENTS --- */
+
+    @media (max-width: 768px) {
+        .envelope {
+            width: 85vw;
+            height: 56vw;
+        }
+        #envelope-label {
+            bottom: 15%;
+            font-size: 0.65rem;
+        }
+    }
+
+    /* --- MAIN SITE TRANSITION --- */
+    #main-site { opacity: 0; display: none; transition: opacity 1.5s ease; }
+    .show-site #main-site { opacity: 1; display: block; }
 </style>
 </head>
 <body style="overflow: hidden;">
