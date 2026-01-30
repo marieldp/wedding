@@ -308,28 +308,41 @@
     }
 
     function checkGuestStatus() {
+    // If there is no token, don't even try to fetch
+    if (!token) {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('error-msg').classList.remove('hidden');
+        return;
+    }
+
     fetch(`${webAppUrl}?id=${encodeURIComponent(token)}`)
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        })
         .then(data => {
             guestData = data;
             document.getElementById('loading').classList.add('hidden');
             
-            if (data.name) {
+            if (data && data.name) {
+                // Trigger the Name Reveal on the Envelope
                 const label = document.getElementById('envelope-label');
-                
-                // 1. Put the name in the div
                 label.innerText = `To our dear ${data.name}`;
-                
-                // 2. FORCE the animation to start by adding the class
-                // We use a small delay so the browser 'notices' the change
                 setTimeout(() => {
                     label.classList.add('reveal-active');
                 }, 500);
 
+                // Load the RSVP form in the background
                 data.isDone ? showDoneView(data) : showMainForm();
             } else {
                 document.getElementById('error-msg').classList.remove('hidden');
             }
+        })
+        .catch(err => {
+            console.error("Connection Error:", err);
+            document.getElementById('loading').innerHTML = 
+                `<p style="color:red;">Connection Error: Could not reach Google Sheets.</p>
+                 <button onclick="checkGuestStatus()" style="padding:5px 10px; font-size:12px;">Retry</button>`;
         });
 }
 
