@@ -24,28 +24,25 @@
     }
 
     /* --- ANIMATIONS --- */
-
-    /* 1. Flap bobs and its shadow changes intensity */
     @keyframes flap-bob {
         0%, 100% { 
             transform: translateY(0px); 
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.2));
         }
         50% { 
-            transform: translateY(-10px); 
-            filter: drop-shadow(0 15px 10px rgba(0,0,0,0.15)); /* Softer, deeper shadow when lifted */
+            transform: translateY(-15px); 
+            filter: drop-shadow(0 20px 15px rgba(0,0,0,0.15));
         }
     }
 
-    /* 2. Seal bobs with flap and glows */
     @keyframes seal-bob-glow {
         0%, 100% { 
             transform: translate(-50%, -50%) translateY(0px); 
             filter: drop-shadow(0 4px 5px rgba(0,0,0,0.3)) drop-shadow(0 0 5px rgba(191, 161, 122, 0.4));
         }
         50% { 
-            transform: translate(-50%, -50%) translateY(-10px); 
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2)) drop-shadow(0 0 25px rgba(191, 161, 122, 0.8));
+            transform: translate(-50%, -50%) translateY(-15px); 
+            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.2)) drop-shadow(0 0 25px rgba(191, 161, 122, 0.8));
         }
     }
 
@@ -55,7 +52,6 @@
     }
 
     /* --- ENVELOPE BASE --- */
-
     #envelope-wrapper {
         position: fixed;
         top: 0; left: 0;
@@ -65,7 +61,6 @@
         align-items: center;
         z-index: 9999;
         background-color: #f4f1ea;
-        transition: all 0.8s ease-in-out;
     }
 
     .envelope {
@@ -76,45 +71,64 @@
         max-height: 460px;
         background: url('6938.jpg') center/cover no-repeat;
         z-index: 1;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
     }
 
-    .envelope-lines {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        z-index: 7;
-        pointer-events: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='2'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='2'/%3E%3Cline x1='0' y1='100%25' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.1' stroke-width='1'/%3E%3Cline x1='100%25' y1='100%25' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.1' stroke-width='1'/%3E%3C/svg%3E");
-        background-size: 100% 100%;
-    }
-
-    .top-flap {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 60%;
-        z-index: 6; 
-        background: url('6938.jpg') center/cover no-repeat;
-        clip-path: polygon(0 0, 100% 0, 50% 100%);
-        transition: transform 0.8s ease, filter 0.8s ease;
-        transform-origin: top;
-        animation: flap-bob 3s ease-in-out infinite;
-    }
-
+    /* LAYER 1: The Pocket (Lower) */
     .envelope-pocket-main { 
         position: absolute; 
         top: 0; left: 0; 
         width: 100%; height: 100%; 
-        z-index: 3;
+        z-index: 2; /* Low layer */
         background: url('6938.jpg') center/cover no-repeat;
         clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
     }
 
+    /* LAYER 2: The Guest Label (On the pocket) */
+    #envelope-label {
+        position: absolute;
+        bottom: 18%;
+        width: 100%;
+        text-align: center;
+        z-index: 3; /* Above pocket, below flap */
+        font-family: 'Montserrat', sans-serif;
+        letter-spacing: 3px;
+        font-size: 0.75rem;
+        color: rgba(74, 74, 74, 0.6);
+        text-transform: uppercase;
+        opacity: 0;
+    }
+
+    /* LAYER 3: The Flap (Higher so shadow falls on Layer 1) */
+    .top-flap {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 60%;
+        z-index: 10; /* HIGH LAYER */
+        background: url('6938.jpg') center/cover no-repeat;
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        transform-origin: top;
+        animation: flap-bob 3s ease-in-out infinite;
+        transition: transform 0.8s ease;
+    }
+
+    /* LAYER 4: The Decorative Lines */
+    .envelope-lines {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: 11; /* Above the flap */
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.15' stroke-width='2'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.15' stroke-width='2'/%3E%3C/svg%3E");
+        background-size: 100% 100%;
+    }
+
+    /* LAYER 5: The Seal (Highest) */
     #seal {
         position: absolute;
         top: 60%;
         left: 50%;
-        z-index: 100;
+        z-index: 20; /* TOP LAYER */
         cursor: pointer;
         width: clamp(80px, 15vw, 110px);
         animation: seal-bob-glow 3s ease-in-out infinite;
@@ -123,47 +137,18 @@
 
     #seal img { width: 100%; height: auto; display: block; }
 
-    /* --- GUEST LABEL --- */
-    #envelope-label {
-        position: absolute;
-        bottom: 18%;
-        width: 100%;
-        text-align: center;
-        z-index: 8;
-        font-family: 'Montserrat', sans-serif;
-        letter-spacing: 3px;
-        font-size: 0.75rem;
-        color: rgba(74, 74, 74, 0.6);
-        text-transform: uppercase;
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    .reveal-active {
-        animation: nameReveal 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-
     /* --- OPEN STATE --- */
-    .open .top-flap, .open #seal {
-        animation: none !important;
+    .open .top-flap { 
+        animation: none !important; 
+        transform: rotateX(180deg); 
+        z-index: 1; /* Hide behind everything when open */
     }
-
-    .open .top-flap {
-        transform: rotateX(180deg);
-        filter: none !important; /* Remove shadow when flipped up */
-        z-index: 2;
-    }
-
     .open #seal { opacity: 0; pointer-events: none; }
+    .reveal-active { animation: nameReveal 1.5s forwards; }
 
-    /* --- RESPONSIVE --- */
     @media (max-width: 768px) {
         .envelope { width: 85vw; height: 56vw; }
-        #envelope-label { bottom: 15%; font-size: 0.65rem; }
     }
-
-    #main-site { opacity: 0; display: none; transition: opacity 1.5s ease; }
-    .show-site #main-site { opacity: 1; display: block; }
 </style>
 </head>
 <body style="overflow: hidden;">
