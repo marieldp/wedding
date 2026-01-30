@@ -109,22 +109,21 @@
     transform: translate(-50%, -50%) scale(1.1);
 }
 
-/* The 'Letter' inside that peeks out */
-.letter {
-    position: absolute;
-    bottom: 5%;
-    left: 5%;
-    width: 90%;
-    height: 80%;
-    background: white;
-    z-index: 2;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Playfair Display', serif;
+/* Seal Animation */
+@keyframes seal-breathe {
+    0% { filter: drop-shadow(0 0 5px rgba(191, 161, 122, 0.4)); }
+    50% { filter: drop-shadow(0 0 20px rgba(191, 161, 122, 0.8)); }
+    100% { filter: drop-shadow(0 0 5px rgba(191, 161, 122, 0.4)); }
 }
-    </style>
+
+#seal img {
+    /* Apply the animation to the image itself for the best effect */
+    animation: seal-breathe 2s ease-in-out infinite;
+    display: block;
+    width: 100%;
+}
+        
+</style>
 </head>
 <body style="overflow: hidden;">
 
