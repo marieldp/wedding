@@ -83,44 +83,43 @@
 
 #seal {
     position: absolute;
-    top: 60%; /* Aligned with the tip of the flap and SVG lines */
+    top: 60%;
     left: 50%;
+    /* Start with the centering transform */
     transform: translate(-50%, -50%);
-    
-    /* UPDATED SIZE: Minimum 80px, preferred 15vw, maximum 120px */
-    width: clamp(80px, 15vw, 120px); 
-    height: auto;
-    
-    z-index: 100; /* Stays on top of the lines and flap */
+    width: clamp(80px, 15vw, 120px);
+    z-index: 100;
     cursor: pointer;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-#seal img {
-    width: 100%;
-    height: auto;
-    display: block;
-    /* Optional: subtle drop shadow to make the wax look real */
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    /* Apply the unified animation here */
+    animation: seal-float-glow 2.5s ease-in-out infinite;
+    transition: transform 0.3s ease; /* For the hover effect */
 }
 
 #seal:hover {
-    /* Slight grow effect when hovering */
-    transform: translate(-50%, -50%) scale(1.1);
+    /* Slightly enlarges on hover while keeping the bobbing center */
+    scale: 1.1;
 }
 
 /* Seal Animation */
-@keyframes seal-breathe {
-    0% { filter: drop-shadow(0 0 5px rgba(191, 161, 122, 0.4)); }
-    50% { filter: drop-shadow(0 0 20px rgba(191, 161, 122, 0.8)); }
-    100% { filter: drop-shadow(0 0 5px rgba(191, 161, 122, 0.4)); }
+/* Unified Animation: Bobs up/down AND changes glow intensity */
+@keyframes seal-float-glow {
+    0% { 
+        transform: translate(-50%, -50%) translateY(0px);
+        filter: drop-shadow(0 0 5px rgba(191, 161, 122, 0.4)); 
+    }
+    50% { 
+        transform: translate(-50%, -50%) translateY(-8px); /* Bob up */
+        filter: drop-shadow(0 0 20px rgba(191, 161, 122, 0.8)); /* Glow stronger */
+    }
+    100% { 
+        transform: translate(-50%, -50%) translateY(0px);
+        filter: drop-shadow(0 0 5px rgba(191, 161, 122, 0.4)); 
+    }
 }
-
 #seal img {
-    /* Apply the animation to the image itself for the best effect */
-    animation: seal-breathe 2s ease-in-out infinite;
-    display: block;
     width: 100%;
+    height: auto;
+    display: block;
 }
         
 </style>
