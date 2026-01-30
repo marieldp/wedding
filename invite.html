@@ -188,20 +188,23 @@
 </head>
 <body style="overflow: hidden;">
 
-<div class="envelope">
-    <div class="envelope-back"></div>
+<div id="envelope-wrapper">
+    <div class="envelope">
+        <div class="envelope-back"></div>
+        
+        <div id="envelope-label"></div>
+        
+        <div class="envelope-pocket-main"></div>
 
-    <div id="envelope-label"></div>
+        <div class="flap-container">
+            <div class="top-flap"></div>
+        </div>
 
-    <div class="envelope-pocket-main"></div>
+        <div class="envelope-lines"></div> 
 
-    <div class="flap-container">
-        <div class="top-flap"></div>
-    </div>
-
-    <div class="envelope-lines"></div> 
-    <div id="seal" onclick="openInvitation()">
-        <img src="seal.png" alt="Seal">
+        <div id="seal" onclick="openInvitation()">
+            <img src="seal.png" alt="Seal">
+        </div>
     </div>
 </div>
 
