@@ -24,16 +24,15 @@
     }
 
     /* --- ANIMATIONS --- */
-    @keyframes flap-bob {
-        0%, 100% { 
-            transform: translateY(0px); 
-            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
-        }
-        50% { 
-            transform: translateY(-15px); 
-            filter: drop-shadow(0 15px 12px rgba(0,0,0,0.15));
-        }
+    /* Update animations to move the CONTAINER, not the flap directly */
+@keyframes flap-bob {
+    0%, 100% { 
+        transform: translateY(0px); 
     }
+    50% { 
+        transform: translateY(-15px); 
+    }
+}
 
     @keyframes seal-bob-glow {
         0%, 100% { 
@@ -50,6 +49,8 @@
         0% { opacity: 0; transform: translateY(15px); }
         100% { opacity: 1; transform: translateY(0); }
     }
+
+    
 
     /* --- ENVELOPE BASE --- */
     #envelope-wrapper {
@@ -100,18 +101,36 @@
         pointer-events: none;
     }
 
+    /* This is the 'Ghost' that holds the shadow */
+.flap-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    z-index: 10;
+    /* This filter creates the shadow around the clipped shape inside it */
+    filter: drop-shadow(0 8px 6px rgba(0,0,0,0.3));
+    transform-origin: top;
+    animation: flap-bob 3s ease-in-out infinite;
+    transition: transform 0.8s ease;
+}
+
     /* LAYER 3: The Flap */
     .top-flap {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 60%;
-        z-index: 10;
-        background: url('6938.jpg') center/cover no-repeat;
-        clip-path: polygon(0 0, 100% 0, 50% 100%);
-        transform-origin: top;
-        animation: flap-bob 3s ease-in-out infinite;
-        transition: transform 0.8s ease;
-    }
+    width: 100%;
+    height: 100%;
+    background: url('6938.jpg') center/cover no-repeat;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+    /* Ensure the open state rotates the container */
+.open .flap-container {
+    animation: none !important;
+    transform: rotateX(180deg);
+    z-index: 1;
+    filter: none;
+}
 
     /* LAYER 4: The Decorative Lines */
     .envelope-lines {
@@ -167,9 +186,15 @@
 <div id="envelope-wrapper">
     <div class="envelope">
         <div id="envelope-label"></div>
+
         <div class="envelope-pocket-main"></div>
-        <div class="top-flap"></div>
+
+        <div class="flap-container">
+            <div class="top-flap"></div>
+        </div>
+
         <div class="envelope-lines"></div> 
+
         <div id="seal" onclick="openInvitation()">
             <img src="seal.png" alt="Seal">
         </div>
