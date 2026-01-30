@@ -105,10 +105,15 @@
     bottom: 20%;
     width: 100%;
     text-align: center;
-    z-index: 2; /* Sits on the back wall */
+    z-index: 2;
     font-family: 'Pinyon Script', cursive;
-    font-size: clamp(1.2rem, 3vw, 2.2rem);
-    color: rgba(74, 74, 74, 0.7);
+    font-size: clamp(1.4rem, 4vw, 2.5rem);
+    
+    /* GOLD FOIL EFFECT */
+    color: #bfa17a; /* Your --gold variable */
+    text-shadow: 0.5px 0.5px 0px rgba(255,255,255,0.5), /* Highlight on edge */
+                 -0.5px -0.5px 0px rgba(0,0,0,0.2);    /* Slight "pressed" depth */
+    
     opacity: 0;
     pointer-events: none;
 }
