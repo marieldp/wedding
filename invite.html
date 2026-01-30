@@ -65,6 +65,19 @@
         transition: all 0.8s ease-in-out;
     }
 
+    /* This is the 'inside' wall of the envelope */
+.envelope-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('6938.jpg') center/cover no-repeat;
+    z-index: 1; /* Behind everything */
+    /* Optional: make it slightly darker to look like it's in shadow */
+    filter: brightness(0.95);
+}
+
     .envelope {
         position: relative;
         width: 60vw;
@@ -82,7 +95,7 @@
         position: absolute; 
         top: 0; left: 0; 
         width: 100%; height: 100%; 
-        z-index: 2;
+        z-index: 3;
         background: url('6938.jpg') center/cover no-repeat;
         clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
     }
@@ -93,7 +106,7 @@
         bottom: 20%;
         width: 100%;
         text-align: center;
-        z-index: 3;
+        z-index: 2;
         font-family: 'Pinyon Script', cursive; /* Elegant Calligraphy */
         font-size: clamp(1.2rem, 3vw, 2rem);
         color: rgba(74, 74, 74, 0.7);
@@ -183,21 +196,20 @@
 </head>
 <body style="overflow: hidden;">
 
-<div id="envelope-wrapper">
-    <div class="envelope">
-        <div id="envelope-label"></div>
+<div class="envelope">
+    <div class="envelope-back"></div>
 
-        <div class="envelope-pocket-main"></div>
+    <div id="envelope-label"></div>
 
-        <div class="flap-container">
-            <div class="top-flap"></div>
-        </div>
+    <div class="envelope-pocket-main"></div>
 
-        <div class="envelope-lines"></div> 
+    <div class="flap-container">
+        <div class="top-flap"></div>
+    </div>
 
-        <div id="seal" onclick="openInvitation()">
-            <img src="seal.png" alt="Seal">
-        </div>
+    <div class="envelope-lines"></div> 
+    <div id="seal" onclick="openInvitation()">
+        <img src="seal.png" alt="Seal">
     </div>
 </div>
 
