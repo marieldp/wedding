@@ -20,18 +20,29 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    background-color: #f4f1ea;
+    background-color: #f4f1ea; /* The "desk" color */
     transition: all 0.8s ease-in-out;
 }
 
 .envelope {
     position: relative;
-    /* This forces the envelope to take up the full screen */
-    width: 100vw;
-    height: 100vh;
+    /* 60% width means 20% margin on left and 20% on right */
+    width: 60vw; 
+    /* Maintains a classic envelope aspect ratio */
+    height: 40vw; 
+    max-width: 700px;
+    max-height: 460px;
     background: url('6938.jpg') center/cover no-repeat;
     z-index: 1;
-    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15); /* Adds depth */
+}
+
+/* For mobile devices, we make it a bit wider so it's not too tiny */
+@media (max-width: 768px) {
+    .envelope {
+        width: 85vw;
+        height: 56vw;
+    }
 }
 
 .top-flap {
@@ -39,10 +50,9 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 50%; /* Adjusted for full screen */
+    height: 60%; 
     z-index: 6;
     background: url('6938.jpg') center/cover no-repeat;
-    /* Creates the triangular flap that meets in the center */
     clip-path: polygon(0 0, 100% 0, 50% 100%);
     transition: transform 0.8s ease;
     transform-origin: top;
@@ -56,16 +66,15 @@
     height: 100%; 
     z-index: 3;
     background: url('6938.jpg') center/cover no-repeat;
-    /* The bottom pocket that the flap 'tucks' into */
     clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
 }
 
 #seal {
     position: absolute;
-    top: 50%; /* Moved to center height since it's full screen */
+    top: 60%; /* Aligned with the flap tip */
     left: 50%;
     transform: translate(-50%, -50%);
-    width: clamp(80px, 20vw, 150px); /* Scales the stamp size */
+    width: clamp(60px, 10vw, 90px);
     z-index: 100;
     cursor: pointer;
     transition: transform 0.3s;
@@ -169,22 +178,30 @@ function openInvitation() {
     const wrapper = document.getElementById('envelope-wrapper');
     const main = document.body;
 
+    // 1. Trigger the flap opening (CSS handles the rotation)
     wrapper.classList.add('open'); 
     
     setTimeout(() => {
-        // This moves the full-screen envelope down off the screen
-        wrapper.style.transform = "translateY(100vh)";
+        // 2. Updated animation: Slides down AND shrinks slightly (scale 0.8)
+        // This looks much better when you have a 20% margin
+        wrapper.style.transform = "translateY(100vh) scale(0.8)";
         wrapper.style.opacity = "0";
         
+        // 3. Prepare the main site
         document.getElementById('main-site').style.display = 'block';
+        
         setTimeout(() => {
             main.classList.add('show-site');
             main.style.overflow = 'auto';
-            // Completely remove the wrapper after animation to avoid click issues
-            setTimeout(() => wrapper.style.display = 'none', 800);
+            
+            // 4. Clean up: Completely hide the wrapper so it doesn't block clicks
+            setTimeout(() => {
+                wrapper.style.display = 'none';
+            }, 800);
         }, 100);
-    }, 1000);
+    }, 1000); // Wait 1 second for the flap to start opening
 
+    // 5. Guest lookup logic
     if (token) {
         document.getElementById('loading').classList.remove('hidden');
         checkGuestStatus();
