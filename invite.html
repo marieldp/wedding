@@ -22,21 +22,39 @@
 /* --- THE LETTER SLIDE --- */
 .letter {
     position: absolute;
-    bottom: 5%; left: 5%;
-    width: 90%; height: 90%;
+    /* Reset: This tucks it deep into the pocket */
+    bottom: 5%; 
+    left: 10%;
+    width: 80%; 
+    height: 60%; /* Made smaller as requested */
     background: white;
-    z-index: 50; 
-    padding: 20px;
+    z-index: 2; 
+    padding: 15px;
     box-sizing: border-box;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    
+    /* Starting state: hidden behind pocket */
+    transform: translateY(0); 
+    pointer-events: none; 
     transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     
-    /* FIX: Prevents the letter from blocking clicks to the seal */
-    pointer-events: none; 
+    /* Layout to center children */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.letter-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertical center */
+    align-items: center;     /* Horizontal center */
+    text-align: center;
+    width: 100%;
 }
 /* When the seal is clicked, the letter peeks out */
 .open .letter {
-    transform: translateY(-55%); /* Slides up to show the question */
+    transform: translateY(-65%); /* Slides up to show the question */
     pointer-events: auto; /* Buttons become clickable now */
 }
     /* --- MUSIC PROMPT MODAL --- */
@@ -233,16 +251,18 @@
     <div class="envelope">
         <div class="envelope-back"></div>
         
-        <div class="letter">
-            <div class="letter-content">
-                <h2 style="font-family: 'Great Vibes'; color: #043927; margin: 0;">M & J</h2>
-                <p style="font-family: 'Montserrat'; font-size: 0.8rem; margin: 10px 0;">Experience with music?</p>
-                <div class="prompt-btns">
-                    <button class="prompt-btn yes" onclick="handleMusic(true)">YES</button>
-                    <button class="prompt-btn" onclick="handleMusic(false)">NO</button>
-                </div>
-            </div>
+    <div class="letter">
+    <div class="letter-content">
+        <h2 style="font-family: 'Great Vibes'; color: #043927; margin: 0; font-size: 2rem;">M & J</h2>
+        <p style="font-family: 'Montserrat'; font-size: 0.8rem; margin: 10px 0; line-height: 1.4;">
+            Would you like to experience <br> this with music?
+        </p>
+        <div class="prompt-btns">
+            <button class="prompt-btn yes" onclick="handleMusic(true)">YES</button>
+            <button class="prompt-btn" onclick="handleMusic(false)">NO</button>
         </div>
+    </div>
+</div>
 
         <div class="flap-container">
             <div class="top-flap"></div>
