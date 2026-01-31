@@ -271,8 +271,12 @@
                     label.classList.add('reveal-active');
                 }, 0);
 
+                document.getElementById('loading').classList.add('hidden');
+
                 // Load the RSVP form in the background
                 data.isDone ? showDoneView(data) : showMainForm();
+
+                
             } else {
                 document.getElementById('error-msg').classList.remove('hidden');
             }
