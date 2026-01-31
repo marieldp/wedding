@@ -22,40 +22,37 @@
 /* --- THE LETTER SLIDE --- */
 .letter {
     position: absolute;
-    /* Reset: This tucks it deep into the pocket */
     bottom: 5%; 
-    left: 10%;
-    width: 80%; 
-    height: 60%; /* Made smaller as requested */
+    left: 15%; /* Centering the 70% width: (100-70)/2 = 15 */
+    width: 70%; 
+    height: 50%; /* Smaller height as requested */
     background: white;
     z-index: 2; 
-    padding: 15px;
+    padding: 10px;
     box-sizing: border-box;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     
-    /* Starting state: hidden behind pocket */
-    transform: translateY(0); 
-    pointer-events: none; 
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Layout to center children */
+    /* Center text inside */
     display: flex;
     justify-content: center;
     align-items: center;
+
+    /* Starting state: hidden */
+    transform: translateY(0); 
+    pointer-events: none; 
+    transition: transform 1s ease-out;
 }
 
 .letter-content {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Vertical center */
-    align-items: center;     /* Horizontal center */
+    align-items: center;
     text-align: center;
-    width: 100%;
 }
 /* When the seal is clicked, the letter peeks out */
 .open .letter {
-    transform: translateY(-65%); /* Slides up to show the question */
-    pointer-events: auto; /* Buttons become clickable now */
+    transform: translateY(-75%); /* Slides up nicely */
+    pointer-events: auto; /* Enables buttons */
 }
     /* --- MUSIC PROMPT MODAL --- */
 #music-prompt {
@@ -348,16 +345,16 @@ const music = document.getElementById('bg-music');
 
 // Step 1: User clicks the seal
 function openInvitation() {
-    // 1. Trigger the 'open' class on the WRAPPER
     const wrapper = document.getElementById('envelope-wrapper');
+    const seal = document.getElementById('seal');
+    
+    // 1. Tell the wrapper we are open (Triggers flap and letter)
     wrapper.classList.add('open');
     
-    // 2. Fade out the seal
-    const seal = document.getElementById('seal');
+    // 2. Clear the seal out of the way
     seal.style.opacity = "0";
     seal.style.pointerEvents = "none";
-
-    // 3. Update the guest info in the background
+    
     if (token) checkGuestStatus();
 }
 
@@ -365,24 +362,23 @@ function handleMusic(play) {
     const music = document.getElementById('bg-music');
     const wrapper = document.getElementById('envelope-wrapper');
 
-    // Play music if Yes
     if (play && music) {
         music.play().catch(e => console.log("Audio block:", e));
     }
 
-    // 1. ADD EXIT CLASS TO WRAPPER
+    // 1. THE WRAPPER EXIT: The whole stage clears out
     wrapper.classList.add('wrapper-exit');
 
-    // 2. REVEAL WEBSITE
+    // 2. SHOW THE LANDING PAGE
     setTimeout(() => {
         wrapper.style.display = "none";
         document.getElementById('main-site').style.display = 'block';
         
         setTimeout(() => {
             document.body.classList.add('show-site');
-            document.body.style.overflow = 'auto'; // Re-enable scrolling
+            document.body.style.overflow = 'auto'; 
         }, 100);
-    }, 1000); // Matches the 1s transition in CSS
+    }, 1000);
 }
     
     function checkGuestStatus() {
