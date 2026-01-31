@@ -26,17 +26,19 @@
     width: 90%; height: 90%;
     background: white;
     z-index: 2; 
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 20px;
     box-sizing: border-box;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* FIX: Prevents the letter from blocking clicks to the seal */
+    pointer-events: none; 
 }
-
 /* When the seal is clicked, the letter peeks out */
 .open .letter {
-    transform: translateY(-50%); /* Adjust this to show more/less of the letter */
+    transform: translateY(-55%); /* Slides up to show the question */
+    pointer-events: auto; /* Buttons become clickable now */
 }
-
     /* --- MUSIC PROMPT MODAL --- */
 #music-prompt {
     position: fixed; /* Changed from absolute to fixed */
@@ -105,7 +107,7 @@
     align-items: center;
     z-index: 9999;
     background-color: #f4f1ea;
-    transition: opacity 1s ease, transform 1s ease; /* Controlled by handleMusic */
+    transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease;
 }
 
 .prompt-btns { display: flex; gap: 15px; margin-top: 15px; justify-content: center; }
@@ -159,6 +161,11 @@
     .reveal-active {
         animation: nameReveal 0.8s ease-out forwards !important;
     }
+
+.wrapper-exit {
+    transform: translateY(-100vh) !important;
+    opacity: 0;
+}
 
     /* --- FLAP --- */
     .flap-container {
@@ -228,8 +235,8 @@
         
         <div class="letter">
             <div class="letter-content">
-                <h2 style="font-family: 'Great Vibes'; color: #043927; margin-bottom: 5px;">M & J</h2>
-                <p style="font-family: 'Montserrat'; font-size: 0.8rem; letter-spacing: 1px;">Would you like to hear our wedding music?</p>
+                <h2 style="font-family: 'Great Vibes'; color: #043927; margin: 0;">M & J</h2>
+                <p style="font-family: 'Montserrat'; font-size: 0.8rem; margin: 10px 0;">Experience with music?</p>
                 <div class="prompt-btns">
                     <button class="prompt-btn yes" onclick="handleMusic(true)">YES</button>
                     <button class="prompt-btn" onclick="handleMusic(false)">NO</button>
@@ -331,17 +338,16 @@ const music = document.getElementById('bg-music');
 
 // Step 1: User clicks the seal
 function openInvitation() {
+    // 1. Trigger the 'open' class on the WRAPPER
     const wrapper = document.getElementById('envelope-wrapper');
-    const seal = document.getElementById('seal');
-    
-    // 1. Open the flap and slide the letter UP with the question
     wrapper.classList.add('open');
     
-    // 2. Hide the seal
+    // 2. Fade out the seal
+    const seal = document.getElementById('seal');
     seal.style.opacity = "0";
     seal.style.pointerEvents = "none";
 
-    // Start guest check in background
+    // 3. Update the guest info in the background
     if (token) checkGuestStatus();
 }
 
@@ -349,16 +355,15 @@ function handleMusic(play) {
     const music = document.getElementById('bg-music');
     const wrapper = document.getElementById('envelope-wrapper');
 
-    // 1. Play music if Yes
+    // Play music if Yes
     if (play && music) {
         music.play().catch(e => console.log("Audio block:", e));
     }
 
-    // 2. Fade out and slide up the WHOLE wrapper
-    wrapper.style.opacity = "0";
-    wrapper.style.transform = "translateY(-100vh)";
+    // 1. ADD EXIT CLASS TO WRAPPER
+    wrapper.classList.add('wrapper-exit');
 
-    // 3. Show the website
+    // 2. REVEAL WEBSITE
     setTimeout(() => {
         wrapper.style.display = "none";
         document.getElementById('main-site').style.display = 'block';
@@ -367,7 +372,7 @@ function handleMusic(play) {
             document.body.classList.add('show-site');
             document.body.style.overflow = 'auto'; // Re-enable scrolling
         }, 100);
-    }, 1000);
+    }, 1000); // Matches the 1s transition in CSS
 }
     
     function checkGuestStatus() {
