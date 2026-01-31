@@ -36,9 +36,8 @@
     }
 
     @keyframes nameReveal {
-        0% { opacity: 0; transform: translate(-50%, 15px); }
-        100% { opacity: 1; transform: translate(-50%, 0); }
-    }
+        0% { opacity: 0; transform: translate(-50%, 5px); } /* Smaller movement */
+    100% { opacity: 1; transform: translate(-50%, 0); }
 
     /* --- ENVELOPE BASE --- */
     #envelope-wrapper {
@@ -83,8 +82,7 @@
     }
 
     .reveal-active {
-        animation: nameReveal 1.5s ease-out forwards;
-    }
+        animation: nameReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;    }
 
     /* --- FLAP LOGIC --- */
     .flap-container {
