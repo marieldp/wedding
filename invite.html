@@ -59,12 +59,15 @@
         z-index: 1; filter: brightness(0.9);
     }
 
-    .envelope-pocket-main { 
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-        z-index: 4; /* Keeps letter (2) and flap (3) tucked in */
-        background: url('6938.jpg') center/cover no-repeat;
-        clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
-    }
+.envelope-pocket-main { 
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+    z-index: 4; 
+    background: url('6938.jpg') center/cover no-repeat;
+    background-color: #fcfaf7;
+    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+    /* This adds the shadow 'under' the V-shape of the pocket */
+    filter: drop-shadow(0 -5px 10px rgba(0,0,0,0.1));
+}
 
     /* --- THE LETTER (Small & Centered) --- */
     .letter {
@@ -102,9 +105,11 @@
 
     /* Animation Trigger: Pulls it out only when .open is added */
     .open .letter {
+        visibility: visible;
         transform: translateY(-115%); /* High enough to clear the pocket */
         opacity: 1;
         pointer-events: auto;
+        
     }
 
     /* --- FLAP --- */
@@ -180,12 +185,20 @@
     #main-site { opacity: 0; display: none; transition: opacity 1.5s ease; }
     .show-site #main-site { opacity: 1; display: block; }
 
-    .envelope-lines {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        z-index: 5; pointer-events: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.1' stroke-width='1'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.1' stroke-width='1'/%3E%3C/svg%3E");
-        background-size: 100% 100%;
-    }
+.envelope-lines {
+    position: absolute; 
+    top: 0; left: 0; 
+    width: 100%; height: 100%;
+    /* 1000 ensures it is above the pocket (4) and the label (20) */
+    z-index: 1000; 
+    pointer-events: none; /* Crucial: clicks must pass through to the seal */
+    
+    /* Darkened the stroke-opacity to 0.4 so you can clearly see if it's working */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.4' stroke-width='1.5'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.4' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+    
 </style>
 </head>
 <body style="overflow: hidden;">
