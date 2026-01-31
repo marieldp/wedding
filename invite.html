@@ -271,7 +271,7 @@
                 label.innerText = `To our dear ${data.name}`;
                 setTimeout(() => {
                     label.classList.add('reveal-active');
-                }, 500);
+                }, 0);
 
                 // Load the RSVP form in the background
                 data.isDone ? showDoneView(data) : showMainForm();
