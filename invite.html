@@ -42,16 +42,16 @@
         z-index: 9999; background-color: #f4f1ea;
     }
 
-    .envelope {
+   .envelope {
     position: relative; 
-    /* Uses % for width so it scales with the screen */
     width: 90vw; 
     height: 60vw;
-    /* max-width prevents it from becoming giant on huge monitors */
     max-width: 600px; 
     max-height: 400px;
     z-index: 10; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    /* This creates the 'room' for the flap to swing into */
+    perspective: 1500px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
     .envelope-back {
@@ -89,24 +89,32 @@
 
     /* --- FLAP --- */
     .flap-container {
-        position: absolute; top: 0; left: 0; width: 100%; height: 60%;
-        z-index: 5;
-        filter: drop-shadow(0 6px 4px rgba(0,0,0,0.2));
-        animation: flap-bob 4s ease-in-out infinite;
-        transition: all 0.8s ease-in-out;
-    }
+    position: absolute; 
+    top: 0; left: 0; 
+    width: 100%; height: 60%;
+    z-index: 15; /* Sits above the pocket but behind the seal */
+    
+    /* THE HINGE: This locks the top edge so it can't move */
+    transform-origin: top; 
+    transform-style: preserve-3d;
+    
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: flap-bob 4s ease-in-out infinite;
+}
 
     .top-flap {
-        width: 100%; height: 100%;
-        background: url('6938.jpg') center/cover no-repeat;
-        clip-path: polygon(0 0, 100% 0, 50% 100%);
-    }
-
+    width: 100%; height: 100%;
+    background: url('6938.jpg') center/cover no-repeat;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    /* This makes sure the 'inside' of the flap is visible when it flips up */
+    backface-visibility: visible;
+}
     /* OPEN STATE: Clean and simple */
     .open .flap-container {
     animation: none !important;
-    transform: translateY(-120%) scale(0.5); /* Lifted slightly higher for mobile */
-    opacity: 0;
+    /* This swings the flap UP and BACK like a real hinge */
+    transform: rotateX(160deg); 
+    z-index: 2; /* Moves it behind the pocket once it's open */
 }
 
     /* --- SEAL (Locked Size) --- */
@@ -118,7 +126,7 @@
     width: 18%; 
     min-width: 60px; /* Prevents it from disappearing on tiny phones */
     max-width: 110px; 
-    z-index: 30; 
+    z-index: 100; 
     cursor: pointer;
     animation: seal-bob 4s ease-in-out infinite;
     transition: opacity 0.4s ease;
