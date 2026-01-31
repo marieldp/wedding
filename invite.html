@@ -19,6 +19,24 @@
         overflow: hidden; height: 100%; 
     }
 
+/* --- THE LETTER SLIDE --- */
+.letter {
+    position: absolute;
+    bottom: 5%; left: 5%;
+    width: 90%; height: 90%;
+    background: white;
+    z-index: 2; 
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+/* When the seal is clicked, the letter peeks out */
+.open .letter {
+    transform: translateY(-50%); /* Adjust this to show more/less of the letter */
+}
+
     /* --- MUSIC PROMPT MODAL --- */
 #music-prompt {
     position: fixed; /* Changed from absolute to fixed */
@@ -54,11 +72,6 @@
 .prompt-btn.yes { background: var(--accent); color: white; }
 .prompt-btn:hover { opacity: 0.7; }
 
-/* --- LETTER EXIT ANIMATION --- */
-.open .letter {
-    z-index: 4; /* Higher than the pocket (3) but lower than the music prompt */
-    animation: letterExit 2.8s ease-in-out forwards;
-}
 
 @keyframes letterExit {
     0% { transform: translateY(0) scale(1); opacity: 1; }
@@ -82,12 +95,25 @@
         100% { opacity: 1; transform: translate(-50%, 0); }
     }
 
-    /* --- ENVELOPE BASE --- */
-    #envelope-wrapper {
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        display: flex; justify-content: center; align-items: center;
-        z-index: 9999; background-color: #f4f1ea;
-    }
+/* --- THE WRAPPER EXIT --- */
+#envelope-wrapper {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    background-color: #f4f1ea;
+    transition: opacity 1s ease, transform 1s ease; /* Controlled by handleMusic */
+}
+
+.prompt-btns { display: flex; gap: 15px; margin-top: 15px; justify-content: center; }
+.prompt-btn { 
+    border: 1px solid #043927; padding: 10px 25px; 
+    cursor: pointer; font-family: 'Montserrat'; font-weight: bold; 
+}
+.prompt-btn.yes { background: #043927; color: white; }
 
    .envelope {
     position: relative; 
@@ -200,20 +226,28 @@
     <div class="envelope">
         <div class="envelope-back"></div>
         
+        <div class="letter">
+            <div class="letter-content">
+                <h2 style="font-family: 'Great Vibes'; color: #043927; margin-bottom: 5px;">M & J</h2>
+                <p style="font-family: 'Montserrat'; font-size: 0.8rem; letter-spacing: 1px;">Would you like to hear our wedding music?</p>
+                <div class="prompt-btns">
+                    <button class="prompt-btn yes" onclick="handleMusic(true)">YES</button>
+                    <button class="prompt-btn" onclick="handleMusic(false)">NO</button>
+                </div>
+            </div>
+        </div>
+
         <div class="flap-container">
             <div class="top-flap"></div>
         </div>
-
-        <div class="envelope-lines"></div>
-
         <div class="envelope-pocket-main"></div>
-
         <div id="envelope-label"></div>
-
+        
         <div id="seal" onclick="openInvitation()">
             <img src="seal.png" alt="Seal">
         </div>
     </div>
+</div>
 </div>
 
 
@@ -297,47 +331,45 @@ const music = document.getElementById('bg-music');
 
 // Step 1: User clicks the seal
 function openInvitation() {
-    const prompt = document.getElementById('music-prompt');
+    const wrapper = document.getElementById('envelope-wrapper');
     const seal = document.getElementById('seal');
     
-    // 1. Show the question
-    prompt.classList.remove('hidden');
+    // 1. Open the flap and slide the letter UP with the question
+    wrapper.classList.add('open');
     
-    // 2. Hide the seal so they can see the question clearly
+    // 2. Hide the seal
     seal.style.opacity = "0";
     seal.style.pointerEvents = "none";
+
+    // Start guest check in background
+    if (token) checkGuestStatus();
 }
-// Step 2: User chooses music preference
+
 function handleMusic(play) {
     const music = document.getElementById('bg-music');
-    const prompt = document.getElementById('music-prompt');
     const wrapper = document.getElementById('envelope-wrapper');
 
-    // 1. Hide the question
-    prompt.classList.add('hidden');
-    
-    // 2. Play music if selected
+    // 1. Play music if Yes
     if (play && music) {
-        music.play().catch(e => console.log("Audio blocked:", e));
+        music.play().catch(e => console.log("Audio block:", e));
     }
 
-    // 3. NOW open the envelope
-    wrapper.classList.add('open'); 
+    // 2. Fade out and slide up the WHOLE wrapper
+    wrapper.style.opacity = "0";
+    wrapper.style.transform = "translateY(-100vh)";
 
-    // 4. Start the transition to the site
+    // 3. Show the website
     setTimeout(() => {
-        wrapper.style.transform = "translateY(-100vh)";
-        wrapper.style.opacity = "0";
+        wrapper.style.display = "none";
         document.getElementById('main-site').style.display = 'block';
         
         setTimeout(() => {
             document.body.classList.add('show-site');
-            document.body.style.overflow = 'auto';
-            setTimeout(() => { wrapper.style.display = 'none'; }, 800);
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
         }, 100);
-    }, 2800); // Wait for the letter to fly away
+    }, 1000);
 }
-
+    
     function checkGuestStatus() {
     // If there is no token, don't even try to fetch
     if (!token) {
