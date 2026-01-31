@@ -16,30 +16,24 @@
     body, html { 
         margin: 0; padding: 0; background-color: #e5e0d8; 
         font-family: 'Montserrat', sans-serif; color: var(--text); 
-        overflow-x: hidden; height: 100%; 
+        overflow: hidden; height: 100%; 
     }
 
-    /* --- ANIMATIONS --- */
+    /* --- STABLE ANIMATIONS --- */
     @keyframes flap-bob {
-        0%, 100% { transform: translateY(0px); filter: drop-shadow(0 4px 4px rgba(0,0,0,0.4)); }
-        50% { transform: translateY(-5px); filter: drop-shadow(0 10px 8px rgba(0,0,0,0.3)); }
+        0%, 100% { transform: translateY(0); filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3)); }
+        50% { transform: translateY(-8px); filter: drop-shadow(0 12px 8px rgba(0,0,0,0.2)); }
     }
 
-    /* Fixed Seal Animation: Preserves centering and locks size */
-    @keyframes seal-bob-glow {
-        0%, 100% { 
-            transform: translate(-50%, -50%) scale(1);
-            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.3)) drop-shadow(0 0 5px rgba(191, 161, 122, 0.4));
-        }
-        50% { 
-            transform: translate(-50%, -50%) translateY(-5px) scale(1);
-            filter: drop-shadow(0 8px 10px rgba(0,0,0,0.2)) drop-shadow(0 0 20px rgba(191, 161, 122, 0.7));
-        }
+    @keyframes seal-bob {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); }
+        50% { transform: translate(-50%, -50%) translateY(-8px) scale(1); }
     }
 
     @keyframes nameReveal {
-        0% { opacity: 0; transform: translate(-50%, 5px); } /* Smaller movement */
-    100% { opacity: 1; transform: translate(-50%, 0); }
+        0% { opacity: 0; transform: translate(-50%, 10px); }
+        100% { opacity: 1; transform: translate(-50%, 0); }
+    }
 
     /* --- ENVELOPE BASE --- */
     #envelope-wrapper {
@@ -49,10 +43,11 @@
     }
 
     .envelope {
-        position: relative; width: 60vw; height: 40vw;
+        position: relative; 
+        width: 60vw; height: 40vw;
         max-width: 700px; max-height: 460px;
-        z-index: 1; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-        perspective: 1000px;
+        z-index: 10; 
+        box-shadow: 0 20px 50px rgba(0,0,0,0.1);
     }
 
     .envelope-back {
@@ -75,7 +70,7 @@
         transform: translateX(-50%);
         width: 100%;
         text-align: center;
-        z-index: 20; 
+        z-index: 20; /* In front of pocket */
         font-family: 'Pinyon Script', cursive;
         font-size: clamp(1.4rem, 4vw, 2.5rem);
         color: #bfa17a;
@@ -84,16 +79,16 @@
     }
 
     .reveal-active {
-        animation: nameReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;    }
+        animation: nameReveal 0.8s ease-out forwards !important;
+    }
 
-    /* --- FLAP LOGIC --- */
+    /* --- FLAP --- */
     .flap-container {
         position: absolute; top: 0; left: 0; width: 100%; height: 60%;
-        z-index: 10;
-        filter: drop-shadow(0 8px 6px rgba(0,0,0,0.3));
-        transform-origin: top; 
+        z-index: 5;
+        filter: drop-shadow(0 6px 4px rgba(0,0,0,0.2));
         animation: flap-bob 4s ease-in-out infinite;
-        transition: transform 1.2s ease-in-out;
+        transition: all 0.8s ease-in-out;
     }
 
     .top-flap {
@@ -102,36 +97,34 @@
         clip-path: polygon(0 0, 100% 0, 50% 100%);
     }
 
-    /* Open Animation: Hinge opens backward */
+    /* OPEN STATE: Clean and simple */
     .open .flap-container {
         animation: none !important;
-        transform: rotateX(110deg); 
-        z-index: 0;
+        transform: translateY(-100%) scale(0.8);
+        opacity: 0;
     }
 
-    /* --- SEAL --- */
+    /* --- SEAL (Locked Size) --- */
     #seal {
         position: absolute; 
         top: 60%; 
         left: 50%;
-        /* Lock the size here */
-        width: 100px; 
+        width: 100px; /* Fixed width to prevent "Huge Seal" bug */
         height: 100px;
-        z-index: 100; 
+        z-index: 30; 
         cursor: pointer;
-        animation: seal-bob-glow 4s ease-in-out infinite;
-        transition: opacity 0.5s ease;
+        animation: seal-bob 4s ease-in-out infinite;
+        transition: opacity 0.4s ease;
     }
 
     #seal img { width: 100%; height: auto; display: block; }
-
     .open #seal { opacity: 0; pointer-events: none; }
 
     /* --- DECORATIVE LINES --- */
     .envelope-lines {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        z-index: 11; pointer-events: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.15' stroke-width='2'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.15' stroke-width='2'/%3E%3C/svg%3E");
+        z-index: 6; pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.1' stroke-width='1'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.1' stroke-width='1'/%3E%3C/svg%3E");
         background-size: 100% 100%;
     }
 
