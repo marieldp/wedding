@@ -21,19 +21,19 @@
 
     /* --- MUSIC PROMPT MODAL --- */
 #music-prompt {
-    position: absolute;
-    top: 50%; left: 50%;
+    position: fixed; /* Changed from absolute to fixed */
+    top: 50%; 
+    left: 50%;
     transform: translate(-50%, -50%);
     background: white;
     padding: 30px;
-    z-index: 500; /* Above everything */
+    z-index: 10000; /* Must be higher than envelope-wrapper (9999) */
     text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    border-radius: 10px;
-    width: 280px;
-    border: 1px solid var(--gold);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    border-radius: 15px;
+    width: 300px;
+    border: 2px solid var(--gold);
 }
-
 .prompt-btns {
     display: flex;
     gap: 10px;
@@ -218,7 +218,9 @@
 
 
 <div id="music-prompt" class="hidden">
-    <p style="font-family: 'Playfair Display'; margin: 0;">Would you like to experience this with music?</p>
+    <p style="font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--accent);">
+        Would you like to experience this with music?
+    </p>
     <div class="prompt-btns">
         <button class="prompt-btn yes" onclick="handleMusic(true)">Yes, please</button>
         <button class="prompt-btn" onclick="handleMusic(false)">No, thanks</button>
@@ -295,47 +297,45 @@ const music = document.getElementById('bg-music');
 
 // Step 1: User clicks the seal
 function openInvitation() {
-    // Show the music question first
-    document.getElementById('music-prompt').classList.remove('hidden');
-    // Fade out the seal so it doesn't overlap the question
-    document.getElementById('seal').style.opacity = "0";
-    document.getElementById('seal').style.pointerEvents = "none";
+    const prompt = document.getElementById('music-prompt');
+    const seal = document.getElementById('seal');
+    
+    // 1. Show the question
+    prompt.classList.remove('hidden');
+    
+    // 2. Hide the seal so they can see the question clearly
+    seal.style.opacity = "0";
+    seal.style.pointerEvents = "none";
 }
-
 // Step 2: User chooses music preference
 function handleMusic(play) {
-    // Hide the prompt
-    document.getElementById('music-prompt').classList.add('hidden');
+    const music = document.getElementById('bg-music');
+    const prompt = document.getElementById('music-prompt');
+    const wrapper = document.getElementById('envelope-wrapper');
+
+    // 1. Hide the question
+    prompt.classList.add('hidden');
     
-    // Attempt to play music
-    if (play) {
-        music.play().catch(e => console.log("Audio playback was blocked or failed: ", e));
+    // 2. Play music if selected
+    if (play && music) {
+        music.play().catch(e => console.log("Audio blocked:", e));
     }
 
-    // Start the envelope opening and letter flight
-    const wrapper = document.getElementById('envelope-wrapper');
+    // 3. NOW open the envelope
     wrapper.classList.add('open'); 
 
-    // Timing: 
-    // 0.8s: Flap hinges open
-    // 1.0s: Letter starts sliding up
-    // 2.5s: Letter flies off screen and site reveals
+    // 4. Start the transition to the site
     setTimeout(() => {
         wrapper.style.transform = "translateY(-100vh)";
         wrapper.style.opacity = "0";
-        
         document.getElementById('main-site').style.display = 'block';
         
         setTimeout(() => {
             document.body.classList.add('show-site');
-            document.body.style.overflow = 'auto'; // Re-enable scrolling for the site
+            document.body.style.overflow = 'auto';
             setTimeout(() => { wrapper.style.display = 'none'; }, 800);
         }, 100);
-    }, 2800); // 2.8 seconds total for the 'theatre' to play out
-
-    if (token) {
-        checkGuestStatus();
-    }
+    }, 2800); // Wait for the letter to fly away
 }
 
     function checkGuestStatus() {
