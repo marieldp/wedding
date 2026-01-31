@@ -56,17 +56,16 @@
 
 /* --- LETTER EXIT ANIMATION --- */
 .open .letter {
-    /* Step 1: Slide up to peek. Step 2: Fly out of screen */
-    animation: letterExit 2.5s ease-in-out forwards;
+    z-index: 4; /* Higher than the pocket (3) but lower than the music prompt */
+    animation: letterExit 2.8s ease-in-out forwards;
 }
 
 @keyframes letterExit {
-    0% { transform: translateY(0); }
-    30% { transform: translateY(-40%); } /* Peeks out */
-    60% { transform: translateY(-40%); } /* Pauses for a split second */
-    100% { transform: translateY(-120vh) scale(1.1); opacity: 0; } /* Flies away */
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    40% { transform: translateY(-40%) scale(1); opacity: 1; } /* Peek out of pocket */
+    60% { transform: translateY(-40%) scale(1.05); opacity: 1; } /* Hover for a beat */
+    100% { transform: translateY(-150vh) scale(1.2); opacity: 0; } /* Fly away to top */
 }
-
     /* --- STABLE ANIMATIONS --- */
     @keyframes flap-bob {
         0%, 100% { transform: translateY(0); filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3)); }
@@ -294,28 +293,33 @@
 
 const music = document.getElementById('bg-music');
 
+// Step 1: User clicks the seal
 function openInvitation() {
-    // 1. Show the music prompt first
+    // Show the music question first
     document.getElementById('music-prompt').classList.remove('hidden');
-    // 2. Hide the seal so they can't click it again
+    // Fade out the seal so it doesn't overlap the question
     document.getElementById('seal').style.opacity = "0";
+    document.getElementById('seal').style.pointerEvents = "none";
 }
 
+// Step 2: User chooses music preference
 function handleMusic(play) {
-    // 1. Hide the prompt
+    // Hide the prompt
     document.getElementById('music-prompt').classList.add('hidden');
     
-    // 2. Play music if "Yes"
+    // Attempt to play music
     if (play) {
-        music.play().catch(e => console.log("Audio block: ", e));
+        music.play().catch(e => console.log("Audio playback was blocked or failed: ", e));
     }
 
-    // 3. Start the actual envelope animation
+    // Start the envelope opening and letter flight
     const wrapper = document.getElementById('envelope-wrapper');
     wrapper.classList.add('open'); 
 
-    // 4. Timing the transition to the website
-    // We wait 2.5s for the letter to fly away completely
+    // Timing: 
+    // 0.8s: Flap hinges open
+    // 1.0s: Letter starts sliding up
+    // 2.5s: Letter flies off screen and site reveals
     setTimeout(() => {
         wrapper.style.transform = "translateY(-100vh)";
         wrapper.style.opacity = "0";
@@ -324,10 +328,10 @@ function handleMusic(play) {
         
         setTimeout(() => {
             document.body.classList.add('show-site');
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'auto'; // Re-enable scrolling for the site
             setTimeout(() => { wrapper.style.display = 'none'; }, 800);
         }, 100);
-    }, 2500);
+    }, 2800); // 2.8 seconds total for the 'theatre' to play out
 
     if (token) {
         checkGuestStatus();
