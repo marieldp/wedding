@@ -19,130 +19,34 @@
         overflow: hidden; height: 100%; 
     }
 
-/* --- THE LETTER SLIDE --- */
-.letter {
-    position: absolute;
-    bottom: 5%; 
-    left: 15%; /* Centering the 70% width: (100-70)/2 = 15 */
-    width: 70%; 
-    height: 50%; /* Smaller height as requested */
-    background: white;
-    z-index: 5; 
-    padding: 10px;
-    box-sizing: border-box;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    
-    /* Center text inside */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    /* Starting state: hidden */
-    transform: translateY(0); 
-    pointer-events: none; 
-    transition: transform 1s ease-out;
-}
-
-.letter-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-/* When the seal is clicked, the letter peeks out */
-.open .letter {
-    transform: translateY(-115%); /* Slides up nicely */
-    pointer-events: auto; /* Enables buttons */
-}
-    /* --- MUSIC PROMPT MODAL --- */
-#music-prompt {
-    position: fixed; /* Changed from absolute to fixed */
-    top: 50%; 
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 30px;
-    z-index: 10000; /* Must be higher than envelope-wrapper (9999) */
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    border-radius: 15px;
-    width: 300px;
-    border: 2px solid var(--gold);
-}
-.prompt-btns {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.prompt-btn {
-    padding: 10px 20px;
-    border: 1px solid var(--accent);
-    background: none;
-    cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.8rem;
-    transition: 0.3s;
-}
-
-.prompt-btn.yes { background: var(--accent); color: white; }
-.prompt-btn:hover { opacity: 0.7; }
-
-
-@keyframes letterExit {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    40% { transform: translateY(-40%) scale(1); opacity: 1; } /* Peek out of pocket */
-    60% { transform: translateY(-40%) scale(1.05); opacity: 1; } /* Hover for a beat */
-    100% { transform: translateY(-150vh) scale(1.2); opacity: 0; } /* Fly away to top */
-}
-    /* --- STABLE ANIMATIONS --- */
-    @keyframes flap-bob {
-        0%, 100% { transform: translateY(0); filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3)); }
-        50% { transform: translateY(-8px); filter: drop-shadow(0 12px 8px rgba(0,0,0,0.2)); }
+    /* --- THE WRAPPER --- */
+    #envelope-wrapper {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        background-color: #f4f1ea;
+        transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease;
     }
 
-    @keyframes seal-bob {
-        0%, 100% { transform: translate(-50%, -50%) scale(1); }
-        50% { transform: translate(-50%, -50%) translateY(-8px) scale(1); }
+    .wrapper-exit {
+        transform: translateY(-100vh) !important;
+        opacity: 0 !important;
+        pointer-events: none;
     }
 
-    @keyframes nameReveal {
-        0% { opacity: 0; transform: translate(-50%, 10px); }
-        100% { opacity: 1; transform: translate(-50%, 0); }
+    /* --- THE ENVELOPE --- */
+    .envelope {
+        position: relative; 
+        width: 90vw; height: 60vw;
+        max-width: 600px; max-height: 400px;
+        z-index: 10; 
+        perspective: 1500px; 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     }
-
-/* --- THE WRAPPER EXIT --- */
-#envelope-wrapper {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    background-color: #f4f1ea;
-    transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease;
-}
-
-.prompt-btns { display: flex; gap: 15px; margin-top: 15px; justify-content: center; }
-.prompt-btn { 
-    border: 1px solid #043927; padding: 10px 25px; 
-    cursor: pointer; font-family: 'Montserrat'; font-weight: bold; 
-}
-.prompt-btn.yes { background: #043927; color: white; }
-
-   .envelope {
-    position: relative; 
-    width: 90vw; 
-    height: 60vw;
-    max-width: 600px; 
-    max-height: 400px;
-    z-index: 10; 
-    /* This creates the 'room' for the flap to swing into */
-    perspective: 1500px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-}
 
     .envelope-back {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -152,96 +56,129 @@
 
     .envelope-pocket-main { 
         position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-        z-index: 3; background: url('6938.jpg') center/cover no-repeat;
+        z-index: 4; /* Keeps letter (2) and flap (3) tucked in */
+        background: url('6938.jpg') center/cover no-repeat;
         clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
     }
 
-    /* --- GUEST NAME (On Front) --- */
-    #envelope-label {
-    position: absolute;
-    bottom: 12%; 
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    text-align: center;
-    z-index: 20;
-    font-family: 'Pinyon Script', cursive;
-    /* clamp(min, preferred, max) - the magic of responsive text */
-    font-size: clamp(1.2rem, 5vw, 2.2rem);
-    color: #bfa17a;
-    opacity: 0;
-    pointer-events: none;
-}
-
-    .reveal-active {
-        animation: nameReveal 0.8s ease-out forwards !important;
+    /* --- THE LETTER (Small & Centered) --- */
+    .letter {
+        position: absolute;
+        bottom: 5%; 
+        left: 15%; 
+        width: 70%; 
+        height: 50%; 
+        background: white;
+        z-index: 2; /* Sits behind the pocket and flap */
+        
+        /* THE FIX: Deep tuck so it doesn't peek behind the flap */
+        transform: translateY(30%); 
+        opacity: 0; /* Extra safety */
+        pointer-events: none; 
+        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        padding: 15px;
+        box-sizing: border-box;
     }
 
-/* Add this if you don't have it yet */
-.wrapper-exit {
-    transform: translateY(-100vh) !important; /* Forces it to fly up */
-    opacity: 0 !important;
-    pointer-events: none;
-}
+    .letter-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    /* Animation Trigger: Pulls it out only when .open is added */
+    .open .letter {
+        transform: translateY(-115%); /* High enough to clear the pocket */
+        opacity: 1;
+        pointer-events: auto;
+    }
 
     /* --- FLAP --- */
     .flap-container {
-    position: absolute; 
-    top: 0; left: 0; 
-    width: 100%; height: 60%;
-    z-index: 15; /* Sits above the pocket but behind the seal */
-    
-    /* THE HINGE: This locks the top edge so it can't move */
-    transform-origin: top; 
-    transform-style: preserve-3d;
-    
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: flap-bob 4s ease-in-out infinite;
-}
+        position: absolute; top: 0; left: 0; width: 100%; height: 60%;
+        z-index: 3; /* Behind pocket, in front of letter */
+        transform-origin: top; 
+        transform-style: preserve-3d;
+        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: flap-bob 4s ease-in-out infinite;
+    }
 
     .top-flap {
-    width: 100%; height: 100%;
-    background: url('6938.jpg') center/cover no-repeat;
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-    /* This makes sure the 'inside' of the flap is visible when it flips up */
-    backface-visibility: visible;
-}
-    /* OPEN STATE: Clean and simple */
+        width: 100%; height: 100%;
+        background: url('6938.jpg') center/cover no-repeat;
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        backface-visibility: visible;
+    }
+
     .open .flap-container {
-    animation: none !important;
-    /* This swings the flap UP and BACK like a real hinge */
-    transform: rotateX(160deg); 
-    z-index: 2; /* Moves it behind the pocket once it's open */
-}
+        animation: none !important;
+        transform: rotateX(160deg); 
+        z-index: 1; /* Moves behind everything when open */
+    }
 
-    /* --- SEAL (Locked Size) --- */
+    /* --- SEAL --- */
     #seal {
-    position: absolute; 
-    top: 60%; 
-    left: 50%;
-    /* Instead of 100px, we use a % of the envelope's width */
-    width: 18%; 
-    min-width: 60px; /* Prevents it from disappearing on tiny phones */
-    max-width: 110px; 
-    z-index: 100; 
-    cursor: pointer;
-    animation: seal-bob 4s ease-in-out infinite;
-    transition: opacity 0.4s ease;
-}
-
+        position: absolute; top: 60%; left: 50%;
+        width: 18%; min-width: 60px; max-width: 110px; 
+        z-index: 100; cursor: pointer;
+        animation: seal-bob 4s ease-in-out infinite;
+        transition: opacity 0.4s ease;
+    }
     #seal img { width: 100%; height: auto; display: block; }
     .open #seal { opacity: 0; pointer-events: none; }
 
-    /* --- DECORATIVE LINES --- */
+    /* --- UI ELEMENTS --- */
+    .prompt-btns { display: flex; gap: 15px; margin-top: 15px; justify-content: center; }
+    .prompt-btn { 
+        border: 1px solid #043927; padding: 10px 25px; 
+        cursor: pointer; font-family: 'Montserrat'; font-weight: bold; font-size: 0.8rem;
+        transition: 0.3s; background: white;
+    }
+    .prompt-btn.yes { background: #043927; color: white; }
+    .prompt-btn:hover { opacity: 0.7; }
+
+    #envelope-label {
+        position: absolute; bottom: 12%; left: 50%;
+        transform: translateX(-50%); width: 90%; text-align: center;
+        z-index: 20; font-family: 'Pinyon Script', cursive;
+        font-size: clamp(1.2rem, 5vw, 2.2rem); color: #bfa17a;
+        opacity: 0; pointer-events: none;
+    }
+
+    .reveal-active { animation: nameReveal 0.8s ease-out forwards !important; }
+
+    /* --- KEYFRAMES --- */
+    @keyframes flap-bob {
+        0%, 100% { transform: translateY(0); filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3)); }
+        50% { transform: translateY(-8px); filter: drop-shadow(0 12px 8px rgba(0,0,0,0.2)); }
+    }
+    @keyframes seal-bob {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); }
+        50% { transform: translate(-50%, -50%) translateY(-8px) scale(1); }
+    }
+    @keyframes nameReveal {
+        0% { opacity: 0; transform: translate(-50%, 10px); }
+        100% { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    /* --- MAIN SITE REVEAL --- */
+    #main-site { opacity: 0; display: none; transition: opacity 1.5s ease; }
+    .show-site #main-site { opacity: 1; display: block; }
+
     .envelope-lines {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         z-index: 6; pointer-events: none;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.1' stroke-width='1'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.1' stroke-width='1'/%3E%3C/svg%3E");
         background-size: 100% 100%;
     }
-
-    #main-site { opacity: 0; display: none; transition: opacity 1.5s ease; }
-    .show-site #main-site { opacity: 1; display: block; }
 </style>
 </head>
 <body style="overflow: hidden;">
