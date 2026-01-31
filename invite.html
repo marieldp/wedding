@@ -83,14 +83,19 @@
     }
 
     /* --- FLAP --- */
-    .flap-container {
-        position: absolute; top: 0; left: 0; width: 100%; height: 60%;
-        z-index: 3; /* Above letter, below pocket */
-        transform-origin: top; 
-        transform-style: preserve-3d;
-        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: flap-bob 4s ease-in-out infinite;
-    }
+ .flap-container {
+    position: absolute; 
+    top: 0; left: 0; 
+    width: 100%; height: 60%;
+    z-index: 3; 
+    transform-origin: top; 
+    transform-style: preserve-3d;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: flap-bob 4s ease-in-out infinite;
+    
+    /* THE FIX: This adds the shadow cast BY the flap onto the pocket */
+    filter: drop-shadow(0 8px 10px rgba(0,0,0,0.3));
+}
 
     .top-flap {
         width: 100%; height: 100%;
@@ -100,18 +105,23 @@
     }
 
     .open .flap-container {
-        animation: none !important;
-        transform: rotateX(160deg); 
-        z-index: 1; /* Hide behind everything when open */
-    }
+    animation: none !important;
+    transform: rotateX(160deg); 
+    z-index: 1; 
+    /* Remove shadow when open for realism */
+    filter: none !important; 
+}
 
     /* --- POCKET & LINES --- */
     .envelope-pocket-main { 
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-        z-index: 4; background: url('6938.jpg') center/cover no-repeat;
-        clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
-        filter: drop-shadow(0 -5px 10px rgba(0,0,0,0.1));
-    }
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+    z-index: 4; 
+    background: url('6938.jpg') center/cover no-repeat;
+    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+    
+    /* THE FIX: This adds the shadow 'under' the V-shape lines */
+    filter: drop-shadow(0 -2px 8px rgba(0,0,0,0.2));
+}
 
     .envelope-lines {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -136,16 +146,18 @@
 
     /* --- SEAL --- */
     #seal {
-        position: absolute; top: 60%; left: 50%;
-        transform: translate(-50%, -50%);
-        width: 18%; min-width: 60px; max-width: 110px; 
-        z-index: 100; cursor: pointer;
-
-        filter: drop-shadow(0 0 15px rgba(191, 161, 122, 0.6));
-        
-        animation: seal-bob 4s ease-in-out infinite;
-        transition: opacity 0.4s ease;
-    }
+    position: absolute; 
+    top: 60%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18%; min-width: 60px; max-width: 110px; 
+    z-index: 100; cursor: pointer;
+    
+    /* THE FIX: Gold Glow behind the seal */
+    filter: drop-shadow(0 0 15px rgba(191, 161, 122, 0.7));
+    
+    animation: seal-bob 4s ease-in-out infinite;
+    transition: opacity 0.4s ease;
+}
     #seal img { width: 100%; height: auto; display: block; }
 
     /* --- BUTTONS --- */
