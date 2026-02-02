@@ -17,7 +17,7 @@
         overflow: hidden; height: 100%; 
     }
 
-    /* --- THE WRAPPER --- */
+    /* --- THE WRAPPER (Stage) --- */
     #envelope-wrapper {
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
         display: flex; justify-content: center; align-items: center;
@@ -41,47 +41,42 @@
         box-shadow: 0 15px 45px rgba(0,0,0,0.1);
     }
 
-    /* --- THE FLAP (Z-INDEX 10) --- */
+    /* --- THE FLAP (Topmost) --- */
     .flap-container {
         position: absolute; top: 0; left: 0; width: 100%; height: 60%;
-        z-index: 10; /* Topmost part of the envelope */
-        transform-origin: top; transform-style: preserve-3d;
+        z-index: 10; transform-origin: top; transform-style: preserve-3d;
         transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         animation: flap-bob 4s ease-in-out infinite;
-    }
-
-    /* THE SHADOW: Now placed BEHIND the pocket (Z-INDEX 3) */
-    .flap-container::after {
-        content: '';
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.5);
-        clip-path: polygon(0 0, 100% 0, 50% 100%);
-        filter: blur(15px);
-        transform: translateY(12px) scale(0.96); 
-        z-index: 3; /* Tucked behind the pocket main (which is 4) */
-        transition: opacity 0.5s;
-        pointer-events: none;
     }
 
     .top-flap {
         width: 100%; height: 100%;
         background: url('6938.jpg') center/cover no-repeat;
         clip-path: polygon(0 0, 100% 0, 50% 100%);
-        box-shadow: inset 0 -2px 5px rgba(0,0,0,0.1);
     }
 
     .open .flap-container { animation: none !important; transform: rotateX(160deg); z-index: 1; }
-    .open .flap-container::after { opacity: 0; }
+
+    /* --- THE INTERNAL SHADOW (Tucked Inside) --- */
+    .internal-shadow {
+        position: absolute; top: 0; left: 0; width: 100%; height: 60%;
+        z-index: 3; /* Behind pocket (4) but in front of letter (2) */
+        background: rgba(0,0,0,0.5);
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        filter: blur(15px);
+        transform: translateY(15px) scale(0.96);
+        pointer-events: none;
+        transition: opacity 0.5s;
+    }
+    .open .internal-shadow { opacity: 0; }
 
     /* --- THE POCKET (Z-INDEX 4) --- */
     .envelope-pocket-main { 
         position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-        z-index: 4; /* Sits on top of the shadow to hide the overlap */
-        background: url('6938.jpg') center/cover no-repeat;
+        z-index: 4; background: url('6938.jpg') center/cover no-repeat;
         clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
     }
 
-    /* fold lines on top of pocket */
     .envelope-lines {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         z-index: 5; pointer-events: none;
@@ -89,39 +84,36 @@
         background-size: 100% 100%;
     }
 
-    /* --- THE LETTER (Z-INDEX 2) --- */
+    /* --- THE LETTER --- */
     .letter {
         position: absolute; bottom: 5%; left: 15%; width: 70%; height: 55%; 
-        background: white; z-index: 2; /* Deepest layer inside the pocket */
+        background: white; z-index: 2;
         transform: translateY(0); opacity: 0; visibility: hidden;
         transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
         display: flex; justify-content: center; align-items: center;
         box-shadow: 0 0 20px rgba(0,0,0,0.1);
         padding: 20px; box-sizing: border-box;
     }
-
     .open .letter { visibility: visible; transform: translateY(-110%); opacity: 1; pointer-events: auto; }
 
-    /* --- SEAL (Z-INDEX 100) --- */
+    /* --- UI ELEMENTS --- */
     #seal {
-        position: absolute; top: 60%; left: 50%;
-        transform: translate(-50%, -50%);
-        width: 20%; min-width: 70px;
-        z-index: 100; cursor: pointer;
+        position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);
+        width: 20%; min-width: 70px; z-index: 100; cursor: pointer;
         filter: drop-shadow(0 0 15px rgba(191, 161, 122, 0.7));
         animation: seal-bob 4s ease-in-out infinite;
-        transition: opacity 0.4s ease;
     }
-
-    /* --- GUEST NAME --- */
     #envelope-label {
-        position: absolute; bottom: 15%; left: 50%;
-        transform: translateX(-50%); width: 90%; text-align: center;
-        z-index: 20; font-family: 'Pinyon Script', cursive;
-        font-size: clamp(1.6rem, 7vw, 2.8rem); color: #8c7356;
-        opacity: 0; transition: opacity 1.5s ease;
+        position: absolute; bottom: 15%; left: 50%; transform: translateX(-50%); width: 90%; 
+        text-align: center; z-index: 20; font-family: 'Pinyon Script', cursive;
+        font-size: clamp(1.6rem, 7vw, 2.8rem); color: #8c7356; opacity: 0; transition: opacity 1.5s ease;
     }
     .reveal-active { opacity: 1 !important; }
+
+    /* --- MAIN SITE REVEAL --- */
+    #main-site { opacity: 0; display: none; transition: opacity 1.5s ease; }
+    .show-site #main-site { opacity: 1; display: block; }
+    .hidden { display: none !important; }
 
     @keyframes flap-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
     @keyframes seal-bob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -55%); } }
@@ -134,8 +126,8 @@
         <div class="envelope-back"></div>
         <div class="letter">
             <div class="letter-content">
-                <h2 style="font-family: 'Great Vibes'; color: var(--accent); margin: 0; font-size: 2.5rem;">M & J</h2>
-                <p style="font-family: 'Montserrat'; font-size: 0.85rem; margin: 10px 0;">Experience with music?</p>
+                <h2 style="font-family: 'Great Vibes'; color: var(--accent); margin: 0; font-size: 2.3rem;">M & J</h2>
+                <p style="font-family: 'Montserrat'; font-size: 0.8rem; margin: 10px 0;">Experience with music?</p>
                 <div style="display:flex; gap:10px; justify-content:center;">
                     <button onclick="handleMusic(true)" style="padding:8px 20px; background:var(--accent); color:white; border:none; cursor:pointer;">YES</button>
                     <button onclick="handleMusic(false)" style="padding:8px 20px; background:white; border:1px solid var(--accent); cursor:pointer;">NO</button>
@@ -143,25 +135,84 @@
             </div>
         </div>
         
-        <div class="flap-container">
-            <div class="top-flap"></div>
-        </div>
-
-        <div class="envelope-pocket-main"></div>
+        <div class="flap-container"><div class="top-flap"></div></div>
+        <div class="internal-shadow"></div> <div class="envelope-pocket-main"></div>
         <div class="envelope-lines"></div>
         <div id="envelope-label">Fetching invitation...</div>
-        
-        <div id="seal" onclick="openInvitation()">
-            <img src="seal.png" alt="Seal" style="width:100%;">
-        </div>
+        <div id="seal" onclick="openInvitation()"><img src="seal.png" alt="Seal" style="width:100%;"></div>
     </div>
 </div>
 
-<div id="main-site" style="display:none;">
-    </div>
+<audio id="bg-music" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
+
+<div id="main-site">
+    <section style="height: 100vh; width: 100%; background: url('1.jpg') center/cover no-repeat; display: flex; align-items: center; justify-content: flex-end; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; right: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(4, 57, 39, 0) 20%, rgba(4, 57, 39, 0.3) 50%, rgba(4, 57, 39, 0.8) 100%); z-index: 1;"></div>
+        <div style="position: relative; padding-right: 10vw; text-align: right; z-index: 2;">
+            <h1 style="font-family: 'Great Vibes', cursive; font-size: clamp(55px, 8vw, 110px); color: #d4af37; margin: 0; line-height: 1.1; text-shadow: 2px 2px 15px rgba(0,0,0,0.6);">
+                Mariel <br> <span style="font-family: 'Georgia', serif; font-size: 0.3em; letter-spacing: 10px; color: #f4cfe0; vertical-align: middle;">&</span> <br> Jasper
+            </h1>
+            <div style="width: 80px; height: 1px; background: #d4af37; margin: 25px 0 25px auto;"></div>
+            <p style="font-family: 'Georgia', serif; letter-spacing: 5px; font-size: clamp(14px, 1.5vw, 18px); text-transform: uppercase; color: #fff;">November 06, 2027</p>
+            <p style="font-family: 'Georgia', serif; font-style: italic; color: #f4cfe0; font-size: 16px;">Save the Date</p>
+        </div>
+    </section>
+
+    <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
+        <h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; margin-bottom: 50px;">The Journey to Forever</h2>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; max-width: 1000px; margin: 0 auto;">
+            <div style="flex: 1; min-width: 300px;"><img src="2.jpg" style="width: 100%; border: 1px solid #d4af37; padding: 10px; background: #fff; box-shadow: 15px 15px 0px #043927;"></div>
+            <div style="flex: 1; min-width: 300px; margin-top: 80px;"><img src="3.jpg" style="width: 100%; border: 1px solid #d4af37; padding: 10px; background: #fff; box-shadow: -15px 15px 0px var(--pink);"></div>
+        </div>
+    </section>
+
+    <section style="padding: 100px 0; background-color: #043927; text-align: center;">
+        <h2 style="font-family: 'Great Vibes', cursive; font-size: 40px; color: #d4af37; margin-bottom: 30px;">Our Story in Motion</h2>
+        <div style="max-width: 800px; margin: 0 auto; padding: 0 20px;">
+            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid #d4af37;">
+                <iframe src="https://www.youtube.com/embed/8RjcJXikhrk?rel=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 80px 20px; background: white; text-align: center;">
+        <div style="max-width: 500px; margin: 0 auto;">
+            <div id="loading" class="hidden">Checking invitation...</div>
+            <div id="content" class="rsvp-card hidden"></div>
+            <div id="error-msg" class="hidden rsvp-card"><p>Guest not found. Please use the original link.</p></div>
+        </div>
+    </section>
+</div>
 
 <script>
-    // Keep your handleMusic and checkGuestStatus functions here
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbyUuEtZP-SXAsbamc-8oRGEf_qjsVYc2YFkbd8aakF7JA4WFxAVFLmhDBSAFFTI-p0Z/exec"; 
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('id');
+    let guestData = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (token) checkGuestStatus();
+        else {
+            const lbl = document.getElementById('envelope-label');
+            lbl.innerText = "To our dear Guest";
+            lbl.classList.add('reveal-active');
+        }
+    });
+
+    function checkGuestStatus() {
+        fetch(`${webAppUrl}?id=${encodeURIComponent(token)}`)
+            .then(res => res.json())
+            .then(data => {
+                guestData = data;
+                if (data && data.name) {
+                    const label = document.getElementById('envelope-label');
+                    label.innerText = `To our dear ${data.name}`;
+                    label.classList.add('reveal-active');
+                    data.isDone ? showDoneView(data) : showMainForm();
+                }
+            }).catch(err => console.error(err));
+    }
+
     function openInvitation() {
         document.getElementById('envelope-wrapper').classList.add('open');
         const seal = document.getElementById('seal');
@@ -170,15 +221,73 @@
     }
 
     function handleMusic(play) {
-        // Your existing music logic
+        const music = document.getElementById('bg-music');
+        if (play && music) music.play().catch(e => console.log(e));
         document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
         setTimeout(() => {
             document.getElementById('envelope-wrapper').style.display = "none";
             document.getElementById('main-site').style.display = 'block';
+            setTimeout(() => {
+                document.body.classList.add('show-site');
+                document.body.style.overflow = 'auto'; 
+            }, 50);
         }, 1000);
     }
-    
-    // Add checkGuestStatus here
+
+    function showMainForm() {
+        const content = document.getElementById('content');
+        content.classList.remove('hidden');
+        const canP1 = String(guestData.allowPlusOne).toLowerCase() === "true";
+        content.innerHTML = `
+            <h2 style="font-family: 'Playfair Display';">Hi ${guestData.name},</h2>
+            <label>Will you attend?</label>
+            <select id="attending-select" onchange="togglePlusOne(${canP1})" style="width:100%; padding:10px; margin:10px 0;">
+                <option value="Yes">Yes, I'll be there!</option>
+                <option value="No">No, I can't make it</option>
+            </select>
+            <div id="p1-area"></div>
+            <label>Email Address</label>
+            <input type="email" id="guest-email" value="${guestData.email || ''}" style="width:100%; padding:10px; margin:10px 0;">
+            <label>Message to the couple</label>
+            <textarea id="guest-note" style="width:100%; height:100px; padding:10px; margin:10px 0;">${guestData.note || ''}</textarea>
+            <button onclick="submitRSVP()" style="padding:10px 20px; background:var(--accent); color:white; border:none; cursor:pointer;">Confirm RSVP</button>`;
+        togglePlusOne(canP1);
+    }
+
+    function togglePlusOne(canP1) {
+        const area = document.getElementById('p1-area');
+        const attending = document.getElementById('attending-select').value;
+        if (attending === "Yes" && canP1) {
+            area.innerHTML = `<label>Bringing a plus one?</label><select id="bringing-p1" onchange="toggleP1Name()" style="width:100%; padding:10px; margin:10px 0;"><option value="No">No</option><option value="Yes">Yes</option></select><div id="p1-name-wrapper"></div>`;
+        } else { area.innerHTML = ''; }
+    }
+
+    function toggleP1Name() {
+        const wrapper = document.getElementById('p1-name-wrapper');
+        if (document.getElementById('bringing-p1').value === "Yes") {
+            wrapper.innerHTML = '<label>Plus One Name</label><input type="text" id="plus-one-name" style="width:100%; padding:10px; margin:10px 0;">';
+        } else { wrapper.innerHTML = ''; }
+    }
+
+    function submitRSVP() {
+        const p1NameInput = document.getElementById('plus-one-name');
+        const payload = {
+            token: token, name: guestData.name,
+            email: document.getElementById('guest-email').value,
+            attending: document.getElementById('attending-select').value,
+            plusOneName: p1NameInput ? p1NameInput.value : "None",
+            note: document.getElementById('guest-note').value
+        };
+        fetch(webAppUrl, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) }).then(() => {
+            showDoneView({ ...guestData });
+        });
+    }
+
+    function showDoneView(data) {
+        const content = document.getElementById('content');
+        content.classList.remove('hidden');
+        content.innerHTML = `<h2 style="font-family:'Playfair Display';">Thank you!</h2><p>RSVP recorded for ${data.name}.</p><button onclick="showMainForm()" style="padding:10px 20px;">Edit Response</button>`;
+    }
 </script>
 </body>
 </html>
