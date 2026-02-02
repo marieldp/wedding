@@ -7,38 +7,67 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
-    /* ... (Keep your base body and wrapper styles) ... */
+    :root { 
+        --paper: #fcfaf7; --gold: #bfa17a; --text: #4a4a4a; --accent: #043927; --pink: #f4cfe0; 
+    }
 
-    /* --- THE ENVELOPE BASE --- */
+    body, html { 
+        margin: 0; padding: 0; background-color: #e5e0d8; 
+        font-family: 'Montserrat', sans-serif; color: var(--text); 
+        overflow: hidden; height: 100%; 
+    }
+
+    /* --- THE WRAPPER (THE MASTER CONTAINER) --- */
+    #envelope-wrapper {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        display: flex; justify-content: center; align-items: center;
+        z-index: 9999; background-color: #f4f1ea;
+        transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease;
+    }
+    
+    .wrapper-exit {
+        transform: translateY(-100vh) !important;
+        opacity: 0 !important;
+        pointer-events: none;
+    }
+
+    /* --- THE ENVELOPE --- */
     .envelope {
         position: relative; 
         width: 90vw; height: 60vw;
         max-width: 600px; max-height: 400px;
         z-index: 10; 
         perspective: 1500px; 
-        box-shadow: 0 15px 45px rgba(0,0,0,0.1); /* Ambient floor shadow */
+        box-shadow: 0 15px 45px rgba(0,0,0,0.1);
     }
 
-    /* --- THE FLAP (The Shadow Source) --- */
+    .envelope-back {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: url('6938.jpg') center/cover no-repeat;
+        z-index: 1; filter: brightness(0.95);
+    }
+
+    /* --- THE FLAP (Z-INDEX 5 TO CAST SHADOW DOWN) --- */
     .flap-container {
         position: absolute; top: 0; left: 0; width: 100%; height: 60%;
-        z-index: 5; /* HIGHER than pocket to cast shadow ONTO it */
-        transform-origin: top; 
-        transform-style: preserve-3d;
+        z-index: 5; 
+        transform-origin: top; transform-style: preserve-3d;
         transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         animation: flap-bob 4s ease-in-out infinite;
     }
 
-    /* THE REAL SHADOW: This puts the shadow UNDER the flap, onto the pocket */
+    /* THE REAL SHADOW: Projected onto the pocket */
     .flap-container::after {
         content: '';
         position: absolute;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.4); /* Deep shadow color */
+        background: rgba(0,0,0,0.4);
         clip-path: polygon(0 0, 100% 0, 50% 100%);
-        filter: blur(12px); /* Soft organic edge */
-        transform: translateY(10px) scale(0.98); /* Pushes shadow down */
-        z-index: -1; /* Behind the flap paper */
+        filter: blur(12px);
+        transform: translateY(12px) scale(0.98); 
+        z-index: -1;
         transition: opacity 0.5s;
     }
 
@@ -46,30 +75,91 @@
         width: 100%; height: 100%;
         background: url('6938.jpg') center/cover no-repeat;
         clip-path: polygon(0 0, 100% 0, 50% 100%);
-        filter: brightness(1.02); /* Makes flap pop from back panel */
+        filter: brightness(1.02);
     }
 
-    /* --- THE POCKET (The Receiver) --- */
+    .open .flap-container {
+        animation: none !important;
+        transform: rotateX(160deg);
+        z-index: 1;
+    }
+    .open .flap-container::after { opacity: 0; }
+
+    /* --- THE POCKET (Z-INDEX 4) --- */
     .envelope-pocket-main { 
         position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-        z-index: 4; /* LOWER than flap container */
+        z-index: 4; 
         background: url('6938.jpg') center/cover no-repeat;
         clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
-        filter: brightness(0.98); /* Slightly darker to receive shadow */
+        filter: brightness(0.98);
     }
 
-    /* --- THE SEAL (Strictly Centered Glow) --- */
+    .envelope-lines {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 6; pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.15' stroke-width='1.5'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.15' stroke-width='1.5'/%3E%3C/svg%3E");
+        background-size: 100% 100%;
+    }
+
+    /* --- THE LETTER (Z-INDEX 2) --- */
+    .letter {
+        position: absolute;
+        bottom: 5%; left: 15%; width: 70%; height: 55%; 
+        background: white; z-index: 2;
+        transform: translateY(0); opacity: 0; visibility: hidden;
+        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
+        display: flex; justify-content: center; align-items: center;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        padding: 20px; box-sizing: border-box;
+    }
+
+    .open .letter {
+        visibility: visible;
+        transform: translateY(-110%); 
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .letter-content {
+        display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%;
+    }
+
+    /* --- SEAL --- */
     #seal {
         position: absolute; top: 60%; left: 50%;
         transform: translate(-50%, -50%);
         width: 20%; min-width: 70px;
         z-index: 100; cursor: pointer;
-        /* Recreated the soft glow from your first image */
-        filter: drop-shadow(0 0 15px rgba(191, 161, 122, 0.6));
+        filter: drop-shadow(0 0 15px rgba(191, 161, 122, 0.7));
         animation: seal-bob 4s ease-in-out infinite;
+        transition: opacity 0.4s ease;
     }
+    #seal img { width: 100%; display: block; }
 
-    /* ... (Keep your open invitation and label styles) ... */
+    /* --- GUEST NAME --- */
+    #envelope-label {
+        position: absolute; bottom: 15%; left: 50%;
+        transform: translateX(-50%); width: 90%; text-align: center;
+        z-index: 20; font-family: 'Pinyon Script', cursive;
+        font-size: clamp(1.6rem, 7vw, 2.8rem); color: #8c7356;
+        opacity: 0; transition: opacity 1.5s ease;
+    }
+    .reveal-active { opacity: 1 !important; }
+
+    /* --- UI --- */
+    .prompt-btns { display: flex; gap: 10px; margin-top: 15px; justify-content: center; }
+    .prompt-btn { 
+        border: 1px solid var(--accent); padding: 8px 20px; 
+        cursor: pointer; font-family: 'Montserrat'; font-weight: bold; font-size: 0.75rem;
+        background: white; transition: 0.3s;
+    }
+    .prompt-btn.yes { background: var(--accent); color: white; }
+
+    @keyframes flap-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes seal-bob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -55%); } }
+
+    #main-site { opacity: 0; display: none; transition: opacity 1.5s ease; }
+    .show-site #main-site { opacity: 1; display: block; }
 </style>
 </head>
 <body>
@@ -82,7 +172,7 @@
             <div class="letter-content">
                 <h2 style="font-family: 'Great Vibes'; color: var(--accent); margin: 0; font-size: 2.5rem;">M & J</h2>
                 <p style="font-family: 'Montserrat'; font-size: 0.85rem; margin: 10px 0; line-height: 1.4;">
-                    Would you like to experience <br> this with music?
+                    Experience with music?
                 </p>
                 <div class="prompt-btns">
                     <button class="prompt-btn yes" onclick="handleMusic(true)">YES</button>
@@ -109,32 +199,11 @@
 </audio>
 
 <div id="main-site">
-    <section style="height: 100vh; width: 100%; background: url('1.jpg') center/cover no-repeat; display: flex; align-items: center; justify-content: flex-end; position: relative; overflow: hidden;">
-        <div style="position: absolute; top: 0; right: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(4, 57, 39, 0) 20%, rgba(4, 57, 39, 0.3) 50%, rgba(4, 57, 39, 0.8) 100%); z-index: 1;"></div>
+    <section style="height: 100vh; width: 100%; background: url('1.jpg') center/cover no-repeat; display: flex; align-items: center; justify-content: flex-end; position: relative;">
+        <div style="position: absolute; top: 0; right: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(4, 57, 39, 0) 20%, rgba(4, 57, 39, 0.8) 100%);"></div>
         <div style="position: relative; padding-right: 10vw; text-align: right; z-index: 2;">
-            <h1 style="font-family: 'Great Vibes', cursive; font-size: clamp(55px, 8vw, 110px); color: #d4af37; margin: 0; line-height: 1.1; text-shadow: 2px 2px 15px rgba(0,0,0,0.6);">
-                Mariel <br> <span style="font-family: 'Georgia', serif; font-size: 0.3em; letter-spacing: 10px; color: #f4cfe0; vertical-align: middle;">&</span> <br> Jasper
-            </h1>
-            <div style="width: 80px; height: 1px; background: #d4af37; margin: 25px 0 25px auto;"></div>
-            <p style="font-family: 'Georgia', serif; letter-spacing: 5px; font-size: clamp(14px, 1.5vw, 18px); text-transform: uppercase; color: #fff;">November 06, 2027</p>
-            <p style="font-family: 'Georgia', serif; font-style: italic; color: #f4cfe0; font-size: 16px;">Save the Date</p>
-            <div style="margin-top: 60px; font-size: 11px; letter-spacing: 4px; color: #d4af37; text-transform: uppercase;">Scroll to RSVP <span style="display:block; margin-top: 10px;">↓</span></div>
-        </div>
-    </section>
-
-    <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
-        <h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; margin-bottom: 50px;">The Journey to Forever</h2>
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; max-width: 1000px; margin: 0 auto;">
-            <div style="flex: 1; min-width: 300px;"><img src="2.jpg" style="width: 100%; border: 1px solid #d4af37; padding: 10px; background: #fff; box-shadow: 15px 15px 0px #043927;"></div>
-            <div style="flex: 1; min-width: 300px; margin-top: 80px;"><img src="3.jpg" style="width: 100%; border: 1px solid #d4af37; padding: 10px; background: #fff; box-shadow: -15px 15px 0px var(--pink);"></div>
-        </div>
-    </section>
-
-    <section style="padding: 80px 20px; background: white; text-align: center;">
-        <div style="max-width: 500px; margin: 0 auto;">
-            <div id="loading" class="hidden">Checking invitation...</div>
-            <div id="content" class="rsvp-card hidden"></div>
-            <div id="error-msg" class="hidden rsvp-card"><p>Guest not found. Please use the original link.</p></div>
+            <h1 style="font-family: 'Great Vibes', cursive; font-size: 80px; color: #d4af37; margin: 0;">Mariel & Jasper</h1>
+            <p style="color: white; font-family: 'Montserrat'; letter-spacing: 5px;">NOVEMBER 06, 2027</p>
         </div>
     </section>
 </div>
@@ -145,13 +214,12 @@
     const token = urlParams.get('id');
     let guestData = null;
 
-    // RESTORED: Fetches guest name immediately upon load
     document.addEventListener('DOMContentLoaded', () => {
-        if (token) {
-            checkGuestStatus();
-        } else {
-            document.getElementById('envelope-label').innerText = "To our dear Guest";
-            document.getElementById('envelope-label').classList.add('reveal-active');
+        if (token) checkGuestStatus();
+        else {
+            const lbl = document.getElementById('envelope-label');
+            lbl.innerText = "To our dear Guest";
+            lbl.classList.add('reveal-active');
         }
     });
 
@@ -163,8 +231,7 @@
                 if (data && data.name) {
                     const label = document.getElementById('envelope-label');
                     label.innerText = `To our dear ${data.name}`;
-                    label.classList.add('reveal-active'); // Reveal on envelope front
-                    data.isDone ? showDoneView(data) : showMainForm();
+                    label.classList.add('reveal-active');
                 }
             }).catch(err => console.error(err));
     }
@@ -179,7 +246,6 @@
     function handleMusic(play) {
         const music = document.getElementById('bg-music');
         const wrapper = document.getElementById('envelope-wrapper');
-        const mainSite = document.getElementById('main-site');
 
         if (play && music) {
             music.play().catch(e => console.log("Audio block:", e));
@@ -189,71 +255,12 @@
 
         setTimeout(() => {
             wrapper.style.display = "none";
-            mainSite.style.display = 'block';
+            document.getElementById('main-site').style.display = 'block';
             setTimeout(() => {
                 document.body.classList.add('show-site');
                 document.body.style.overflow = 'auto'; 
-                document.documentElement.style.overflow = 'auto';
             }, 50);
         }, 1000);
-    }
-
-    // RSVP Form Logic
-    function showMainForm() {
-        const content = document.getElementById('content');
-        content.classList.remove('hidden');
-        const canP1 = String(guestData.allowPlusOne).toLowerCase() === "true";
-        content.innerHTML = `
-            <h2 style="font-family: 'Playfair Display';">Hi ${guestData.name},</h2>
-            <label>Will you attend?</label>
-            <select id="attending-select" onchange="togglePlusOne(${canP1})">
-                <option value="Yes">Yes, I'll be there!</option>
-                <option value="No">No, I can't make it</option>
-            </select>
-            <div id="p1-area"></div>
-            <label>Email Address</label>
-            <input type="email" id="guest-email" value="${guestData.email || ''}">
-            <label>Message to the couple</label>
-            <textarea id="guest-note">${guestData.note || ''}</textarea>
-            <button class="btn" id="submit-btn" onclick="submitRSVP()">Confirm RSVP</button>`;
-        togglePlusOne(canP1);
-    }
-
-    function togglePlusOne(canP1) {
-        const area = document.getElementById('p1-area');
-        const attending = document.getElementById('attending-select').value;
-        if (attending === "Yes" && canP1) {
-            area.innerHTML = `<label>Bringing a plus one?</label><select id="bringing-p1" onchange="toggleP1Name()"><option value="No">No</option><option value="Yes">Yes</option></select><div id="p1-name-wrapper"></div>`;
-        } else { area.innerHTML = ''; }
-    }
-
-    function toggleP1Name() {
-        const wrapper = document.getElementById('p1-name-wrapper');
-        if (document.getElementById('bringing-p1').value === "Yes") {
-            wrapper.innerHTML = '<label>Plus One Name</label><input type="text" id="plus-one-name" placeholder="Guest Name">';
-        } else { wrapper.innerHTML = ''; }
-    }
-
-    function submitRSVP() {
-        const btn = document.getElementById('submit-btn');
-        btn.disabled = true; btn.innerHTML = "Saving...";
-        const p1NameInput = document.getElementById('plus-one-name');
-        const payload = {
-            token: token, name: guestData.name,
-            email: document.getElementById('guest-email').value,
-            attending: document.getElementById('attending-select').value,
-            plusOneName: p1NameInput ? p1NameInput.value : "None",
-            note: document.getElementById('guest-note').value
-        };
-        fetch(webAppUrl, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) }).then(() => {
-            showDoneView({ ...guestData });
-        });
-    }
-
-    function showDoneView(data) {
-        const content = document.getElementById('content');
-        content.classList.remove('hidden');
-        content.innerHTML = `<div style="text-align: center;"><h2 style="font-family: 'Playfair Display';">Thank you!</h2><p>RSVP recorded for ${data.name}.</p><button class="btn" onclick="showMainForm()">Edit Response</button></div>`;
     }
 </script>
 </body>
