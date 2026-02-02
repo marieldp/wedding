@@ -17,7 +17,7 @@
         overflow: hidden; height: 100%; 
     }
 
-    /* --- THE WRAPPER --- */
+    /* --- THE WRAPPER (Stage for the Fly-Away) --- */
     #envelope-wrapper {
         position: fixed;
         top: 0; left: 0;
@@ -33,14 +33,14 @@
         pointer-events: none;
     }
 
-    /* --- THE ENVELOPE --- */
+    /* --- THE ENVELOPE BASE --- */
     .envelope {
         position: relative; 
         width: 90vw; height: 60vw;
         max-width: 600px; max-height: 400px;
         z-index: 10; 
         perspective: 1500px; 
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.2);
     }
 
     .envelope-back {
@@ -49,53 +49,27 @@
         z-index: 1; filter: brightness(0.9);
     }
 
-    /* --- THE LETTER (Small, Centered, Tucked) --- */
-    .letter {
+    /* --- THE FLAP (Shadow Fix) --- */
+    .flap-container {
+        position: absolute; top: 0; left: 0; width: 100%; height: 60%;
+        z-index: 3; 
+        transform-origin: top; transform-style: preserve-3d;
+        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: flap-bob 4s ease-in-out infinite;
+    }
+
+    /* THE BULLETPROOF SHADOW: Creates depth regardless of clip-path */
+    .flap-container::after {
+        content: '';
         position: absolute;
-        bottom: 5%; left: 15%; 
-        width: 70%; height: 55%; 
-        background: white;
-        z-index: 2; /* Behind flap (3) and pocket (4) */
-        
-        /* Start position: tucked inside, invisible */
-        transform: translateY(0); 
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none; 
-        
-        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s, visibility 0.5s;
-        display: flex; justify-content: center; align-items: center;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        padding: 15px; box-sizing: border-box;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.35);
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        filter: blur(10px);
+        transform: translateY(8px);
+        z-index: -1;
+        transition: opacity 0.5s;
     }
-
-    .letter-content {
-        display: flex; flex-direction: column; justify-content: center; align-items: center;
-        text-align: center; width: 100%;
-    }
-
-    /* Transition when opened */
-    .open .letter {
-        visibility: visible;
-        transform: translateY(-110%); 
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    /* --- FLAP --- */
- .flap-container {
-    position: absolute; 
-    top: 0; left: 0; 
-    width: 100%; height: 60%;
-    z-index: 3; 
-    transform-origin: top; 
-    transform-style: preserve-3d;
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: flap-bob 4s ease-in-out infinite;
-    
-    /* THE FIX: This adds the shadow cast BY the flap onto the pocket */
-    filter: drop-shadow(0 8px 10px rgba(0,0,0,0.3));
-}
 
     .top-flap {
         width: 100%; height: 100%;
@@ -105,62 +79,85 @@
     }
 
     .open .flap-container {
-    animation: none !important;
-    transform: rotateX(160deg); 
-    z-index: 1; 
-    /* Remove shadow when open for realism */
-    filter: none !important; 
-}
-
-    /* --- POCKET & LINES --- */
-    .envelope-pocket-main { 
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-    z-index: 4; 
-    background: url('6938.jpg') center/cover no-repeat;
-    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+        animation: none !important;
+        transform: rotateX(160deg);
+        z-index: 1;
+    }
     
-    /* THE FIX: This adds the shadow 'under' the V-shape lines */
-    filter: drop-shadow(0 -2px 8px rgba(0,0,0,0.2));
-}
+    .open .flap-container::after { opacity: 0; }
 
-    .envelope-lines {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        z-index: 5; /* Above pocket to show folds */
-        pointer-events: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='1.5'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='1.5'/%3E%3C/svg%3E");
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
+    /* --- THE POCKET --- */
+    .envelope-pocket-main { 
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+        z-index: 4; background: url('6938.jpg') center/cover no-repeat;
+        clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
     }
 
-    /* --- NAME LABEL (Always on front) --- */
+    /* Inner Shadow for Pocket Depth */
+    .envelope-pocket-main::after {
+        content: '';
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 30%);
+        pointer-events: none;
+    }
+
+    /* Fold Lines */
+    .envelope-lines {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 6; pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='1.5'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='1.5'/%3E%3C/svg%3E");
+        background-size: 100% 100%;
+    }
+
+    /* --- THE LETTER --- */
+    .letter {
+        position: absolute;
+        bottom: 5%; left: 15%; 
+        width: 70%; height: 55%; 
+        background: white;
+        z-index: 2;
+        transform: translateY(0); 
+        opacity: 0; visibility: hidden;
+        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
+        display: flex; justify-content: center; align-items: center;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        padding: 20px; box-sizing: border-box;
+    }
+
+    .open .letter {
+        visibility: visible;
+        transform: translateY(-110%); 
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .letter-content {
+        display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%;
+    }
+
+    /* --- SEAL (Strict Glow) --- */
+    #seal {
+        position: absolute; top: 60%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 18%; min-width: 65px;
+        z-index: 100; cursor: pointer;
+        filter: drop-shadow(0 0 12px rgba(191, 161, 122, 0.8));
+        animation: seal-bob 4s ease-in-out infinite;
+        transition: opacity 0.4s ease;
+    }
+    #seal img { width: 100%; display: block; }
+
+    /* --- NAME LABEL --- */
     #envelope-label {
         position: absolute; bottom: 15%; left: 50%;
         transform: translateX(-50%); width: 90%; text-align: center;
         z-index: 20; font-family: 'Pinyon Script', cursive;
         font-size: clamp(1.4rem, 6vw, 2.5rem); color: var(--gold);
-        opacity: 0; pointer-events: none;
-        transition: opacity 1.5s ease-in-out;
+        opacity: 0; transition: opacity 1.5s ease;
     }
-
     .reveal-active { opacity: 1 !important; }
 
-    /* --- SEAL --- */
-    #seal {
-    position: absolute; 
-    top: 60%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 18%; min-width: 60px; max-width: 110px; 
-    z-index: 100; cursor: pointer;
-    
-    /* THE FIX: Gold Glow behind the seal */
-    filter: drop-shadow(0 0 15px rgba(191, 161, 122, 0.7));
-    
-    animation: seal-bob 4s ease-in-out infinite;
-    transition: opacity 0.4s ease;
-}
-    #seal img { width: 100%; height: auto; display: block; }
-
-    /* --- BUTTONS --- */
+    /* --- UI ELEMENTS --- */
     .prompt-btns { display: flex; gap: 10px; margin-top: 15px; justify-content: center; }
     .prompt-btn { 
         border: 1px solid var(--accent); padding: 8px 20px; 
@@ -172,21 +169,15 @@
 
     /* --- ANIMATIONS --- */
     @keyframes flap-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
+    
     @keyframes seal-bob {
-    0%, 100% { 
-        transform: translate(-50%, -50%) scale(1); 
-        filter: drop-shadow(0 0 10px rgba(191, 161, 122, 0.4));
+        0%, 100% { transform: translate(-50%, -50%) scale(1); }
+        50% { transform: translate(-50%, -56%) scale(1.05); }
     }
-    50% { 
-        transform: translate(-50%, -58%) scale(1.05); 
-        filter: drop-shadow(0 0 20px rgba(191, 161, 122, 0.8));
-    }
-}
-    /* --- LANDING PAGE --- */
+
+    /* --- MAIN SITE REVEAL --- */
     #main-site { opacity: 0; display: none; transition: opacity 1.5s ease; }
     .show-site #main-site { opacity: 1; display: block; }
-    .hidden { display: none !important; }
 </style>
 </head>
 <body>
