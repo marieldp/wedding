@@ -7,67 +7,38 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
-    :root { 
-        --paper: #fcfaf7; --gold: #bfa17a; --text: #4a4a4a; --accent: #043927; --pink: #f4cfe0; 
-    }
+    /* ... (Keep your base body and wrapper styles) ... */
 
-    body, html { 
-        margin: 0; padding: 0; background-color: #e5e0d8; 
-        font-family: 'Montserrat', sans-serif; color: var(--text); 
-        overflow: hidden; height: 100%; 
-    }
-
-    /* --- THE WRAPPER --- */
-    #envelope-wrapper {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100vw; height: 100vh;
-        display: flex; justify-content: center; align-items: center;
-        z-index: 9999; background-color: #f4f1ea;
-        transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease;
-    }
-    
-    .wrapper-exit {
-        transform: translateY(-100vh) !important;
-        opacity: 0 !important;
-        pointer-events: none;
-    }
-
-    /* --- THE ENVELOPE --- */
+    /* --- THE ENVELOPE BASE --- */
     .envelope {
         position: relative; 
         width: 90vw; height: 60vw;
         max-width: 600px; max-height: 400px;
         z-index: 10; 
         perspective: 1500px; 
-        box-shadow: 0 15px 45px rgba(0,0,0,0.1);
+        box-shadow: 0 15px 45px rgba(0,0,0,0.1); /* Ambient floor shadow */
     }
 
-    .envelope-back {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: url('6938.jpg') center/cover no-repeat;
-        z-index: 1; filter: brightness(0.95);
-    }
-
-    /* --- THE FLAP (Shadow Source) --- */
+    /* --- THE FLAP (The Shadow Source) --- */
     .flap-container {
         position: absolute; top: 0; left: 0; width: 100%; height: 60%;
         z-index: 5; /* HIGHER than pocket to cast shadow ONTO it */
-        transform-origin: top; transform-style: preserve-3d;
+        transform-origin: top; 
+        transform-style: preserve-3d;
         transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         animation: flap-bob 4s ease-in-out infinite;
     }
 
-    /* THE REAL SHADOW: This mimics the dark 'V' shadow in your photo */
+    /* THE REAL SHADOW: This puts the shadow UNDER the flap, onto the pocket */
     .flap-container::after {
         content: '';
         position: absolute;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.45); /* Darker shadow */
+        background: rgba(0,0,0,0.4); /* Deep shadow color */
         clip-path: polygon(0 0, 100% 0, 50% 100%);
-        filter: blur(15px); /* Soft spread */
-        transform: translateY(12px) scale(0.97); /* Pushes shadow DOWN onto pocket */
-        z-index: -1;
+        filter: blur(12px); /* Soft organic edge */
+        transform: translateY(10px) scale(0.98); /* Pushes shadow down */
+        z-index: -1; /* Behind the flap paper */
         transition: opacity 0.5s;
     }
 
@@ -75,77 +46,30 @@
         width: 100%; height: 100%;
         background: url('6938.jpg') center/cover no-repeat;
         clip-path: polygon(0 0, 100% 0, 50% 100%);
+        filter: brightness(1.02); /* Makes flap pop from back panel */
     }
 
-    .open .flap-container {
-        animation: none !important;
-        transform: rotateX(160deg);
-        z-index: 1; /* Moves behind when open */
-    }
-    .open .flap-container::after { opacity: 0; }
-
-    /* --- THE POCKET (Receives Shadow) --- */
+    /* --- THE POCKET (The Receiver) --- */
     .envelope-pocket-main { 
         position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
         z-index: 4; /* LOWER than flap container */
         background: url('6938.jpg') center/cover no-repeat;
         clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
-        filter: brightness(0.98); /* Slightly darker to receive shadow better */
+        filter: brightness(0.98); /* Slightly darker to receive shadow */
     }
 
-    /* Diagonal Fold Lines */
-    .envelope-lines {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        z-index: 6; pointer-events: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.15' stroke-width='1'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.15' stroke-width='1'/%3E%3C/svg%3E");
-        background-size: 100% 100%;
-    }
-
-    /* --- THE SEAL --- */
+    /* --- THE SEAL (Strictly Centered Glow) --- */
     #seal {
         position: absolute; top: 60%; left: 50%;
         transform: translate(-50%, -50%);
         width: 20%; min-width: 70px;
         z-index: 100; cursor: pointer;
-        filter: drop-shadow(0 0 15px rgba(191, 161, 122, 0.7));
+        /* Recreated the soft glow from your first image */
+        filter: drop-shadow(0 0 15px rgba(191, 161, 122, 0.6));
         animation: seal-bob 4s ease-in-out infinite;
     }
-    #seal img { width: 100%; display: block; }
 
-    /* --- THE LETTER --- */
-    .letter {
-        position: absolute;
-        bottom: 5%; left: 15%; width: 70%; height: 55%; 
-        background: white; z-index: 2;
-        transform: translateY(0); opacity: 0; visibility: hidden;
-        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
-        display: flex; justify-content: center; align-items: center;
-        box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        padding: 20px; box-sizing: border-box;
-    }
-    .open .letter { visibility: visible; transform: translateY(-110%); opacity: 1; pointer-events: auto; }
-
-    /* --- GUEST NAME --- */
-    #envelope-label {
-        position: absolute; bottom: 15%; left: 50%;
-        transform: translateX(-50%); width: 90%; text-align: center;
-        z-index: 20; font-family: 'Pinyon Script', cursive;
-        font-size: clamp(1.6rem, 7vw, 2.8rem); color: #8c7356;
-        opacity: 0; transition: opacity 1.5s ease;
-    }
-    .reveal-active { opacity: 1 !important; }
-
-    /* --- UI --- */
-    .prompt-btns { display: flex; gap: 10px; margin-top: 15px; justify-content: center; }
-    .prompt-btn { 
-        border: 1px solid var(--accent); padding: 8px 20px; 
-        cursor: pointer; font-family: 'Montserrat'; font-weight: bold; font-size: 0.75rem;
-        background: white; transition: 0.3s;
-    }
-    .prompt-btn.yes { background: var(--accent); color: white; }
-
-    @keyframes flap-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-    @keyframes seal-bob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -55%); } }
+    /* ... (Keep your open invitation and label styles) ... */
 </style>
 </head>
 <body>
