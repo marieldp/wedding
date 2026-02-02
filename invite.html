@@ -17,7 +17,7 @@
         overflow: hidden; height: 100%; 
     }
 
-    /* --- THE WRAPPER (THE STAGE) --- */
+    /* --- THE WRAPPER --- */
     #envelope-wrapper {
         position: fixed;
         top: 0; left: 0;
@@ -40,16 +40,16 @@
         max-width: 600px; max-height: 400px;
         z-index: 10; 
         perspective: 1500px; 
-        box-shadow: 0 15px 45px rgba(0,0,0,0.1);
     }
 
     .envelope-back {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         background: url('6938.jpg') center/cover no-repeat;
         z-index: 1; filter: brightness(0.95);
+        box-shadow: 0 15px 45px rgba(0,0,0,0.1);
     }
 
-    /* --- THE FLAP (Z-INDEX 5 TO CAST SHADOW DOWN) --- */
+    /* --- THE FLAP (Z-INDEX 5) --- */
     .flap-container {
         position: absolute; top: 0; left: 0; width: 100%; height: 60%;
         z-index: 5; 
@@ -58,16 +58,16 @@
         animation: flap-bob 4s ease-in-out infinite;
     }
 
-    /* THE REAL SHADOW: Projected onto the pocket */
+    /* THE SHADOW FIX: Tucked BEHIND the pocket (z-index -1 relative to container) */
     .flap-container::after {
         content: '';
         position: absolute;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.4);
+        background: rgba(0,0,0,0.5); /* Deep shadow */
         clip-path: polygon(0 0, 100% 0, 50% 100%);
-        filter: blur(12px);
-        transform: translateY(12px) scale(0.98); 
-        z-index: -1;
+        filter: blur(15px);
+        transform: translateY(15px) scale(0.96); 
+        z-index: -1; /* This ensures it sits behind the pocket main */
         transition: opacity 0.5s;
     }
 
@@ -75,7 +75,6 @@
         width: 100%; height: 100%;
         background: url('6938.jpg') center/cover no-repeat;
         clip-path: polygon(0 0, 100% 0, 50% 100%);
-        filter: brightness(1.02);
     }
 
     .open .flap-container {
@@ -88,10 +87,9 @@
     /* --- THE POCKET (Z-INDEX 4) --- */
     .envelope-pocket-main { 
         position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-        z-index: 4; 
+        z-index: 4; /* Higher than the shadow, lower than the flap */
         background: url('6938.jpg') center/cover no-repeat;
         clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
-        filter: brightness(0.98);
     }
 
     .envelope-lines {
@@ -155,7 +153,6 @@
         background: white; transition: 0.3s;
     }
     .prompt-btn.yes { background: var(--accent); color: white; }
-    .prompt-btn:hover { opacity: 0.7; }
 
     @keyframes flap-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
     @keyframes seal-bob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -55%); } }
@@ -174,7 +171,7 @@
         <div class="letter">
             <div class="letter-content">
                 <h2 style="font-family: 'Great Vibes'; color: var(--accent); margin: 0; font-size: 2.5rem;">M & J</h2>
-                <p style="font-family: 'Montserrat'; font-size: 0.85rem; margin: 10px 0; line-height: 1.4;">Experience with music?</p>
+                <p style="font-family: 'Montserrat'; font-size: 0.85rem; margin: 10px 0;">Experience with music?</p>
                 <div class="prompt-btns">
                     <button class="prompt-btn yes" onclick="handleMusic(true)">YES</button>
                     <button class="prompt-btn" onclick="handleMusic(false)">NO</button>
@@ -198,26 +195,7 @@
             <h1 style="font-family: 'Great Vibes', cursive; font-size: clamp(55px, 8vw, 110px); color: #d4af37; margin: 0; line-height: 1.1; text-shadow: 2px 2px 15px rgba(0,0,0,0.6);">
                 Mariel <br> <span style="font-family: 'Georgia', serif; font-size: 0.3em; letter-spacing: 10px; color: #f4cfe0; vertical-align: middle;">&</span> <br> Jasper
             </h1>
-            <div style="width: 80px; height: 1px; background: #d4af37; margin: 25px 0 25px auto;"></div>
-            <p style="font-family: 'Georgia', serif; letter-spacing: 5px; font-size: clamp(14px, 1.5vw, 18px); text-transform: uppercase; color: #fff;">November 06, 2027</p>
-            <p style="font-family: 'Georgia', serif; font-style: italic; color: #f4cfe0; font-size: 16px;">Save the Date</p>
-        </div>
-    </section>
-
-    <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
-        <h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; margin-bottom: 50px;">The Journey to Forever</h2>
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; max-width: 1000px; margin: 0 auto;">
-            <div style="flex: 1; min-width: 300px;"><img src="2.jpg" style="width: 100%; border: 1px solid #d4af37; padding: 10px; background: #fff; box-shadow: 15px 15px 0px #043927;"></div>
-            <div style="flex: 1; min-width: 300px; margin-top: 80px;"><img src="3.jpg" style="width: 100%; border: 1px solid #d4af37; padding: 10px; background: #fff; box-shadow: -15px 15px 0px var(--pink);"></div>
-        </div>
-    </section>
-
-    <section style="padding: 100px 0; background-color: #043927; text-align: center;">
-        <h2 style="font-family: 'Great Vibes', cursive; font-size: 40px; color: #d4af37; margin-bottom: 30px;">Our Story in Motion</h2>
-        <div style="max-width: 800px; margin: 0 auto; padding: 0 20px;">
-            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid #d4af37;">
-                <iframe src="https://www.youtube.com/embed/8RjcJXikhrk?rel=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allowfullscreen></iframe>
-            </div>
+            <p style="font-family: 'Georgia', serif; letter-spacing: 5px; font-size: 18px; text-transform: uppercase; color: #fff;">November 06, 2027</p>
         </div>
     </section>
 
@@ -261,8 +239,9 @@
 
     function openInvitation() {
         document.getElementById('envelope-wrapper').classList.add('open');
-        document.getElementById('seal').style.opacity = "0";
-        document.getElementById('seal').style.pointerEvents = "none";
+        const seal = document.getElementById('seal');
+        seal.style.opacity = "0";
+        seal.style.pointerEvents = "none";
     }
 
     function handleMusic(play) {
@@ -286,15 +265,15 @@
         content.innerHTML = `
             <h2 style="font-family: 'Playfair Display';">Hi ${guestData.name},</h2>
             <label>Will you attend?</label>
-            <select id="attending-select" onchange="togglePlusOne(${canP1})" style="width:100%; padding:10px; margin:10px 0;">
+            <select id="attending-select" onchange="togglePlusOne(${canP1})">
                 <option value="Yes">Yes, I'll be there!</option>
                 <option value="No">No, I can't make it</option>
             </select>
             <div id="p1-area"></div>
             <label>Email Address</label>
-            <input type="email" id="guest-email" value="${guestData.email || ''}" style="width:100%; padding:10px; margin:10px 0;">
+            <input type="email" id="guest-email" value="${guestData.email || ''}">
             <label>Message to the couple</label>
-            <textarea id="guest-note" style="width:100%; height:100px; padding:10px; margin:10px 0;">${guestData.note || ''}</textarea>
+            <textarea id="guest-note">${guestData.note || ''}</textarea>
             <button onclick="submitRSVP()" style="padding:10px 20px; background:var(--accent); color:white; border:none; cursor:pointer;">Confirm RSVP</button>`;
         togglePlusOne(canP1);
     }
@@ -303,14 +282,14 @@
         const area = document.getElementById('p1-area');
         const attending = document.getElementById('attending-select').value;
         if (attending === "Yes" && canP1) {
-            area.innerHTML = `<label>Bringing a plus one?</label><select id="bringing-p1" onchange="toggleP1Name()" style="width:100%; padding:10px; margin:10px 0;"><option value="No">No</option><option value="Yes">Yes</option></select><div id="p1-name-wrapper"></div>`;
+            area.innerHTML = `<label>Bringing a plus one?</label><select id="bringing-p1" onchange="toggleP1Name()"><option value="No">No</option><option value="Yes">Yes</option></select><div id="p1-name-wrapper"></div>`;
         } else { area.innerHTML = ''; }
     }
 
     function toggleP1Name() {
         const wrapper = document.getElementById('p1-name-wrapper');
         if (document.getElementById('bringing-p1').value === "Yes") {
-            wrapper.innerHTML = '<label>Plus One Name</label><input type="text" id="plus-one-name" style="width:100%; padding:10px; margin:10px 0;">';
+            wrapper.innerHTML = '<label>Plus One Name</label><input type="text" id="plus-one-name">';
         } else { wrapper.innerHTML = ''; }
     }
 
@@ -331,7 +310,7 @@
     function showDoneView(data) {
         const content = document.getElementById('content');
         content.classList.remove('hidden');
-        content.innerHTML = `<h2 style="font-family:'Playfair Display';">Thank you!</h2><p>RSVP recorded for ${data.name}.</p><button onclick="showMainForm()" style="padding:10px 20px;">Edit Response</button>`;
+        content.innerHTML = `<h2>Thank you!</h2><p>RSVP recorded for ${data.name}.</p><button onclick="showMainForm()">Edit Response</button>`;
     }
 </script>
 </body>
