@@ -17,7 +17,7 @@
         overflow: hidden; height: 100%; 
     }
 
-    /* --- THE WRAPPER (Stage for the Fly-Away) --- */
+    /* --- THE WRAPPER (Stage) --- */
     #envelope-wrapper {
         position: fixed;
         top: 0; left: 0;
@@ -40,16 +40,17 @@
         max-width: 600px; max-height: 400px;
         z-index: 10; 
         perspective: 1500px; 
-        box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        /* The soft shadow under the whole envelope against the floor */
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
     }
 
     .envelope-back {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         background: url('6938.jpg') center/cover no-repeat;
-        z-index: 1; filter: brightness(0.9);
+        z-index: 1; filter: brightness(0.95);
     }
 
-    /* --- THE FLAP (Shadow Fix) --- */
+    /* --- THE FLAP (With Photorealistic Shadow) --- */
     .flap-container {
         position: absolute; top: 0; left: 0; width: 100%; height: 60%;
         z-index: 3; 
@@ -58,15 +59,15 @@
         animation: flap-bob 4s ease-in-out infinite;
     }
 
-    /* THE BULLETPROOF SHADOW: Creates depth regardless of clip-path */
+    /* THE SHADOW: This mimics the soft dark edge in your photo */
     .flap-container::after {
         content: '';
         position: absolute;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.35);
+        background: rgba(0,0,0,0.4);
         clip-path: polygon(0 0, 100% 0, 50% 100%);
-        filter: blur(10px);
-        transform: translateY(8px);
+        filter: blur(12px); /* Softens the shadow edge */
+        transform: translateY(10px) scale(0.98);
         z-index: -1;
         transition: opacity 0.5s;
     }
@@ -75,7 +76,8 @@
         width: 100%; height: 100%;
         background: url('6938.jpg') center/cover no-repeat;
         clip-path: polygon(0 0, 100% 0, 50% 100%);
-        backface-visibility: visible;
+        /* Brightens the flap slightly to separate it from the pocket */
+        filter: brightness(1.02); 
     }
 
     .open .flap-container {
@@ -83,101 +85,66 @@
         transform: rotateX(160deg);
         z-index: 1;
     }
-    
     .open .flap-container::after { opacity: 0; }
 
-    /* --- THE POCKET --- */
+    /* --- THE POCKET (The V-opening) --- */
     .envelope-pocket-main { 
         position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
         z-index: 4; background: url('6938.jpg') center/cover no-repeat;
         clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
     }
 
-    /* Inner Shadow for Pocket Depth */
+    /* Adds internal depth shadow so the pocket looks hollow */
     .envelope-pocket-main::after {
         content: '';
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 30%);
+        background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 40%);
         pointer-events: none;
     }
 
-    /* Fold Lines */
-    .envelope-lines {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        z-index: 6; pointer-events: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='1.5'/%3E%3Cline x1='100%25' y1='0' x2='50%25' y2='60%25' stroke='black' stroke-opacity='0.2' stroke-width='1.5'/%3E%3C/svg%3E");
-        background-size: 100% 100%;
-    }
-
-    /* --- THE LETTER --- */
-    .letter {
-        position: absolute;
-        bottom: 5%; left: 15%; 
-        width: 70%; height: 55%; 
-        background: white;
-        z-index: 2;
-        transform: translateY(0); 
-        opacity: 0; visibility: hidden;
-        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
-        display: flex; justify-content: center; align-items: center;
-        box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        padding: 20px; box-sizing: border-box;
-    }
-
-    .open .letter {
-        visibility: visible;
-        transform: translateY(-110%); 
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .letter-content {
-        display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%;
-    }
-
-    /* --- SEAL (Strict Glow) --- */
+    /* --- THE SEAL (Strictly Centered Glow) --- */
     #seal {
         position: absolute; top: 60%; left: 50%;
         transform: translate(-50%, -50%);
-        width: 18%; min-width: 65px;
+        width: 20%; min-width: 70px;
         z-index: 100; cursor: pointer;
-        filter: drop-shadow(0 0 12px rgba(191, 161, 122, 0.8));
+        /* The glow from your image restored */
+        filter: drop-shadow(0 0 15px rgba(191, 161, 122, 0.6));
         animation: seal-bob 4s ease-in-out infinite;
         transition: opacity 0.4s ease;
     }
     #seal img { width: 100%; display: block; }
 
-    /* --- NAME LABEL --- */
+    /* --- GUEST NAME LABEL --- */
     #envelope-label {
-        position: absolute; bottom: 15%; left: 50%;
-        transform: translateX(-50%); width: 90%; text-align: center;
-        z-index: 20; font-family: 'Pinyon Script', cursive;
-        font-size: clamp(1.4rem, 6vw, 2.5rem); color: var(--gold);
+        position: absolute; 
+        bottom: 15%; left: 50%;
+        transform: translateX(-50%); 
+        width: 90%; text-align: center;
+        z-index: 20; 
+        font-family: 'Pinyon Script', cursive;
+        font-size: clamp(1.6rem, 7vw, 2.8rem); 
+        color: #8c7356; /* Match the gold-brown ink in your photo */
         opacity: 0; transition: opacity 1.5s ease;
     }
     .reveal-active { opacity: 1 !important; }
 
-    /* --- UI ELEMENTS --- */
-    .prompt-btns { display: flex; gap: 10px; margin-top: 15px; justify-content: center; }
-    .prompt-btn { 
-        border: 1px solid var(--accent); padding: 8px 20px; 
-        cursor: pointer; font-family: 'Montserrat'; font-weight: bold; font-size: 0.75rem;
-        background: white; transition: 0.3s;
+    /* --- THE LETTER --- */
+    .letter {
+        position: absolute;
+        bottom: 5%; left: 15%; width: 70%; height: 55%; 
+        background: white; z-index: 2;
+        transform: translateY(0); opacity: 0; visibility: hidden;
+        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
+        display: flex; justify-content: center; align-items: center;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        padding: 20px; box-sizing: border-box;
     }
-    .prompt-btn.yes { background: var(--accent); color: white; }
-    .prompt-btn:hover { opacity: 0.7; }
+    .open .letter { visibility: visible; transform: translateY(-110%); opacity: 1; pointer-events: auto; }
 
-    /* --- ANIMATIONS --- */
-    @keyframes flap-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-    
-    @keyframes seal-bob {
-        0%, 100% { transform: translate(-50%, -50%) scale(1); }
-        50% { transform: translate(-50%, -56%) scale(1.05); }
-    }
-
-    /* --- MAIN SITE REVEAL --- */
-    #main-site { opacity: 0; display: none; transition: opacity 1.5s ease; }
-    .show-site #main-site { opacity: 1; display: block; }
+    /* --- KEYFRAMES --- */
+    @keyframes flap-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes seal-bob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -58%); } }
 </style>
 </head>
 <body>
