@@ -295,33 +295,35 @@
 /* --- ELEGANT ENVELOPE LABEL --- */
 #envelope-label {
     position: absolute;
-    bottom: 18%; /* Sits perfectly on the lower third of the pocket */
+    /* Uses Viewport Height to stay proportional on all screens */
+    bottom: 5vh; 
     left: 0;
     width: 100%;
     text-align: center;
-    z-index: 20 !important;
+    z-index: 30 !important;
     
-    /* Base Style: Clean & Modern */
+    /* Clean, modern style */
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 3px;
+    font-size: clamp(0.6rem, 2vw, 0.8rem); /* Automatically resizes font based on width */
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: #5a5a5a; /* Soft gray-black */
-    opacity: 0; 
+    color: #777;
+    
+    /* Animation */
+    opacity: 0;
     transition: opacity 1.5s ease;
     pointer-events: none;
 }
-
 /* The Guest Name Style */
 #envelope-label span {
-    display: block; /* Puts name on a new line */
-    font-family: 'Great Vibes', cursive; /* Your wedding script font */
-    font-size: 2.2rem;
-    text-transform: none; /* Keep capitalization natural */
+    display: block;
+    font-family: 'Great Vibes', cursive;
+    /* Scales between 1.8rem and 3rem depending on screen size */
+    font-size: clamp(1.8rem, 5vw, 3rem); 
+    color: var(--accent);
+    margin-top: 0.5vh;
+    text-transform: none;
     letter-spacing: 0;
-    color: var(--accent); /* Elegant dark green */
-    margin-top: 5px;
-    text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
 }
 
 #envelope-label.reveal-active {
