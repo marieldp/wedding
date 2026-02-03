@@ -62,8 +62,7 @@
         background-size: 100% 100%;
     }
 
-    /* 5. BOTTOM TRAPEZOID FLAP */
-/* --- 9. THE LETTER (Missing Layer) --- */
+/* --- THE LETTER (Initial State: Tucked Inside) --- */
 .letter {
     position: absolute;
     bottom: 5%;
@@ -71,12 +70,15 @@
     width: 80%;
     height: 80%;
     background: white;
-    /* Layer 8: Above bottom-flap (7) but behind top-flap (10) */
-    z-index: 8 !important; 
+    /* Layer 2: Behind pocket (3) and bottom flap (6) */
+    z-index: 2 !important; 
     transform: translateY(0);
     opacity: 0;
     visibility: hidden;
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
+    /* The magic is in the transition delay for z-index */
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.5s, 
+                z-index 0s linear 0.4s; /* Waits 0.4s before jumping to the front */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -84,15 +86,21 @@
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
     padding: 20px;
     box-sizing: border-box;
-    text-align: center;
 }
 
-/* Trigger for when openInvitation() is called */
+/* --- THE LETTER (Open State: Elegant Slide) --- */
 .open .letter {
     visibility: visible;
-    transform: translateY(-110%); /* Slides the letter UP out of the pocket */
     opacity: 1;
+    /* THE FIX: Changed from -110% to -65% so it doesn't slide up too much */
+    transform: translateY(-65%); 
+    /* Layer 8: Now it clears the bottom flap (7) */
+    z-index: 8 !important; 
     pointer-events: auto;
+    /* Remove delay on z-index when closing so it tucks back immediately */
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.5s, 
+                z-index 0s;
 }
 /* --- THE BALANCED NARROW BOTTOM FLAP --- */
 .bottom-flap {
