@@ -142,8 +142,15 @@
 
     /* Animations & Utilities */
     .open .flap-container { animation: none !important; transform: rotateX(160deg); z-index: 1 !important; }
-    @keyframes flap-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-    @keyframes seal-bob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -55%); } }
+@keyframes flap-bob { 
+    0%, 100% { 
+        transform: translateY(0); 
+    } 
+    50% { 
+        /* Reduced from -8px to -3px for a barely-there breath */
+        transform: translateY(-3px); 
+    } 
+}    @keyframes seal-bob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -55%); } }
     .hidden { display: none !important; }
 </style>
 </head>
