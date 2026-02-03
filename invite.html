@@ -451,42 +451,39 @@
     }
 
 function handleMusic(play, event) {
-    // 1. Stop the click from bubbling/reloading
-    if (event) event.preventDefault();
-    if (event) event.stopPropagation();
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
 
     if (play) {
-        const music = document.getElementById('bg-music');
-        if (music) {
-            // Try to play, and ALERT if it fails
-            music.play()
-                .then(() => {
-                    console.log("Audio playing successfully");
-                })
-                .catch(error => {
-                    alert("Music Error: " + error.message); 
-                    // Common errors:
-                    // "NotAllowedError": Browser blocked it (needs stronger interaction)
-                    // "NotSupportedError": Bad file format
-                    // "Failed to load": File missing (bgm.mp3 not found)
-                });
-        } else {
-            alert("Error: <audio> tag with id 'bg-music' not found!");
+        var audio = document.getElementById('bg-music');
+        
+        // 1. SET THE START TIME (in seconds)
+        audio.currentTime = 3; 
+
+        audio.volume = 1.0; 
+        
+        var playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.then(_ => { console.log("Audio started at 3s!"); })
+            .catch(error => { console.error("Playback failed:", error); });
         }
     }
 
-    // 2. Proceed with the animation regardless of music
-    document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
-
+    // ... (rest of your animation code remains the same)
     setTimeout(() => {
-        document.getElementById('envelope-wrapper').style.display = "none";
-        document.getElementById('main-site').style.display = 'block';
+        document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
         setTimeout(() => {
-            document.body.classList.add('show-site');
-            document.body.style.overflow = 'auto'; 
-            document.documentElement.style.overflow = 'auto';
-        }, 50);
-    }, 1000);
+            document.getElementById('envelope-wrapper').style.display = "none";
+            document.getElementById('main-site').style.display = 'block';
+            setTimeout(() => {
+                document.body.classList.add('show-site');
+                document.body.style.overflow = 'auto'; 
+                document.documentElement.style.overflow = 'auto';
+            }, 50);
+        }, 1000);
+    }, 100);
 }
 
     function showMainForm() {
