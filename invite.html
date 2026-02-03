@@ -57,12 +57,18 @@
 .internal-shadow {
     position: absolute;
     top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 1; /* Sits behind the flap paper */
+    width: 100%; height: 100%; /* Ensure it's identical to the flap size */
+    z-index: 1; 
     background: rgba(0,0,0,0.6);
+    
+    /* THE FIX: Remove scale and use the EXACT same clip-path as the flap */
     clip-path: polygon(0 0, 100% 0, 50% 100%);
-    filter: blur(15px);
-    transform: translateY(12px) scale(0.95);
+    
+    /* Filter blur can make things look 'smaller', so we compensate 
+       by pushing the Y-axis slightly more rather than scaling it */
+    filter: blur(12px);
+    transform: translateY(12px); 
+    
     pointer-events: none;
     animation: shadow-fade 4s ease-in-out infinite;
 }
