@@ -64,31 +64,31 @@
 
     /* 5. BOTTOM TRAPEZOID FLAP */
 /* --- THE SMALL NARROW BOTTOM FLAP --- */
+/* --- THE TALL NARROW BOTTOM FLAP --- */
 .bottom-flap {
     position: absolute; 
     bottom: 0; left: 0; 
     width: 100%; 
-    height: 30%; /* Reduced from 45% to make it shorter */
+    height: 60%; /* Increased from 30% to make it significantly taller */
     z-index: 6; 
     background: url('6938.jpg') center/cover no-repeat;
-    /* Pushed inward to 42% and 58% for a much narrower top */
+    /* Maintained the narrow 42%/58% top edge for that elegant look */
     clip-path: polygon(0 100%, 100% 100%, 58% 0, 42% 0);
     filter: brightness(0.98);
 }
 
-/* --- THE MATCHING SMALL LINES --- */
+/* --- THE MATCHING TALL LINES --- */
 .bottom-flap-lines {
     position: absolute; 
     bottom: 0; left: 0; 
     width: 100%; 
-    height: 30%; /* Must match flap height */
+    height: 60%; /* Must match the new height of the flap */
     z-index: 7; 
     pointer-events: none;
-    /* L42 and L58 match the new narrow paper width */
+    /* SVG path remains synchronized with the 42/58 width */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 L42,0 L58,0 L100,100' fill='none' stroke='black' stroke-opacity='0.08' stroke-width='0.4'/%3E%3C/svg%3E");
     background-size: 100% 100%;
 }
-
     /* 7. TOP FLAP CONTAINER */
     .flap-container {
         position: absolute; top: 0; left: 0; width: 100%; height: 60%;
