@@ -57,17 +57,24 @@
 .internal-shadow {
     position: absolute;
     top: 0; left: 0;
-    width: 100%; height: 100%; /* Ensure it's identical to the flap size */
-    z-index: 1; 
-    background: rgba(0,0,0,0.6);
+    width: 100%; height: 100%;
+    z-index: 1; /* Sits behind the top-flap paper */
     
-    /* THE FIX: Remove scale and use the EXACT same clip-path as the flap */
+    /* THE FIX: We use a gradient so the shadow is darkest at the top (the fold) 
+       and fades out naturally toward the tip of the triangle. */
+    background: radial-gradient(ellipse at top, 
+                rgba(0,0,0,0.4) 0%, 
+                rgba(0,0,0,0.1) 40%, 
+                transparent 70%);
+    
+    /* Keep the clip-path to maintain the triangle shape */
     clip-path: polygon(0 0, 100% 0, 50% 100%);
     
-    /* Filter blur can make things look 'smaller', so we compensate 
-       by pushing the Y-axis slightly more rather than scaling it */
-    filter: blur(12px);
-    transform: translateY(12px); 
+    /* We don't need heavy blur anymore because the gradient is already soft */
+    filter: blur(4px); 
+    
+    /* Start exactly at the top (0) so it's connected to the flap */
+    transform: translateY(0); 
     
     pointer-events: none;
     animation: shadow-fade 4s ease-in-out infinite;
@@ -132,8 +139,8 @@
 }
 /* 2. The Shadow appearing ONLY when lifted */
 @keyframes shadow-fade {
-    0%, 100% { opacity: 0; }     /* Hidden when closed */
-    50% { opacity: 1; }         /* Fully visible at peak lift */
+    0%, 100% { opacity: 0; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(4px); } /* Subtle downward drop when lifted */
 }
 @keyframes seal-bob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -55%); } }
 
