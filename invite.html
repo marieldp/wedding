@@ -56,41 +56,42 @@
     }
 
 /* --- THE LETTER (Always Inside) --- */
+/* --- THE SMALLER, CENTERED LETTER --- */
 .letter {
     position: absolute;
     bottom: 0;
-    left: 10%;
-    width: 80%;
-    height: 85%;
+    left: 15%;  /* (100% - 70%) / 2 = 15% to keep it centered */
+    width: 70%; /* Smaller Width */
+    height: 70%; /* Smaller Height */
     background: white;
     
-    /* 1. NO POP: Keep it strictly behind the pocket/flap */
+    /* Layer 2: Safely behind the pocket and flaps */
     z-index: 2 !important; 
     
+    /* Perfect Centering Logic */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers content vertically */
+    align-items: center;     /* Centers content horizontally */
+    text-align: center;      /* Ensures text lines are centered */
+    padding: 20px;           /* Breathing room inside the card */
+    box-sizing: border-box;
+    
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+    
+    /* Animation defaults */
     transform: translateY(0);
     opacity: 0;
     visibility: hidden;
     transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
-    
-    /* 2. LAYOUT: Push content up so buttons aren't hidden at the bottom */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* or flex-start */
-    align-items: center;
-    
-    /* THE MAGIC: Add padding to push buttons up above the flap line */
-    padding-bottom: 80px; 
-    box-sizing: border-box; 
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
 }
 
 /* --- THE SLIDE ANIMATION --- */
 .open .letter {
     visibility: visible;
     opacity: 1;
-    
-    /* 3. GENTLE SLIDE: Just enough to show the content (-55%) */
-    transform: translateY(-55%); 
+    /* Slides up nicely to show the centered content */
+    transform: translateY(-50%); 
 }
 /* --- THE BALANCED NARROW BOTTOM FLAP --- */
 .bottom-flap {
