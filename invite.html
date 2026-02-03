@@ -85,6 +85,13 @@
     visibility: hidden;
     transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
 }
+/* --- ENVELOPE EXIT ANIMATION --- */
+.wrapper-exit {
+    opacity: 0 !important;          /* Fades out */
+    transform: scale(1.1);          /* Slightly grows while fading */
+    pointer-events: none;           /* Prevents double clicking */
+    transition: opacity 1s ease, transform 1s ease; /* ensuring smooth transition */
+}
 
 /* --- THE SLIDE ANIMATION --- */
 .open .letter {
@@ -165,8 +172,8 @@
                 <h2 style="font-family: 'Great Vibes'; color: var(--accent); margin: 0; font-size: 2.3rem;">M & J</h2>
                 <p style="font-family: 'Montserrat'; font-size: 0.8rem; margin: 10px 0;">Experience with music?</p>
                 <div style="display:flex; gap:10px; justify-content:center;">
-                    <button onclick="handleMusic(true)" style="padding:8px 20px; background:var(--accent); color:white; border:none; cursor:pointer;">YES</button>
-                    <button onclick="handleMusic(false)" style="padding:8px 20px; background:white; border:1px solid var(--accent); cursor:pointer;">NO</button>
+                    <button type="button" onclick="handleMusic(true, event)" style="padding:8px 20px; background:var(--accent); color:white; border:none; cursor:pointer;">YES</button>
+                    <button type="button" onclick="handleMusic(false, event)" style="padding:8px 20px; background:white; border:1px solid var(--accent); cursor:pointer;">NO</button>
                 </div>
             </div>
         </div>
@@ -272,20 +279,29 @@
         seal.style.pointerEvents = "none";
     }
 
-    function handleMusic(play) {
-        const music = document.getElementById('bg-music');
-        if (play && music) music.play().catch(e => console.log(e));
-        document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
+    function handleMusic(play, event) {
+    // 1. Stop the click from bubbling up
+    if (event) event.preventDefault();
+    if (event) event.stopPropagation();
+
+    // 2. Play Music
+    const music = document.getElementById('bg-music');
+    if (play && music) music.play().catch(e => console.log(e));
+
+    // 3. Trigger the CSS transition
+    document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
+
+    // 4. Wait for the CSS transition to finish, then hide
+    setTimeout(() => {
+        document.getElementById('envelope-wrapper').style.display = "none";
+        document.getElementById('main-site').style.display = 'block';
         setTimeout(() => {
-            document.getElementById('envelope-wrapper').style.display = "none";
-            document.getElementById('main-site').style.display = 'block';
-            setTimeout(() => {
-                document.body.classList.add('show-site');
-                document.body.style.overflow = 'auto'; 
-                document.documentElement.style.overflow = 'auto';
-            }, 50);
-        }, 1000);
-    }
+            document.body.classList.add('show-site');
+            document.body.style.overflow = 'auto'; 
+            document.documentElement.style.overflow = 'auto';
+        }, 50);
+    }, 1000);
+}
 
     function showMainForm() {
         const content = document.getElementById('content');
