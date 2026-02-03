@@ -62,45 +62,42 @@
         background-size: 100% 100%;
     }
 
-/* --- THE LETTER (Initial State: Tucked Inside) --- */
+/* --- THE LETTER (Always Inside) --- */
 .letter {
     position: absolute;
-    bottom: 5%;
+    bottom: 0;
     left: 10%;
     width: 80%;
-    height: 80%;
+    height: 85%;
     background: white;
-    /* Layer 2: Behind pocket (3) and bottom flap (6) */
-    z-index: 1 !important; 
+    
+    /* 1. NO POP: Keep it strictly behind the pocket/flap */
+    z-index: 2 !important; 
+    
     transform: translateY(0);
     opacity: 0;
     visibility: hidden;
-    /* The magic is in the transition delay for z-index */
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.5s, 
-                z-index 0s linear 0.4s; /* Waits 0.4s before jumping to the front */
+    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
+    
+    /* 2. LAYOUT: Push content up so buttons aren't hidden at the bottom */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center; /* or flex-start */
     align-items: center;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    padding: 20px;
-    box-sizing: border-box;
+    
+    /* THE MAGIC: Add padding to push buttons up above the flap line */
+    padding-bottom: 80px; 
+    box-sizing: border-box; 
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
 }
 
-/* --- THE LETTER (Open State: Elegant Slide) --- */
+/* --- THE SLIDE ANIMATION --- */
 .open .letter {
     visibility: visible;
     opacity: 1;
-    /* THE FIX: Changed from -110% to -65% so it doesn't slide up too much */
-    transform: translateY(-65%); 
-    /* Layer 8: Now it clears the bottom flap (7) */
-    z-index: 8 !important; 
-    pointer-events: auto;
-    /* Remove delay on z-index when closing so it tucks back immediately */
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.5s, 
-                z-index 0s;
+    
+    /* 3. GENTLE SLIDE: Just enough to show the content (-55%) */
+    transform: translateY(-55%); 
 }
 /* --- THE BALANCED NARROW BOTTOM FLAP --- */
 .bottom-flap {
