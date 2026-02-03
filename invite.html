@@ -60,28 +60,7 @@
     .open .letter { visibility: visible; transform: translateY(-110%); opacity: 1; pointer-events: auto; }
 
     /* --- THE INTERNAL SHADOW (THE FIX) --- */
-    .internal-shadow {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    /* Layer 3 sits behind the Pocket (4) and Lines (5) but in front of the Letter (2) */
-    z-index: 3; 
-    
-    /* Stronger gradient to ensure it pops against the background texture */
-    background: linear-gradient(to bottom, 
-                rgba(0,0,0,0.8) 0%, 
-                rgba(0,0,0,0.4) 30%, 
-                transparent 70%);
-    
-    /* Matches the new 60% tip of your pocket and lines */
-    clip-path: polygon(0 0, 50% 60%, 100% 0, 100% 100%, 0 100%);
-    
-    filter: blur(10px);
-    pointer-events: none;
-    
-    /* Ensures it breathes as the flap lifts */
-    animation: shadow-breathe 4s ease-in-out infinite;
-}
+    .internal-shadow { display: none; }
     .open .internal-shadow { display: none; }
     /* --- THE POCKET (STAYS IN FRONT) --- */
     .envelope-pocket-main { 
@@ -94,11 +73,15 @@
 
     /* --- THE MOVING FLAP --- */
     .flap-container {
-        position: absolute; top: 0; left: 0; width: 100%; height: 60%;
-        z-index: 10; transform-origin: top; transform-style: preserve-3d;
-        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: flap-bob 4s ease-in-out infinite;
-    }
+    position: absolute; top: 0; left: 0; width: 100%; height: 60%;
+    z-index: 10;
+    transform-origin: top;
+    transform-style: preserve-3d;
+    animation: flap-bob 4s ease-in-out infinite;
+    /* THE SECRET: Drop-shadow follows the TRIANGLE shape, not the box */
+    filter: drop-shadow(0 4px 5px rgba(0,0,0,0.3));
+    transition: opacity 0.5s;
+}
     .top-flap {
         width: 100%; height: 100%;
         background: url('6938.jpg') center/cover no-repeat;
@@ -163,7 +146,7 @@
                 </div>
             </div>
         </div>
-        <div class="flap-container"><div class="top-flap"></div></div>
+        <div class="flap-container"><div class="top-flap"><div class="internal-shadow"></div></div></div>
         <div class="envelope-pocket-main"></div>
         <div class="envelope-lines" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%25\' height=\'100%25\'%3E%3Cline x1=\'0\' y1=\'0\' x2=\'50%25\' y2=\'60%25\' stroke=\'black\' stroke-opacity=\'0.2\' stroke-width=\'1.5\'/%3E%3Cline x1=\'100%25\' y1=\'0\' x2=\'50%25\' y2=\'60%25\' stroke=\'black\' stroke-opacity=\'0.2\' stroke-width=\'1.5\'/%3E%3C/svg%3E');"></div>
         <div id="envelope-label">Fetching invitation...</div>
