@@ -63,31 +63,26 @@
     }
 
     /* 5. BOTTOM TRAPEZOID FLAP */
-/* --- THE SMALL NARROW BOTTOM FLAP --- */
-/* --- THE TALL NARROW BOTTOM FLAP --- */
-/* --- THE ULTRA-TALL NARROW BOTTOM FLAP --- */
+
 /* --- THE 70% TALL NARROW BOTTOM FLAP --- */
 .bottom-flap {
     position: absolute; 
     bottom: 0; left: 0; 
     width: 100%; 
-    height: 70%; /* Set to exactly 70% as requested */
+    height: 60%; /* Lowering this to 60% creates more 'white space' at the top */
     z-index: 6; 
     background: url('6938.jpg') center/cover no-repeat;
-    /* Maintained the narrow 42%/58% top edge */
     clip-path: polygon(0 100%, 100% 100%, 58% 0, 42% 0);
     filter: brightness(0.98);
 }
 
-/* --- THE MATCHING 70% LINES --- */
 .bottom-flap-lines {
     position: absolute; 
     bottom: 0; left: 0; 
     width: 100%; 
-    height: 70%; /* Must match the 70% height above */
+    height: 60%; /* Keep this matched to the flap height */
     z-index: 7; 
     pointer-events: none;
-    /* SVG path synchronized with the 42/58 width coordinates */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 L42,0 L58,0 L100,100' fill='none' stroke='black' stroke-opacity='0.06' stroke-width='0.4'/%3E%3C/svg%3E");
     background-size: 100% 100%;
 }
