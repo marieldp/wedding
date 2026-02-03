@@ -68,7 +68,7 @@
     z-index: 5 !important; 
     background: url('6938.jpg') center/cover no-repeat;
     /* Corner points are at 20% and 80% */
-    clip-path: polygon(0 100%, 100% 100%, 10% 0, 20% 0);
+    clip-path: polygon(0 100%, 100% 100%, 65% 0, 35% 0);
     filter: brightness(0.98);
 }
 
@@ -77,8 +77,7 @@
     position: absolute; bottom: 0; left: 0; width: 100%; height: 45%;
     z-index: 6 !important; pointer-events: none;
     /* THE FIX: Updated path coordinates to 20 and 80 to match the clip-path above */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 L20,0 L80,0 L100,100' fill='none' stroke='black' stroke-opacity='0.05' stroke-width='0.4'/%3E%3C/svg%3E");
-    background-size: 100% 100%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 L35,0 L65,0 L100,100' fill='none' stroke='black' stroke-opacity='0.08' stroke-width='0.5'/%3E%3C/svg%3E");    background-size: 100% 100%;
 }
 
     /* 7. TOP FLAP CONTAINER */
