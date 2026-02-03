@@ -58,13 +58,12 @@
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    z-index: -1; 
+    z-index: 1; /* Sits behind the flap paper */
     background: rgba(0,0,0,0.6);
     clip-path: polygon(0 0, 100% 0, 50% 100%);
     filter: blur(15px);
     transform: translateY(12px) scale(0.95);
     pointer-events: none;
-    /* This connects the shadow's visibility to the lift animation */
     animation: shadow-fade 4s ease-in-out infinite;
 }
    .open .internal-shadow {
@@ -87,10 +86,12 @@
         animation: flap-bob 4s ease-in-out infinite;
     }
     .top-flap {
-        width: 100%; height: 100%;
-        background: url('6938.jpg') center/cover no-repeat;
-        clip-path: polygon(0 0, 100% 0, 50% 100%);
-    }
+    width: 100%; height: 100%;
+    background: url('6938.jpg') center/cover no-repeat;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    position: relative;
+    z-index: 2; /* Sits on top of the shadow */
+}
     .open .flap-container { animation: none !important; transform: rotateX(160deg); z-index: 1; }
 
     /* --- UI ELEMENTS --- */
@@ -150,7 +151,7 @@
                 </div>
             </div>
         </div>
-        <div class="flap-container"><div class="top-flap"><div class="internal-shadow"></div></div></div>
+        <div class="flap-container"><div class="internal-shadow"></div><div class="top-flap"></div></div>
         <div class="envelope-pocket-main"></div>
         <div class="envelope-lines" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%25\' height=\'100%25\'%3E%3Cline x1=\'0\' y1=\'0\' x2=\'50%25\' y2=\'60%25\' stroke=\'black\' stroke-opacity=\'0.2\' stroke-width=\'1.5\'/%3E%3Cline x1=\'100%25\' y1=\'0\' x2=\'50%25\' y2=\'60%25\' stroke=\'black\' stroke-opacity=\'0.2\' stroke-width=\'1.5\'/%3E%3C/svg%3E');"></div>
         <div id="envelope-label">Fetching invitation...</div>
