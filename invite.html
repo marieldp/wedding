@@ -292,25 +292,40 @@
 }
 
 /* --- THE GUEST LABEL (On top of the pocket) --- */
+/* --- ELEGANT ENVELOPE LABEL --- */
 #envelope-label {
     position: absolute;
-    bottom: 20%;        /* Position it comfortably on the pocket */
+    bottom: 18%; /* Sits perfectly on the lower third of the pocket */
     left: 0;
     width: 100%;
     text-align: center;
-    z-index: 20 !important; /* CRITICAL: Must be higher than flaps (z=6, z=10) */
+    z-index: 20 !important;
     
+    /* Base Style: Clean & Modern */
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.9rem;
-    letter-spacing: 2px;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--accent); /* Dark Green text to contrast with paper */
-    text-shadow: 0 1px 1px rgba(255,255,255,0.8); /* Subtle highlight */
-    
-    /* Animation for smooth reveal */
+    color: #5a5a5a; /* Soft gray-black */
     opacity: 0; 
-    transition: opacity 1s ease;
-    pointer-events: none; /* Let clicks pass through to the seal */
+    transition: opacity 1.5s ease;
+    pointer-events: none;
+}
+
+/* The Guest Name Style */
+#envelope-label span {
+    display: block; /* Puts name on a new line */
+    font-family: 'Great Vibes', cursive; /* Your wedding script font */
+    font-size: 2.2rem;
+    text-transform: none; /* Keep capitalization natural */
+    letter-spacing: 0;
+    color: var(--accent); /* Elegant dark green */
+    margin-top: 5px;
+    text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+}
+
+#envelope-label.reveal-active {
+    opacity: 1;
 }
 
 /* Class to reveal it once data is fetched */
@@ -455,7 +470,7 @@
         if (token) checkGuestStatus();
         else {
             const lbl = document.getElementById('envelope-label');
-            lbl.innerText = "To our dear Guest";
+            lbl.innerHTML = `To our dear <span>Guest</span>`;
             lbl.classList.add('reveal-active');
         }
     });
@@ -467,7 +482,7 @@
                 guestData = data;
                 if (data && data.name) {
                     const label = document.getElementById('envelope-label');
-                    label.innerText = `To our dear ${data.name}`;
+                    label.innerHTML = `To our dear <span>${data.name}</span>`;
                     label.classList.add('reveal-active');
                     data.isDone ? showDoneView(data) : showMainForm();
                 }
