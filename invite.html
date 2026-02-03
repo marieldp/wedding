@@ -1,227 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M & J Wedding</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M & J Wedding</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
-    :root { 
-        --paper: #fcfaf7; --gold: #bfa17a; --text: #4a4a4a; --accent: #043927; --pink: #f4cfe0; 
-    }
+:root { 
+    --paper: #fcfaf7; 
+    --gold: #bfa17a; 
+    --text: #4a4a4a; 
+    --accent: #043927; 
+    --pink: #f4cfe0; 
+}
 
-    body, html { 
-        margin: 0; padding: 0; background-color: #e5e0d8; 
-        font-family: 'Montserrat', sans-serif; color: var(--text); 
-        overflow: hidden; height: 100%; 
-    }
+body, html { 
+    margin: 0; 
+    padding: 0; 
+    background-color: #e5e0d8; 
+    font-family: 'Montserrat', sans-serif; 
+    color: var(--text); 
+    overflow: hidden; 
+    height: 100%; 
+}
 
-    /* --- THE WRAPPER --- */
-    #envelope-wrapper {
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        display: flex; justify-content: center; align-items: center;
-        z-index: 9999; background-color: #f4f1ea;
-        transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease;
-    }
-    
-    .wrapper-exit { transform: translateY(-100vh) !important; opacity: 0 !important; pointer-events: none; }
+/* --- WRAPPER --- */
+#envelope-wrapper {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    background-color: #f4f1ea;
+    transition: transform 1s cubic-bezier(0.7,0,0.3,1), opacity 1s ease;
+}
 
-    /* --- THE ENVELOPE --- */
-    .envelope {
-        position: relative; width: 90vw; height: 60vw;
-        max-width: 600px; max-height: 400px;
-        z-index: 10; perspective: 1500px; 
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    }
+.wrapper-exit {
+    transform: translateY(-100vh);
+    opacity: 0;
+    pointer-events: none;
+}
 
-    .envelope-back {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: url('6938.jpg') center/cover no-repeat;
-        z-index: 1; filter: brightness(0.9);
-    }
+/* --- ENVELOPE --- */
+.envelope {
+    position: relative;
+    width: 90vw;
+    height: 60vw;
+    max-width: 600px;
+    max-height: 400px;
+    perspective: 1500px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
 
-    /* --- THE LETTER (Z-INDEX 2) --- */
-    .letter {
-        position: absolute; bottom: 5%; left: 15%; width: 70%; height: 55%; 
-        background: white; z-index: 2;
-        transform: translateY(0); opacity: 0; visibility: hidden;
-        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
-        display: flex; justify-content: center; align-items: center;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 15px; box-sizing: border-box;
-    }
-    .open .letter { visibility: visible; transform: translateY(-110%); opacity: 1; pointer-events: auto; }
+.envelope-back {
+    position: absolute;
+    inset: 0;
+    background: url('6938.jpg') center/cover no-repeat;
+    z-index: 1;
+    filter: brightness(0.9);
+}
 
-    /* --- THE INTERNAL SHADOW (LAYER 3) --- */
-    .internal-shadow {
-        position: absolute; 
-        top: 0; left: 0; 
-        width: 100%; height: 60%;
-        /* CHANGED: Higher than pocket-main (4) and envelope-lines (5) */
-        z-index: 6; 
-        background: linear-gradient(135deg, rgba(0,0,0,0.5) 0%, transparent 55%),
-                    linear-gradient(225deg, rgba(0,0,0,0.5) 0%, transparent 55%);
-        filter: blur(12px); 
-        /* CHANGED: Adjusted transform to sit exactly on the pocket's top edge */
-        transform: translateY(5px); 
-        pointer-events: none; 
-        transition: opacity 0.5s;
-    }
-    .open .internal-shadow { opacity: 0; }
+/* --- LETTER --- */
+.letter {
+    position: absolute;
+    bottom: 5%;
+    left: 15%;
+    width: 70%;
+    height: 55%;
+    background: white;
+    z-index: 2;
+    transform: translateY(0);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 1.2s cubic-bezier(0.4,0,0.2,1), opacity 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 15px;
+    box-sizing: border-box;
+}
 
-    /* --- THE POCKET (LAYER 4) --- */
-    .envelope-pocket-main { 
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-        z-index: 4; /* Stays below shadow */
-        background: url('6938.jpg') center/cover no-repeat;
-        clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
-        filter: drop-shadow(0 -5px 10px rgba(0,0,0,0.1));
-    }}
+.open .letter {
+    visibility: visible;
+    transform: translateY(-110%);
+    opacity: 1;
+}
 
-    /* --- THE FLAP (LAYER 10) --- */
-    .flap-container {
-        position: absolute; top: 0; left: 0; width: 100%; height: 60%;
-        z-index: 10; /* Stays on top of everything */
-        transform-origin: top; transform-style: preserve-3d;
-        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: flap-bob 4s ease-in-out infinite;
-    }
-    .top-flap {
-        width: 100%; height: 100%;
-        background: url('6938.jpg') center/cover no-repeat;
-        clip-path: polygon(0 0, 100% 0, 50% 100%);
-    }
-    .open .flap-container { animation: none !important; transform: rotateX(160deg); z-index: 1; }
+/* --- INTERNAL SHADOW (fades out cleanly) --- */
+.internal-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    z-index: 6;
+    background: linear-gradient(135deg, rgba(0,0,0,0.4), transparent 60%),
+                linear-gradient(225deg, rgba(0,0,0,0.4), transparent 60%);
+    filter: blur(10px);
+    pointer-events: none;
+    transition: opacity 0.5s;
+}
 
-    /* --- UI ELEMENTS --- */
-    #seal {
-        position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);
-        width: 18%; min-width: 60px; z-index: 100; cursor: pointer;
-        filter: drop-shadow(0 0 15px rgba(191, 161, 122, 0.7));
-        animation: seal-bob 4s ease-in-out infinite;
-    }
-    #envelope-label {
-        position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%);
-        width: 90%; text-align: center; z-index: 20; font-family: 'Pinyon Script', cursive;
-        font-size: clamp(1.2rem, 5vw, 2.2rem); color: var(--gold); opacity: 0; transition: opacity 1.5s ease;
-    }
-    .reveal-active { opacity: 1 !important; }
+.open .internal-shadow {
+    opacity: 0;
+}
 
-    @keyframes flap-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-    @keyframes seal-bob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -55%); } }
+/* --- POCKET --- */
+.envelope-pocket-main {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    background: url('6938.jpg') center/cover no-repeat;
+    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+}
 
-    /* --- MAIN SITE REVEAL --- */
-    #main-site { opacity: 0; display: none; transition: opacity 1.5s ease; }
-    .show-site #main-site { opacity: 1; display: block; }
-    .hidden { display: none !important; }
-</style>
-</head>
-<body>
+/* --- FLAP --- */
+.flap-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    z-index: 10;
+    transform-origin: top;
+    transform-style: preserve-3d;
+    transition: transform 1.2s cubic-bezier(0.4,0,0.2,1);
+    animation: flap-bob 4s ease-in-out infinite;
+}
 
-<div id="envelope-wrapper">
-    <div class="envelope">
-        <div class="envelope-back"></div>
-        <div class="letter">
-            <div class="letter-content">
-                <h2 style="font-family: 'Great Vibes'; color: var(--accent); margin: 0; font-size: 2.3rem;">M & J</h2>
-                <p style="font-family: 'Montserrat'; font-size: 0.8rem; margin: 10px 0;">Experience with music?</p>
-                <div style="display:flex; gap:10px; justify-content:center;">
-                    <button onclick="handleMusic(true)" style="padding:8px 20px; background:var(--accent); color:white; border:none; cursor:pointer;">YES</button>
-                    <button onclick="handleMusic(false)" style="padding:8px 20px; background:white; border:1px solid var(--accent); cursor:pointer;">NO</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="internal-shadow"></div>
-        
-        <div class="envelope-pocket-main"></div>
-        <div class="flap-container"><div class="top-flap"></div></div>
-        
-        <div class="envelope-lines" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%25\' height=\'100%25\'%3E%3Cline x1=\'0\' y1=\'0\' x2=\'50%25\' y2=\'60%25\' stroke=\'black\' stroke-opacity=\'0.2\' stroke-width=\'1.5\'/%3E%3Cline x1=\'100%25\' y1=\'0\' x2=\'50%25\' y2=\'60%25\' stroke=\'black\' stroke-opacity=\'0.2\' stroke-width=\'1.5\'/%3E%3C/svg%3E');"></div>
-        <div id="envelope-label">Fetching invitation...</div>
-        <div id="seal" onclick="openInvitation()"><img src="seal.png" alt="Seal" style="width:100%;"></div>
-    </div>
-</div>
+.top-flap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: url('6938.jpg') center/cover no-repeat;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-style: preserve-3d;
+}
 
-<audio id="bg-music" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
-
-<div id="main-site">
-    <section style="height: 100vh; width: 100%; background: url('1.jpg') center/cover no-repeat; display: flex; align-items: center; justify-content: flex-end; position: relative; overflow: hidden;">
-        <div style="position: absolute; top: 0; right: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(4, 57, 39, 0) 20%, rgba(4, 57, 39, 0.3) 50%, rgba(4, 57, 39, 0.8) 100%); z-index: 1;"></div>
-        <div style="position: relative; padding-right: 10vw; text-align: right; z-index: 2;">
-            <h1 style="font-family: 'Great Vibes', cursive; font-size: clamp(55px, 8vw, 110px); color: #d4af37; margin: 0; line-height: 1.1; text-shadow: 2px 2px 15px rgba(0,0,0,0.6);">
-                Mariel <br> <span style="font-family: 'Georgia', serif; font-size: 0.3em; letter-spacing: 10px; color: #f4cfe0; vertical-align: middle;">&</span> <br> Jasper
-            </h1>
-            <div style="width: 80px; height: 1px; background: #d4af37; margin: 25px 0 25px auto;"></div>
-            <p style="font-family: 'Georgia', serif; letter-spacing: 5px; font-size: clamp(14px, 1.5vw, 18px); text-transform: uppercase; color: #fff;">November 06, 2027</p>
-            <p style="font-family: 'Georgia', serif; font-style: italic; color: #f4cfe0; font-size: 16px;">Save the Date</p>
-        </div>
-    </section>
-
-    <section style="padding: 80px 20px; background: white; text-align: center;">
-        <div style="max-width: 500px; margin: 0 auto;">
-            <div id="loading" class="hidden">Checking invitation...</div>
-            <div id="content" class="hidden"></div>
-            <div id="error-msg" class="hidden"><p>Guest not found. Please use the original link.</p></div>
-        </div>
-    </section>
-</div>
-
-<script>
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbyUuEtZP-SXAsbamc-8oRGEf_qjsVYc2YFkbd8aakF7JA4WFxAVFLmhDBSAFFTI-p0Z/exec"; 
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('id');
-    let guestData = null;
-
-    document.addEventListener('DOMContentLoaded', () => { if (token) checkGuestStatus(); });
-
-    function checkGuestStatus() {
-        fetch(`${webAppUrl}?id=${encodeURIComponent(token)}`)
-            .then(res => res.json())
-            .then(data => {
-                guestData = data;
-                if (data && data.name) {
-                    const label = document.getElementById('envelope-label');
-                    label.innerText = `To our dear ${data.name}`;
-                    label.classList.add('reveal-active');
-                    data.isDone ? showDoneView(data) : showMainForm();
-                }
-            });
-    }
-
-    function openInvitation() {
-        document.getElementById('envelope-wrapper').classList.add('open');
-        const seal = document.getElementById('seal');
-        seal.style.opacity = "0"; seal.style.pointerEvents = "none";
-    }
-
-    function handleMusic(play) {
-        const music = document.getElementById('bg-music');
-        if (play && music) music.play().catch(e => console.log(e));
-        document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
-        setTimeout(() => {
-            document.getElementById('envelope-wrapper').style.display = "none";
-            document.getElementById('main-site').style.display = 'block';
-            setTimeout(() => {
-                document.body.classList.add('show-site');
-                document.body.style.overflow = 'auto'; 
-            }, 50);
-        }, 1000);
-    }
-
-    function showMainForm() {
-        const content = document.getElementById('content');
-        content.classList.remove('hidden');
-        content.innerHTML = `<h2>Hi ${guestData.name},</h2><p>RSVP form goes here...</p><button onclick="submitRSVP()">Submit</button>`;
-    }
-
-    function showDoneView(data) {
-        const content = document.getElementById('content');
-        content.classList.remove('hidden');
-        content.innerHTML = `<h2>Thank you, ${data.name}!</h2>`;
-    }
-    
-    function submitRSVP() { /* Your POST fetch logic */ }
-</script>
-</body>
-</html>
+/* ✅ REAL FLAP SHADOW */
+.top-flap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    c
