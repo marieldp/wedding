@@ -470,7 +470,7 @@
         if (token) checkGuestStatus();
         else {
             const lbl = document.getElementById('envelope-label');
-            lbl.innerHTML = `To our dear <span>Guest</span>`;
+            lbl.innerHTML = `With love, to <span>Guest</span>`;
             lbl.classList.add('reveal-active');
         }
     });
@@ -482,7 +482,7 @@
                 guestData = data;
                 if (data && data.name) {
                     const label = document.getElementById('envelope-label');
-                    label.innerHTML = `To our dear <span>${data.name}</span>`;
+                    label.innerHTML = `With love, to <span>${data.name}</span>`;
                     label.classList.add('reveal-active');
                     data.isDone ? showDoneView(data) : showMainForm();
                 }
