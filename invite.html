@@ -291,12 +291,43 @@
     background-color: var(--gold);
 }
 
+/* --- THE GUEST LABEL (On top of the pocket) --- */
+#envelope-label {
+    position: absolute;
+    bottom: 20%;        /* Position it comfortably on the pocket */
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 20 !important; /* CRITICAL: Must be higher than flaps (z=6, z=10) */
+    
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent); /* Dark Green text to contrast with paper */
+    text-shadow: 0 1px 1px rgba(255,255,255,0.8); /* Subtle highlight */
+    
+    /* Animation for smooth reveal */
+    opacity: 0; 
+    transition: opacity 1s ease;
+    pointer-events: none; /* Let clicks pass through to the seal */
+}
+
+/* Class to reveal it once data is fetched */
+#envelope-label.reveal-active {
+    opacity: 1;
+}
+
     /* --- MOBILE FIXES (Phones Only) --- */
 @media (max-width: 768px) {
     /* 1. Make the envelope slightly taller on mobile to give more room */
     .envelope {
         width: 95vw;      /* Use almost full screen width */
         height: 70vw;     /* Make it taller (was 60vw) */
+    }
+    #envelope-label {
+        bottom: 15%; /* Push it lower on phones */
+        font-size: 0.75rem;
     }
 
     /* 2. Make the letter occupy more space inside the envelope */
@@ -331,7 +362,7 @@
         transform: translateY(-60%); 
     }
 }
-    
+  
 </style>
 </head>
 <body>
