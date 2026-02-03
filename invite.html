@@ -55,36 +55,89 @@
         background-size: 100% 100%;
     }
 
-/* --- THE LETTER (Always Inside) --- */
-/* --- THE SMALLER, CENTERED LETTER --- */
+/* --- THE LETTER (Always Inside) AND EVERYTHING INSIDE IT --- */
+/* --- UPDATED LETTER STYLING (Matches RSVP Card) --- */
 .letter {
+    /* Keep your existing positioning */
     position: absolute;
     bottom: 0;
-    left: 15%;  /* (100% - 70%) / 2 = 15% to keep it centered */
-    width: 70%; /* Smaller Width */
-    height: 70%; /* Smaller Height */
+    left: 15%; 
+    width: 70%; 
+    height: 70%; 
     background: white;
-    
-    /* Layer 2: Safely behind the pocket and flaps */
     z-index: 2 !important; 
     
-    /* Perfect Centering Logic */
+    /* NEW: Add the Gold Border to match RSVP */
+    border: 1px solid var(--gold); 
+    
+    /* Flexbox centering */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centers content vertically */
-    align-items: center;     /* Centers content horizontally */
-    text-align: center;      /* Ensures text lines are centered */
-    padding: 20px;           /* Breathing room inside the card */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
     box-sizing: border-box;
-    
     box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
-    
+
     /* Animation defaults */
     transform: translateY(0);
     opacity: 0;
     visibility: hidden;
     transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
 }
+
+/* Typography inside the Letter */
+.letter h2 {
+    font-family: 'Great Vibes', cursive;
+    color: var(--accent);
+    font-size: 2.8rem; /* Slightly larger for impact */
+    margin: 0 0 10px 0;
+    line-height: 1;
+}
+
+.letter p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text);
+    margin: 10px 0 20px 0;
+}
+
+/* Buttons inside the Letter */
+.letter button {
+    padding: 10px 25px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border: 1px solid var(--accent);
+    transition: all 0.3s ease;
+}
+
+/* The "YES" Button Style */
+.letter button.btn-yes {
+    background-color: var(--accent);
+    color: white;
+}
+.letter button.btn-yes:hover {
+    background-color: var(--gold);
+    border-color: var(--gold);
+}
+
+/* The "NO" Button Style */
+.letter button.btn-no {
+    background-color: transparent;
+    color: var(--accent);
+}
+.letter button.btn-no:hover {
+    background-color: #fcfaf7;
+    color: var(--gold);
+    border-color: var(--gold);
+}
+
 /* --- ENVELOPE EXIT ANIMATION --- */
 .wrapper-exit {
     opacity: 0 !important;          /* Fades out */
