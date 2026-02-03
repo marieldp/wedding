@@ -290,6 +290,47 @@
 .rsvp-card button:hover {
     background-color: var(--gold);
 }
+
+    /* --- MOBILE FIXES (Phones Only) --- */
+@media (max-width: 768px) {
+    /* 1. Make the envelope slightly taller on mobile to give more room */
+    .envelope {
+        width: 95vw;      /* Use almost full screen width */
+        height: 70vw;     /* Make it taller (was 60vw) */
+    }
+
+    /* 2. Make the letter occupy more space inside the envelope */
+    .letter {
+        width: 90%;       /* Wider paper */
+        height: 85%;      /* Taller paper (was 70%) */
+        left: 5%;         /* Re-center it: (100% - 90%) / 2 = 5% */
+        padding: 10px;    /* Reduce padding so content fits */
+    }
+
+    /* 3. Shrink the Title Text */
+    .letter h2 {
+        font-size: 1.8rem; /* Smaller than the desktop 2.3rem */
+        margin-bottom: 5px;
+    }
+
+    /* 4. Shrink the Question Text */
+    .letter p {
+        font-size: 0.7rem; /* Tiny but readable text */
+        margin: 5px 0 10px 0;
+    }
+
+    /* 5. Compact Buttons */
+    .letter button {
+        padding: 6px 15px;
+        font-size: 0.7rem;
+    }
+    
+    /* 6. Slide it UP HIGHER on mobile */
+    .open .letter {
+        /* Move up 60% instead of 50% to ensure buttons clear the pocket */
+        transform: translateY(-60%); 
+    }
+}
     
 </style>
 </head>
