@@ -460,13 +460,13 @@ function handleMusic(play, event) {
         var audio = document.getElementById('bg-music');
         
         // 1. SET THE START TIME (in seconds)
-        audio.currentTime = 3; 
+        audio.currentTime = 4; 
 
         audio.volume = 1.0; 
         
         var playPromise = audio.play();
         if (playPromise !== undefined) {
-            playPromise.then(_ => { console.log("Audio started at 3s!"); })
+            playPromise.then(_ => { console.log("Audio started at 4s!"); })
             .catch(error => { console.error("Playback failed:", error); });
         }
     }
