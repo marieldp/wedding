@@ -58,24 +58,20 @@
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    /* We set this to 1 to stay behind the top-flap (2), 
-       but it must be higher than the letter (which we should set to 0) */
-    z-index: 1; 
+    z-index: 1; /* Sits behind the flap paper */
     
-    /* Using a linear gradient for a more "filled" shadow that connects to the fold */
+    /* A deeper, more concentrated gradient */
     background: linear-gradient(to bottom, 
-                rgba(0,0,0,0.7) 0%, 
-                rgba(0,0,0,0.3) 40%, 
-                transparent 100%);
+                rgba(0,0,0,0.8) 0%, 
+                rgba(0,0,0,0.4) 20%, 
+                transparent 80%);
     
     clip-path: polygon(0 0, 100% 0, 50% 100%);
-    
-    /* Subtle blur to take the "digital" edge off */
     filter: blur(8px); 
-    
     pointer-events: none;
-    /* This connects the shadow's visibility to the flap's movement */
-    animation: shadow-fade 4s ease-in-out infinite;
+    
+    /* THE FIX: Maintains a base shadow and grows as it bobs */
+    animation: shadow-glow 4s ease-in-out infinite;
 }
    .open .internal-shadow {
     display: none;
@@ -133,7 +129,17 @@
 
 @keyframes flap-bob {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); } /* Flap lifts up */
+    50% { transform: translateY(-6px); }
+}
+@keyframes shadow-glow {
+    0%, 100% { 
+        opacity: 0.3; /* This is the "closed" shadow - tiny but visible */
+        transform: translateY(2px) scale(0.98); 
+    }
+    50% { 
+        opacity: 0.8; /* Deepens as the flap lifts */
+        transform: translateY(12px) scale(1); 
+    }
 }
 /* 2. The Shadow appearing ONLY when lifted */
 @keyframes shadow-fade {
