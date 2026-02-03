@@ -410,19 +410,34 @@
         seal.style.pointerEvents = "none";
     }
 
-    function handleMusic(play, event) {
-    // 1. Stop the click from bubbling up
+function handleMusic(play, event) {
+    // 1. Stop the click from bubbling/reloading
     if (event) event.preventDefault();
     if (event) event.stopPropagation();
 
-    // 2. Play Music
-    const music = document.getElementById('bg-music');
-    if (play && music) music.play().catch(e => console.log(e));
+    if (play) {
+        const music = document.getElementById('bg-music');
+        if (music) {
+            // Try to play, and ALERT if it fails
+            music.play()
+                .then(() => {
+                    console.log("Audio playing successfully");
+                })
+                .catch(error => {
+                    alert("Music Error: " + error.message); 
+                    // Common errors:
+                    // "NotAllowedError": Browser blocked it (needs stronger interaction)
+                    // "NotSupportedError": Bad file format
+                    // "Failed to load": File missing (bgm.mp3 not found)
+                });
+        } else {
+            alert("Error: <audio> tag with id 'bg-music' not found!");
+        }
+    }
 
-    // 3. Trigger the CSS transition
+    // 2. Proceed with the animation regardless of music
     document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
 
-    // 4. Wait for the CSS transition to finish, then hide
     setTimeout(() => {
         document.getElementById('envelope-wrapper').style.display = "none";
         document.getElementById('main-site').style.display = 'block';
