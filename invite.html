@@ -64,13 +64,12 @@
 
     /* 5. BOTTOM TRAPEZOID FLAP */
 
-/* --- THE 70% TALL NARROW BOTTOM FLAP --- */
-/* --- THE LOW-PROFILE NARROW BOTTOM FLAP --- */
+/* --- THE BALANCED NARROW BOTTOM FLAP --- */
 .bottom-flap {
     position: absolute; 
     bottom: 0; left: 0; 
     width: 100%; 
-    height: 35%; /* Reduced to 35% for a much shorter appearance */
+    height: 43%; /* Adjusted from 35% for a slightly taller, balanced look */
     z-index: 6; 
     background: url('6938.jpg') center/cover no-repeat;
     /* Maintained the very narrow 45%/55% top edge */
@@ -78,15 +77,15 @@
     filter: brightness(0.98);
 }
 
-/* --- THE MATCHING LOW-PROFILE LINES --- */
+/* --- THE MATCHING BALANCED LINES --- */
 .bottom-flap-lines {
     position: absolute; 
     bottom: 0; left: 0; 
     width: 100%; 
-    height: 35%; /* Must match the 35% height above */
+    height: 43%; /* Must match the 43% height above */
     z-index: 7; 
     pointer-events: none;
-    /* SVG path synchronized with the 45/55 width coordinates */
+    /* SVG path remains synchronized with the narrow top edge */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 L45,0 L55,0 L100,100' fill='none' stroke='black' stroke-opacity='0.08' stroke-width='0.4'/%3E%3C/svg%3E");
     background-size: 100% 100%;
 }
