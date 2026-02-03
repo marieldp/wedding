@@ -160,6 +160,84 @@
     } 
 }    @keyframes seal-bob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -55%); } }
     .hidden { display: none !important; }
+
+/* --- RSVP FORM STYLING --- */
+.rsvp-card {
+    background: #fff;
+    padding: 40px;
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid var(--gold); /* Adds a classy gold border */
+    box-shadow: 0 10px 30px rgba(4, 57, 39, 0.1); /* Soft shadow */
+    text-align: center; /* Centers the "Hi [Name]" */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Elegant Header */
+.rsvp-card h2 {
+    font-family: 'Great Vibes', cursive;
+    color: var(--accent);
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+/* Labels */
+.rsvp-card label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text);
+    margin-bottom: 8px;
+    text-align: left; /* Labels look better aligned left */
+    width: 100%;
+    display: block;
+}
+
+/* Inputs & Selects */
+.rsvp-card input, 
+.rsvp-card select, 
+.rsvp-card textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    background: #fcfaf7; /* Slight off-white to match theme */
+    color: var(--accent);
+    box-sizing: border-box; /* Prevents padding from breaking width */
+}
+
+/* Focus State (When you click an input) */
+.rsvp-card input:focus, 
+.rsvp-card select:focus, 
+.rsvp-card textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: white;
+}
+
+/* The Confirm Button */
+.rsvp-card button {
+    background-color: var(--accent);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 15px 30px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+}
+
+.rsvp-card button:hover {
+    background-color: var(--gold);
+}
+    
 </style>
 </head>
 <body>
