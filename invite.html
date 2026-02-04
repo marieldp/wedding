@@ -63,9 +63,7 @@
     }
 
 /* --- THE LETTER (Always Inside) AND EVERYTHING INSIDE IT --- */
-/* --- UPDATED LETTER STYLING (Matches RSVP Card) --- */
 .letter {
-    /* Keep your existing positioning */
     position: absolute;
     bottom: 0;
     left: 15%; 
@@ -73,18 +71,24 @@
     height: 70%; 
     background: white;
     z-index: 2 !important; 
-    
-    /* NEW: Add the Gold Border to match RSVP */
     border: 1px solid var(--gold); 
     
-    /* Flexbox centering */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    
+    /* CHANGE THIS: from center to flex-start */
+    justify-content: flex-start !important; 
+    
     align-items: center;
     text-align: center;
-    padding-top: 20px !important; /* Forces the content to start near the top */
-    padding: 20px;
+    
+    /* ADJUST THIS: This number now controls how "high" the text starts */
+    padding-top: 40px !important; 
+    
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    
     box-sizing: border-box;
     box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
 
@@ -95,14 +99,16 @@
     transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
 }
 
-/* Typography inside the Letter */
+/* Typography adjustments to keep it tight */
 .letter h2 {
     font-family: 'Allison', cursive !important;
-    font-size: 3.2rem !important; /* Reduced from 5rem */
+    font-size: 3.2rem !important;
     color: var(--accent);
     font-weight: 400;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    
+    /* Zero this out to pull it to the very top of the padding */
+    margin-top: 0 !important; 
+    margin-bottom: 5px !important;
     line-height: 0.8;
 }
 .letter p {
