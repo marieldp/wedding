@@ -204,13 +204,33 @@
 
     /* 8. THE SEAL (Always on top) */
     #seal {
-        position: absolute; top: 58%; left: 50%; transform: translate(-50%, -50%);
-        width: 18%; min-width: 65px; z-index: 100 !important; cursor: pointer;
-        filter: drop-shadow(0 0 15px rgba(191, 161, 122, 0.7));
-        animation: seal-bob 4s ease-in-out infinite;
-    }
-    #seal img { width: 100%; display: block; }
+    position: absolute; 
+    top: 58%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    width: 18%; 
+    min-width: 65px; 
+    z-index: 100 !important; 
+    cursor: pointer;
+    
+    /* Smooth, subtle bobbing (only 2px movement) */
+    animation: seal-bob 3s ease-in-out infinite;
+}
+#seal img { width: 100%; display: block; position: relative; z-index: 102; }
 
+.seal-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140%; /* Makes it larger than the seal */
+    height: 140%;
+    background: radial-gradient(circle, rgba(191, 161, 122, 0.6) 0%, rgba(191, 161, 122, 0) 70%);
+    border-radius: 50%;
+    z-index: -1; /* Sits behind the wax image */
+    animation: elegantPulse 3s ease-in-out infinite;
+    pointer-events: none;
+}
     /* Animations & Utilities */
     .open .flap-container { animation: none !important; transform: rotateX(160deg); z-index: 1 !important; }
 @keyframes flap-bob { 
@@ -221,7 +241,12 @@
         /* Reduced from -8px to -3px for a barely-there breath */
         transform: translateY(-3px); 
     } 
-}    @keyframes seal-bob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -55%); } }
+}    @keyframes seal-bob { 0%, 100% { transform: translate(-50%, -50%); } 
+    50% { transform: translate(-50%, -53%); } /* Very slight nudge */ } }
+    @keyframes elegantPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.4; }
+    50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.8; }
+}
     .hidden { display: none !important; }
 
 /* --- RSVP FORM STYLING --- */
@@ -408,7 +433,9 @@
         <div class="top-flap"></div> </div>
 
     <div class="envelope-pocket-main"></div> <div class="envelope-lines"></div> <div class="bottom-flap"></div> <div class="bottom-flap-lines"></div> <div id="envelope-label">Fetching invitation...</div>
-    <div id="seal" onclick="openInvitation()"><img src="seal.png" alt="Seal"></div>
+    <div id="seal" onclick="openEnvelope()">
+    <div class="seal-glow"></div> <img src="seal.png" alt="Seal">
+</div>
 </div>
 </div>
 
