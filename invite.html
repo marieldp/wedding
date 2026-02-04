@@ -76,19 +76,17 @@
     display: flex;
     flex-direction: column;
     
-    /* CHANGE THIS: from center to flex-start */
-    justify-content: flex-start !important; 
-    
+    /* Back to center! */
+    justify-content: center !important; 
     align-items: center;
     text-align: center;
     
-    /* ADJUST THIS: This number now controls how "high" the text starts */
-    padding-top: 40px !important; 
+    /* The Trick: More bottom padding pushes the 'center' UP */
+    padding-top: 20px !important;
+    padding-bottom: 60px !important; /* Increase this to move text HIGHER */
     
     padding-left: 20px;
     padding-right: 20px;
-    padding-bottom: 20px;
-    
     box-sizing: border-box;
     box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
 
@@ -99,17 +97,14 @@
     transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
 }
 
-/* Typography adjustments to keep it tight */
 .letter h2 {
     font-family: 'Allison', cursive !important;
     font-size: 3.2rem !important;
     color: var(--accent);
     font-weight: 400;
-    
-    /* Zero this out to pull it to the very top of the padding */
-    margin-top: 0 !important; 
-    margin-bottom: 5px !important;
-    line-height: 0.8;
+    margin-top: 0 !important; /* Keeps it tight */
+    margin-bottom: 5px;
+    line-height: 1;
 }
 .letter p {
     font-family: 'Montserrat', sans-serif;
