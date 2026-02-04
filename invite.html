@@ -8,6 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Allison&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
+/* This targets the landing page section specifically */
+#main-site section:first-of-type {
+    background-position: center 15% !important; /* Shifts the focus to the faces */
+}
+
+/* On Mobile, the photo usually looks fine centered */
+@media (max-width: 768px) {
+    #main-site section:first-of-type {
+        background-position: center center !important;
+    }
+}
     @font-face {
     font-family: 'Arielle';
     src: url('https://fonts.cdnfonts.com/s/16288/Arielle.woff');
