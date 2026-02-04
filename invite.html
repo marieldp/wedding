@@ -220,25 +220,9 @@
     cursor: pointer;
 }
 
-.seal-glow {
-    position: absolute;
-    top: 0; left: 0;
-    transform: translate(-50%, -50%);
-    width: 140px; 
-    height: 140px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(191, 161, 122, 0.5) 30%, rgba(191, 161, 122, 0) 70%);
-    border-radius: 50%;
-    z-index: -1;
-    filter: blur(10px);
-    animation: glow-pulse 4s ease-in-out infinite;
-}
-@keyframes glow-pulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.4; }
-    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
-}
     /* Animations & Utilities */
     .open .flap-container { animation: none !important; transform: rotateX(160deg); z-index: 1 !important; }
-@keyframes flap-bob { 
+    @keyframes flap-bob { 
     0%, 100% { 
         transform: translateY(0); 
     } 
@@ -442,7 +426,6 @@ body, html {
 
     <div class="envelope-pocket-main"></div> <div class="envelope-lines"></div> <div class="bottom-flap"></div> <div class="bottom-flap-lines"></div> <div id="envelope-label">Fetching invitation...</div>
    <div class="seal-bob-wrapper">
-    <div class="seal-glow"></div>
     <div id="seal" onclick="openInvitation()">
         <img src="seal.png" alt="Seal">
     </div>
