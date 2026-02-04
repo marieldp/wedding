@@ -292,36 +292,34 @@
 }
 
 /* --- THE GUEST LABEL (On top of the pocket) --- */
-/* --- ELEGANT ENVELOPE LABEL --- */
 #envelope-label {
     position: absolute;
-    /* Uses Viewport Height to stay proportional on all screens */
-    bottom: 2vh; 
+    /* Negative values pull the text DOWN. 
+       If it's still too high, make this -20px, -30px, etc. */
+    bottom: -15px; 
+    
     left: 0;
     width: 100%;
     text-align: center;
-    z-index: 30 !important;
+    z-index: 100 !important; /* Ensure it stays above the pocket flap */
     
-    /* Clean, modern style */
     font-family: 'Montserrat', sans-serif;
-    font-size: clamp(0.6rem, 2vw, 0.8rem); /* Automatically resizes font based on width */
-    letter-spacing: 0.3em;
+    font-size: 0.65rem;
+    letter-spacing: 4px;
     text-transform: uppercase;
     color: #777;
     
-    /* Animation */
     opacity: 0;
     transition: opacity 1.5s ease;
     pointer-events: none;
 }
-/* The Guest Name Style */
+
 #envelope-label span {
     display: block;
     font-family: 'Great Vibes', cursive;
-    /* Scales between 1.8rem and 3rem depending on screen size */
-    font-size: clamp(1.8rem, 5vw, 3rem); 
+    font-size: 2.4rem; 
     color: var(--accent);
-    margin-top: 0.5vh;
+    margin-top: 2px;
     text-transform: none;
     letter-spacing: 0;
 }
@@ -330,10 +328,6 @@
     opacity: 1;
 }
 
-/* Class to reveal it once data is fetched */
-#envelope-label.reveal-active {
-    opacity: 1;
-}
 
     /* --- MOBILE FIXES (Phones Only) --- */
 @media (max-width: 768px) {
