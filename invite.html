@@ -205,61 +205,36 @@
     /* 8. THE SEAL (Always on top) */
 #seal {
     position: relative;
-    transform: translate(-50%, -50%); /* Keeps it centered */
+    transform: translate(-50%, -50%);
     width: 100%;
-    cursor: pointer;
-    
-    /* REMOVE the old animation from here */
-    animation: none !important; 
 }
-#seal img { width: 100%; display: block; }
-    
+#seal img { width: 100%; display: block; }    
 .seal-bob-wrapper {
     position: absolute;
-    top: 58%; /* Same position as your seal */
+    top: 58%;
     left: 50%;
     width: 18%;
     min-width: 65px;
     z-index: 100 !important;
-    
-    /* TARGET: Use the EXACT same animation as your flap */
     animation: flap-bob 4s ease-in-out infinite; 
+    cursor: pointer;
 }
 
 .seal-glow {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     transform: translate(-50%, -50%);
-    width: 120px;
-    height: 120px;
-    
-    /* Use a mix of white and gold for a 'light' effect */
-    background: radial-gradient(circle, 
-        rgba(255, 255, 255, 0.8) 0%,   /* Bright white core */
-        rgba(191, 161, 122, 0.5) 30%,  /* Gold middle */
-        rgba(191, 161, 122, 0) 70%     /* Fades to nothing */
-    );
-    
+    width: 140px; 
+    height: 140px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(191, 161, 122, 0.5) 30%, rgba(191, 161, 122, 0) 70%);
     border-radius: 50%;
-    z-index: -1; 
-    
-    /* This makes it look like light, not a solid shape */
-    filter: blur(8px); 
-    
-    /* Matches your 4s flap-bob timing */
+    z-index: -1;
+    filter: blur(10px);
     animation: glow-pulse 4s ease-in-out infinite;
-    pointer-events: none;
 }
 @keyframes glow-pulse {
-    0%, 100% { 
-        transform: translate(-50%, -50%) scale(0.7); 
-        opacity: 0.4; 
-    }
-    50% { 
-        transform: translate(-50%, -50%) scale(1.3); 
-        opacity: 1; /* Brightens at the top of the bob */
-    }
+    0%, 100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.4; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
 }
     /* Animations & Utilities */
     .open .flap-container { animation: none !important; transform: rotateX(160deg); z-index: 1 !important; }
@@ -441,7 +416,10 @@
         transform: translateY(-60%); 
     }
 }
-  
+body, html {
+    background: url('1.jpg') no-repeat center 20% fixed;
+    background-size: cover;
+}
 </style>
 </head>
 <body>
