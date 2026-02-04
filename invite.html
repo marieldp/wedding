@@ -294,28 +294,44 @@
 /* --- THE GUEST LABEL (On top of the pocket) --- */
 #envelope-label {
     position: absolute;
-    bottom: 0;
-    left: 50%;
-    
-    /* CHANGE 80% TO 30% 
-       If 30% is still too low, try 10%.
-       If it goes back to being too high, try 50%. */
-    transform: translate(-50%, 30%); 
-
+    /* This anchors it to the bottom. 10% is usually the sweet spot. */
+    bottom: 10% !important; 
+    left: 0;
     width: 100%;
     text-align: center;
-    z-index: 100 !important;
     
-    /* Keep your elegant styles below */
+    /* CRITICAL: Higher than all flaps (which are usually 1-10) */
+    z-index: 1000 !important; 
+    
+    /* Ensure it's visible for testing */
+    display: block !important;
+    
+    /* Styles */
     font-family: 'Montserrat', sans-serif;
     font-size: 0.7rem;
     letter-spacing: 5px;
     text-transform: uppercase;
     color: #666;
+    
+    /* Transition */
     opacity: 0;
     transition: opacity 1.5s ease;
+    pointer-events: none;
 }
 
+#envelope-label span {
+    display: block;
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: var(--accent);
+    text-transform: none;
+    margin-top: 5px;
+}
+
+/* Make sure this class is still working */
+#envelope-label.reveal-active {
+    opacity: 1 !important;
+}
     /* --- MOBILE FIXES (Phones Only) --- */
 @media (max-width: 768px) {
     /* 1. Make the envelope slightly taller on mobile to give more room */
