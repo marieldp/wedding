@@ -294,40 +294,27 @@
 /* --- THE GUEST LABEL (On top of the pocket) --- */
 #envelope-label {
     position: absolute;
-    /* Negative values pull the text DOWN. 
-       If it's still too high, make this -20px, -30px, etc. */
-    bottom: -15px; 
+    bottom: 0;
+    left: 50%;
     
-    left: 0;
+    /* CHANGE 80% TO 30% 
+       If 30% is still too low, try 10%.
+       If it goes back to being too high, try 50%. */
+    transform: translate(-50%, 30%); 
+
     width: 100%;
     text-align: center;
-    z-index: 100 !important; /* Ensure it stays above the pocket flap */
+    z-index: 100 !important;
     
+    /* Keep your elegant styles below */
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.65rem;
-    letter-spacing: 4px;
+    font-size: 0.7rem;
+    letter-spacing: 5px;
     text-transform: uppercase;
-    color: #777;
-    
+    color: #666;
     opacity: 0;
     transition: opacity 1.5s ease;
-    pointer-events: none;
 }
-
-#envelope-label span {
-    display: block;
-    font-family: 'Great Vibes', cursive;
-    font-size: 2.4rem; 
-    color: var(--accent);
-    margin-top: 2px;
-    text-transform: none;
-    letter-spacing: 0;
-}
-
-#envelope-label.reveal-active {
-    opacity: 1;
-}
-
 
     /* --- MOBILE FIXES (Phones Only) --- */
 @media (max-width: 768px) {
