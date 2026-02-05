@@ -12,6 +12,18 @@
 #main-site section:first-of-type {
     background-position: center 15% !important; /* Shifts the focus to the faces */
 }
+/* The Scroll Reveal Animation */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1.2s ease-out;
+}
+
+/* This class will be added by JavaScript when the guest scrolls to it */
+.reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 /* The 'Soft Glide' Animation */
 @keyframes fadeInUp {
@@ -557,14 +569,14 @@ body, html {
     </div>
 </section>
 
-<section style="padding: 100px 20px; background-color: #fcfaf7; color: #043927; text-align: center; position: relative; z-index: 10; margin-top: -1px;">
+<section id="formal-invitation" style="padding: 100px 20px; background-color: #fcfaf7; color: #043927; text-align: center; position: relative; z-index: 10; margin-top: -1px;">
     
-    <div style="max-width: 700px; margin: 0 auto; border: 1px solid rgba(212, 175, 55, 0.2); padding: 60px 20px; position: relative;">
+    <div class="reveal-on-scroll" style="max-width: 700px; margin: 0 auto; border: 1px solid rgba(212, 175, 55, 0.2); padding: 60px 20px; position: relative;">
         
         <div style="position: absolute; top: 10px; left: 10px; width: 30px; height: 30px; border-top: 1px solid #d4af37; border-left: 1px solid #d4af37;"></div>
         <div style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; border-bottom: 1px solid #d4af37; border-right: 1px solid #d4af37;"></div>
 
-        <p style="font-family: 'Georgia', serif; letter-spacing: 4px; font-size: 12px; text-transform: uppercase; color: #666; margin-bottom: 40px;">
+        <p style="font-family: 'Georgia', serif; letter-spacing: 4px; font-size: 11px; text-transform: uppercase; color: #666; margin-bottom: 30px;">
             Together with their families
         </p>
         
@@ -572,7 +584,7 @@ body, html {
             Mariel & Jasper
         </h2>
         
-        <div style="width: 40px; height: 1px; background: #f4cfe0; margin: 35px auto;"></div>
+        <div style="width: 40px; height: 1px; background: #f4cfe0; margin: 30px auto;"></div>
         
         <p style="font-family: 'Georgia', serif; font-size: 18px; line-height: 1.8; color: #043927; font-style: italic;">
             request the honor of your presence<br>
@@ -582,20 +594,19 @@ body, html {
         </p>
         
         <div style="margin-top: 40px;">
-            <p style="font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 3px; font-size: 14px; text-transform: uppercase; color: #d4af37;">
+            <p style="font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 3px; font-size: 13px; text-transform: uppercase; color: #d4af37;">
                 Saturday
             </p>
-            <p style="font-family: 'Playfair Display', serif; font-size: 24px; margin: 5px 0; color: #043927;">
+            <p style="font-family: 'Playfair Display', serif; font-size: 26px; margin: 5px 0; color: #043927;">
                 NOVEMBER 06, 2027
             </p>
-            <p style="font-family: 'Montserrat', sans-serif; font-weight: 400; letter-spacing: 3px; font-size: 14px; text-transform: uppercase; color: #d4af37;">
+            <p style="font-family: 'Montserrat', sans-serif; font-weight: 400; letter-spacing: 3px; font-size: 13px; text-transform: uppercase; color: #d4af37;">
                 At Two O'Clock in the Afternoon
             </p>
         </div>
-
     </div>
 </section>
-
+    
     <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
         <h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; margin-bottom: 50px;">The Journey to Forever</h2>
         <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; max-width: 1000px; margin: 0 auto;">
