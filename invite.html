@@ -784,6 +784,23 @@ function handleMusic(play, event) {
                 <button onclick="showMainForm()">Edit Response</button>
             </div>`;
     }
+
+// SCROLL REVEAL OBSERVER
+const observerOptions = { threshold: 0.2 }; // Triggers when 20% of the section is visible
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+        }
+    });
+}, observerOptions);
+
+// Start watching the formal invitation section
+document.addEventListener('DOMContentLoaded', () => {
+    const revealElement = document.querySelector('.reveal-on-scroll');
+    if (revealElement) observer.observe(revealElement);
+});
 </script>
 </body>
 </html>
