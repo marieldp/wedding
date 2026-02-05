@@ -828,40 +828,40 @@ const observer = new IntersectionObserver((entries) => {
 
 // COUNTDOWN LOGIC
 function updateCountdown() {
-    const weddingDate = new Date("Nov 6, 2027 14:00:00");
-    const now = new Date();
-    
-    // 1. Calculate the total gap in milliseconds
+    const weddingDate = new Date("Nov 6, 2027 14:00:00").getTime();
+    const now = new Date().getTime();
     const totalGap = weddingDate - now;
 
     if (totalGap <= 0) {
-        // Wedding has started!
         document.getElementById("months").innerText = "00";
         document.getElementById("days").innerText = "00";
         return;
     }
 
-    // 2. Calculate Months
-    let months = (weddingDate.getFullYear() - now.getFullYear()) * 12 + (weddingDate.getMonth() - now.getMonth());
+    // 1. Calculate Months (The "Honest" way)
+    const startDate = new Date();
+    const endDate = new Date("Nov 6, 2027 14:00:00");
     
-    // Adjust if the current day/time hasn't reached the wedding day/time of the month yet
-    const tempDate = new Date(now);
-    tempDate.setMonth(now.getMonth() + months);
+    let months = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
     
-    if (tempDate > weddingDate) {
+    // Check if we have actually reached the wedding day/time yet in the current month
+    const tempDate = new Date(startDate);
+    tempDate.setMonth(startDate.getMonth() + months);
+    
+    if (tempDate > endDate) {
         months--;
-        tempDate.setMonth(now.getMonth() + months);
+        tempDate.setMonth(startDate.getMonth() + months);
     }
 
-    // 3. Calculate remaining time after months are removed
-    const remainingGap = weddingDate - tempDate;
+    // 2. Calculate the literal remainder
+    const remainingGap = endDate - tempDate;
 
     const d = Math.floor(remainingGap / (1000 * 60 * 60 * 24));
     const h = Math.floor((remainingGap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const m = Math.floor((remainingGap % (1000 * 60 * 60)) / (1000 * 60));
     const s = Math.floor((remainingGap % (1000 * 60)) / 1000);
 
-    // 4. Update the display
+    // 3. Update the display
     document.getElementById("months").innerText = months < 10 ? "0" + months : months;
     document.getElementById("days").innerText = d < 10 ? "0" + d : d;
     document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
