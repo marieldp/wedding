@@ -636,6 +636,34 @@ body, html {
     </div>
 </div>
 </section>
+
+<section id="entourage" style="padding: 100px 20px; background-color: #ffffff; text-align: center;">
+    
+    <div class="reveal-on-scroll" style="margin-bottom: 60px;">
+        <h2 style="font-family: 'Pinyon Script', cursive; font-size: 55px; color: #d4af37;">The Entourage</h2>
+        <div style="width: 40px; height: 1px; background: #f4cfe0; margin: 10px auto;"></div>
+    </div>
+
+    <div class="reveal-on-scroll" style="margin-bottom: 80px; max-width: 800px; margin-left: auto; margin-right: auto;">
+        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Principal Sponsors</span>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px;">
+            <p id="Sponsors_Male" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2;"></p>
+            <p id="Sponsors_Female" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2;"></p>
+        </div>
+    </div>
+
+    <div class="reveal-on-scroll" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px; max-width: 1000px; margin: 0 auto;">
+        <div>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Bridesmaids</span>
+            <p id="Bridesmaids" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #043927; line-height: 2; margin-top: 15px;"></p>
+        </div>
+        <div>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #043927;">Groomsmen</span>
+            <p id="Groomsmen" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #043927; line-height: 2; margin-top: 15px;"></p>
+        </div>
+    </div>
+
+</section>
     
     <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
         <h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; margin-bottom: 50px;">The Journey to Forever</h2>
@@ -680,7 +708,7 @@ body, html {
 </div>
 
 <script>
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbyUuEtZP-SXAsbamc-8oRGEf_qjsVYc2YFkbd8aakF7JA4WFxAVFLmhDBSAFFTI-p0Z/exec"; 
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbzrtwb3bnwahRGg94f6Eu3Qj1zsfGw3hga7Y5a23q293gI60mFJ818kGw5zbYtuKTBn/exec"; 
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('id');
     let guestData = null;
@@ -879,6 +907,26 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateCountdown, 1000);
     updateCountdown();
 });
+
+function loadEntourage() {
+    const scriptURL = "YOUR_NEW_DEPLOYMENT_URL_HERE"; // Put your URL here
+    
+    fetch(`${scriptURL}?action=getEntourage`)
+        .then(response => response.json())
+        .then(data => {
+            Object.keys(data).forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    // This swaps every comma for a clean line break
+                    element.innerHTML = data[id].split(',').map(name => name.trim()).join('<br>');
+                }
+            });
+        })
+        .catch(error => console.error('Error loading entourage:', error));
+}
+
+// Call it when the page loads
+document.addEventListener('DOMContentLoaded', loadEntourage);
 
 </script>
 </body>
