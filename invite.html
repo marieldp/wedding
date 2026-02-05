@@ -12,6 +12,26 @@
 #main-site section:first-of-type {
     background-position: center 15% !important; /* Shifts the focus to the faces */
 }
+
+/* Decorative Paper Texture */
+.paper-texture {
+    background-color: #fcfaf7;
+    background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png"); /* Subtle paper grain */
+}
+
+/* Background Monogram */
+.monogram-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Great Vibes', cursive;
+    font-size: 250px;
+    color: rgba(212, 175, 55, 0.05); /* Very faint gold */
+    z-index: 0;
+    white-space: nowrap;
+    pointer-events: none;
+}
 /* The Scroll Reveal Animation */
 .reveal-on-scroll {
     opacity: 0;
@@ -569,40 +589,54 @@ body, html {
     </div>
 </section>
 
-<section id="formal-invitation" style="padding: 100px 20px; background-color: #fcfaf7; color: #043927; text-align: center; position: relative; z-index: 10; margin-top: -1px;">
+<section id="formal-invitation" class="paper-texture" style="padding: 120px 20px; color: #043927; text-align: center; position: relative; z-index: 10; margin-top: -1px; overflow: hidden;">
     
-    <div class="reveal-on-scroll" style="max-width: 700px; margin: 0 auto; border: 1px solid rgba(212, 175, 55, 0.2); padding: 60px 20px; position: relative;">
-        
-        <div style="position: absolute; top: 10px; left: 10px; width: 30px; height: 30px; border-top: 1px solid #d4af37; border-left: 1px solid #d4af37;"></div>
-        <div style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; border-bottom: 1px solid #d4af37; border-right: 1px solid #d4af37;"></div>
+    <div class="monogram-bg">M&J</div>
 
-        <p style="font-family: 'Georgia', serif; letter-spacing: 4px; font-size: 11px; text-transform: uppercase; color: #666; margin-bottom: 30px;">
-            Together with their families
-        </p>
+    <div class="reveal-on-scroll" style="max-width: 600px; margin: 0 auto; border: 1px solid #d4af37; padding: 15px; position: relative; z-index: 1; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
         
-        <h2 style="font-family: 'Great Vibes', cursive; font-size: clamp(45px, 8vw, 75px); color: #d4af37; margin: 0; font-weight: 400;">
-            Mariel & Jasper
-        </h2>
-        
-        <div style="width: 40px; height: 1px; background: #f4cfe0; margin: 30px auto;"></div>
-        
-        <p style="font-family: 'Georgia', serif; font-size: 18px; line-height: 1.8; color: #043927; font-style: italic;">
-            request the honor of your presence<br>
-            as they exchange marriage vows<br>
-            and celebrate the beginning of their<br>
-            life together
-        </p>
-        
-        <div style="margin-top: 40px;">
-            <p style="font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 3px; font-size: 13px; text-transform: uppercase; color: #d4af37;">
-                Saturday
+        <div style="border: 2px solid #d4af37; padding: 50px 20px; position: relative;">
+            
+            <div style="position: absolute; top: -5px; left: -5px; width: 40px; height: 40px; background: white; display: flex; align-items: center; justify-content: center;">
+                <span style="color: #d4af37; font-size: 20px;">✧</span>
+            </div>
+            <div style="position: absolute; top: -5px; right: -5px; width: 40px; height: 40px; background: white; display: flex; align-items: center; justify-content: center;">
+                <span style="color: #d4af37; font-size: 20px;">✧</span>
+            </div>
+
+            <p style="font-family: 'Georgia', serif; letter-spacing: 5px; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 30px;">
+                Together with their families
             </p>
-            <p style="font-family: 'Playfair Display', serif; font-size: 26px; margin: 5px 0; color: #043927;">
-                NOVEMBER 06, 2027
+            
+            <h2 style="font-family: 'Great Vibes', cursive; font-size: clamp(50px, 9vw, 80px); color: #d4af37; margin: 0; font-weight: 400; line-height: 1;">
+                Mariel & Jasper
+            </h2>
+            
+            <div style="margin: 25px 0; color: #f4cfe0; font-size: 24px;">❦</div>
+            
+            <p style="font-family: 'Georgia', serif; font-size: 17px; line-height: 1.8; color: #043927; font-style: italic; max-width: 80%; margin: 0 auto;">
+                request the honor of your presence as they exchange marriage vows and celebrate the beginning of their life together
             </p>
-            <p style="font-family: 'Montserrat', sans-serif; font-weight: 400; letter-spacing: 3px; font-size: 13px; text-transform: uppercase; color: #d4af37;">
-                At Two O'Clock in the Afternoon
-            </p>
+            
+            <div style="margin-top: 45px; border-top: 1px solid #f4cfe0; pt: 30px; display: inline-block; padding-top: 25px;">
+                <p style="font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 4px; font-size: 12px; text-transform: uppercase; color: #d4af37; margin: 0;">
+                    Saturday
+                </p>
+                <p style="font-family: 'Playfair Display', serif; font-size: 28px; margin: 10px 0; color: #043927; letter-spacing: 2px;">
+                    NOVEMBER 06, 2027
+                </p>
+                <p style="font-family: 'Montserrat', sans-serif; font-weight: 400; letter-spacing: 4px; font-size: 12px; text-transform: uppercase; color: #d4af37; margin: 0;">
+                    At Two O'Clock in the Afternoon
+                </p>
+            </div>
+
+            <div style="position: absolute; bottom: -5px; left: -5px; width: 40px; height: 40px; background: white; display: flex; align-items: center; justify-content: center;">
+                <span style="color: #d4af37; font-size: 20px;">✧</span>
+            </div>
+            <div style="position: absolute; bottom: -5px; right: -5px; width: 40px; height: 40px; background: white; display: flex; align-items: center; justify-content: center;">
+                <span style="color: #d4af37; font-size: 20px;">✧</span>
+            </div>
+
         </div>
     </div>
 </section>
