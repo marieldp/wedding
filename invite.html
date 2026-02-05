@@ -599,24 +599,46 @@ body, html {
         </div>
     </div>
 
-    <div class="reveal-on-scroll" style="margin-top: 60px; display: flex; justify-content: center; gap: 25px; font-family: 'Montserrat', sans-serif; color: #043927;">
-        <div>
-            <span id="days" style="display: block; font-size: 32px; font-weight: 700; color: #d4af37;">00</span>
-            <span style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #888;">Days</span>
+    
+    <div class="reveal-on-scroll" style="margin: 80px auto 40px auto; max-width: 600px; padding: 30px 0; border-top: 1px solid rgba(212, 175, 55, 0.3); border-bottom: 1px solid rgba(212, 175, 55, 0.3);">
+    <p style="font-family: 'Georgia', serif; font-style: italic; font-size: 14px; color: #888; margin-bottom: 25px; letter-spacing: 1px;">The countdown to forever...</p>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 0; font-family: 'Montserrat', sans-serif;">
+        
+        <div style="flex: 1; text-align: center; padding: 0 5px;">
+            <span id="months" style="display: block; font-size: clamp(22px, 5vw, 35px); font-weight: 300; color: #043927; letter-spacing: -1px;">00</span>
+            <span style="font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Months</span>
         </div>
-        <div>
-            <span id="hours" style="display: block; font-size: 32px; font-weight: 700; color: #d4af37;">00</span>
-            <span style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #888;">Hours</span>
+
+        <div style="width: 1px; height: 30px; background: rgba(212, 175, 55, 0.4);"></div>
+
+        <div style="flex: 1; text-align: center; padding: 0 5px;">
+            <span id="days" style="display: block; font-size: clamp(22px, 5vw, 35px); font-weight: 300; color: #043927; letter-spacing: -1px;">00</span>
+            <span style="font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Days</span>
         </div>
-        <div>
-            <span id="minutes" style="display: block; font-size: 32px; font-weight: 700; color: #d4af37;">00</span>
-            <span style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #888;">Mins</span>
+
+        <div style="width: 1px; height: 30px; background: rgba(212, 175, 55, 0.4);"></div>
+
+        <div style="flex: 1; text-align: center; padding: 0 5px;">
+            <span id="hours" style="display: block; font-size: clamp(22px, 5vw, 35px); font-weight: 300; color: #043927; letter-spacing: -1px;">00</span>
+            <span style="font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Hours</span>
         </div>
-        <div>
-            <span id="seconds" style="display: block; font-size: 32px; font-weight: 700; color: #d4af37;">00</span>
-            <span style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #888;">Secs</span>
+
+        <div style="width: 1px; height: 30px; background: rgba(212, 175, 55, 0.4);"></div>
+
+        <div style="flex: 1; text-align: center; padding: 0 5px;">
+            <span id="minutes" style="display: block; font-size: clamp(22px, 5vw, 35px); font-weight: 300; color: #043927; letter-spacing: -1px;">00</span>
+            <span style="font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Mins</span>
         </div>
+
+        <div style="width: 1px; height: 30px; background: rgba(212, 175, 55, 0.4);"></div>
+
+        <div style="flex: 1; text-align: center; padding: 0 5px;">
+            <span id="seconds" style="display: block; font-size: clamp(22px, 5vw, 35px); font-weight: 300; color: #043927; letter-spacing: -1px;">00</span>
+            <span style="font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Secs</span>
+        </div>
+
     </div>
+</div>
 </section>
     
     <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
@@ -810,17 +832,31 @@ const observer = new IntersectionObserver((entries) => {
 
 // COUNTDOWN LOGIC
 function updateCountdown() {
-    const weddingDate = new Date("Nov 6, 2027 14:00:00").getTime();
-    const now = new Date().getTime();
-    const gap = weddingDate - now;
+    const weddingDate = new Date("Nov 6, 2027 14:00:00");
+    const now = new Date();
+    
+    let years = weddingDate.getFullYear() - now.getFullYear();
+    let months = (weddingDate.getMonth() - now.getMonth()) + (years * 12);
+    
+    // Adjust months if current day is past the wedding day of the month
+    if (weddingDate.getDate() < now.getDate()) {
+        months--;
+    }
 
-    if (gap > 0) {
+    // Create a date object for the "remaining" time after the months are accounted for
+    const tempDate = new Date(now);
+    tempDate.setMonth(now.getMonth() + months);
+    
+    const gap = weddingDate - tempDate;
+
+    if (gap > 0 || months > 0) {
         const d = Math.floor(gap / (1000 * 60 * 60 * 24));
         const h = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
         const s = Math.floor((gap % (1000 * 60)) / 1000);
 
-        document.getElementById("days").innerText = d;
+        document.getElementById("months").innerText = months < 10 ? "0" + months : months;
+        document.getElementById("days").innerText = d < 10 ? "0" + d : d;
         document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
         document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
         document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
