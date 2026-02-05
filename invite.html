@@ -617,6 +617,26 @@ body, html {
 
         </div>
     </div>
+
+    <div class="reveal-on-scroll" style="margin-top: 60px; display: flex; justify-content: center; gap: 30px; font-family: 'Montserrat', sans-serif; color: #043927;">
+    <div style="text-align: center;">
+        <span id="days" style="display: block; font-size: 32px; font-weight: 700; color: #d4af37;">00</span>
+        <span style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #888;">Days</span>
+    </div>
+    <div style="text-align: center;">
+        <span id="hours" style="display: block; font-size: 32px; font-weight: 700; color: #d4af37;">00</span>
+        <span style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #888;">Hours</span>
+    </div>
+    <div style="text-align: center;">
+        <span id="minutes" style="display: block; font-size: 32px; font-weight: 700; color: #d4af37;">00</span>
+        <span style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #888;">Mins</span>
+    </div>
+    <div style="text-align: center;">
+        <span id="seconds" style="display: block; font-size: 32px; font-weight: 700; color: #d4af37;">00</span>
+        <span style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #888;">Secs</span>
+    </div>
+</div>
+    
 </section>
     
     <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
@@ -813,6 +833,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const revealElement = document.querySelector('.reveal-on-scroll');
     if (revealElement) observer.observe(revealElement);
 });
+
+function updateCountdown() {
+    const weddingDate = new Date("Nov 6, 2027 14:00:00").getTime();
+    const now = new Date().getTime();
+    const gap = weddingDate - now;
+
+    if (gap > 0) {
+        const d = Math.floor(gap / (1000 * 60 * 60 * 24));
+        const h = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((gap % (1000 * 60)) / 1000);
+
+        document.getElementById("days").innerText = d;
+        document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+        document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
+        document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+    }
+}
+
+// Update every second
+setInterval(updateCountdown, 1000);
+// Run once on load
+updateCountdown();
+
+
 </script>
 </body>
 </html>
