@@ -831,32 +831,42 @@ function updateCountdown() {
     const weddingDate = new Date("Nov 6, 2027 14:00:00");
     const now = new Date();
     
-    let years = weddingDate.getFullYear() - now.getFullYear();
-    let months = (weddingDate.getMonth() - now.getMonth()) + (years * 12);
-    
-    // Adjust months if current day is past the wedding day of the month
-    if (weddingDate.getDate() < now.getDate()) {
-        months--;
+    // 1. Calculate the total gap in milliseconds
+    const totalGap = weddingDate - now;
+
+    if (totalGap <= 0) {
+        // Wedding has started!
+        document.getElementById("months").innerText = "00";
+        document.getElementById("days").innerText = "00";
+        return;
     }
 
-    // Create a date object for the "remaining" time after the months are accounted for
+    // 2. Calculate Months
+    let months = (weddingDate.getFullYear() - now.getFullYear()) * 12 + (weddingDate.getMonth() - now.getMonth());
+    
+    // Adjust if the current day/time hasn't reached the wedding day/time of the month yet
     const tempDate = new Date(now);
     tempDate.setMonth(now.getMonth() + months);
     
-    const gap = weddingDate - tempDate;
-
-    if (gap > 0 || months > 0) {
-        const d = Math.floor(gap / (1000 * 60 * 60 * 24));
-        const h = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((gap % (1000 * 60)) / 1000);
-
-        document.getElementById("months").innerText = months < 10 ? "0" + months : months;
-        document.getElementById("days").innerText = d < 10 ? "0" + d : d;
-        document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
-        document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
-        document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+    if (tempDate > weddingDate) {
+        months--;
+        tempDate.setMonth(now.getMonth() + months);
     }
+
+    // 3. Calculate remaining time after months are removed
+    const remainingGap = weddingDate - tempDate;
+
+    const d = Math.floor(remainingGap / (1000 * 60 * 60 * 24));
+    const h = Math.floor((remainingGap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((remainingGap % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((remainingGap % (1000 * 60)) / 1000);
+
+    // 4. Update the display
+    document.getElementById("months").innerText = months < 10 ? "0" + months : months;
+    document.getElementById("days").innerText = d < 10 ? "0" + d : d;
+    document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+    document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
+    document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
 }
 
 // START EVERYTHING
