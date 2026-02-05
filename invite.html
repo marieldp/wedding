@@ -909,25 +909,29 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadEntourage() {
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzrtwb3bnwahRGg94f6Eu3Qj1zsfGw3hga7Y5a23q293gI60mFJ818kGw5zbYtuKTBn/exec"; // Put your URL here
-    
-    fetch(`${scriptURL}?action=getEntourage`)
+    // We use your global webAppUrl variable here
+    fetch(`${webAppUrl}?action=getEntourage`)
         .then(response => response.json())
         .then(data => {
+            // Check if we actually got names or an error
+            if (data.error) {
+                console.error("Spreadsheet Error:", data.error);
+                return;
+            }
+
             Object.keys(data).forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
-                    // This swaps every comma for a clean line break
+                    // Turn commas from the sheet into line breaks for the list
                     element.innerHTML = data[id].split(',').map(name => name.trim()).join('<br>');
                 }
             });
         })
-        .catch(error => console.error('Error loading entourage:', error));
+        .catch(error => console.error('Error fetching entourage:', error));
 }
 
-// Call it when the page loads
+// Just make sure you call it once the page is ready
 document.addEventListener('DOMContentLoaded', loadEntourage);
-
 </script>
 </body>
 </html>
