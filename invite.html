@@ -17,7 +17,7 @@
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(25px);
     }
     to {
         opacity: 1;
@@ -27,15 +27,15 @@
 
 /* Apply this to the text elements */
 .reveal-text {
-    opacity: 0; /* Keeps them hidden until the animation starts */
-    animation: fadeInUp 1.2s ease-out forwards;
+    opacity: 0;
 }
 
-/* Staggered Delays */
-.delay-1 { animation-delay: 0.5s; } /* Mariel & Jasper */
-.delay-2 { animation-delay: 1.0s; } /* The Date */
-.delay-3 { animation-delay: 1.5s; } /* Save the Date */
-
+.show-site .reveal-text {
+    animation: fadeInUp 1.2s ease-out forwards;
+}
+.show-site .delay-1 { animation-delay: 0.3s; } /* Names */
+.show-site .delay-2 { animation-delay: 0.8s; } /* Date & Line */
+.show-site .delay-3 { animation-delay: 1.3s; } /* Save the Date */
 
     @font-face {
     font-family: 'Arielle';
