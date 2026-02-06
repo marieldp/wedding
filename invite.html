@@ -1,576 +1,580 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M & J Wedding</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Allison&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M & J Wedding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Allison&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
-/* Target the spans directly by their IDs */
+    #months, #days, #hours, #minutes, #seconds {
+/* Force the countdown numbers to behave as single units */
 #months, #days, #hours, #minutes, #seconds {
-    display: inline-block !important;
-    white-space: nowrap !important; /* Forces the number to stay on one line */
-    hyphens: none !important;      /* Explicitly kills the 'auto-dash' feature */
-    -webkit-hyphens: none !important;
-    min-width: 45px;               /* Gives the number a 'safe zone' so it doesn't hit the edge */
-    text-align: center;
+display: inline-block;
+    min-width: 1.2em; /* Ensures 3-digit numbers like 336 don't 'squish' */
+    min-width: 1.2em; /* Ensures room for 3-digit numbers like 336 */
+text-align: center;
+    white-space: nowrap; /* Prevents the browser from adding dashes to wrap text */
+    white-space: nowrap; /* Prevents the browser from inserting hyphens to wrap text */
 }
 
-/* Fix the flex containers so they don't crush the numbers */
+/* Adjust the container to handle the extra width on iPhone 15 Plus */
 .countdown-box > div {
-    flex: 1 0 auto !important;     /* Tells the box: 'Grow if you need to, but never shrink below content size' */
-    padding: 0 10px;
+    padding: 0 5px; /* Adds a tiny bit of internal space */
+/* Ensure the flex boxes don't squish the text */
+#countdown-container > div {
+    flex: 1;
+    min-width: 0; /* Prevents flex-items from overflowing their container */
 }
 /* Makes the names easier to read on mobile screens */
 #entourage p {
-    font-weight: 400;
-    letter-spacing: 0.3px;
-    margin-top: 8px;
-    /* This adds a very soft fade-in effect when names appear */
-    animation: fadeInName 0.8s ease forwards;
+font-weight: 400;
+letter-spacing: 0.3px;
+margin-top: 8px;
+/* This adds a very soft fade-in effect when names appear */
+animation: fadeInName 0.8s ease forwards;
 }
 
 
 /* This targets the landing page section specifically */
 #main-site section:first-of-type {
-    background-position: center 15% !important; /* Shifts the focus to the faces */
+background-position: center 15% !important; /* Shifts the focus to the faces */
 }
 
 /* Decorative Paper Texture */
 .paper-texture {
-    background-color: #fcfaf7;
-    background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png"); /* Subtle paper grain */
+background-color: #fcfaf7;
+background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png"); /* Subtle paper grain */
 }
 
 /* The Scroll Reveal Animation */
 .reveal-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 1.5s ease-out;
+opacity: 0;
+transform: translateY(30px);
+transition: all 1.5s ease-out;
 }
 
 /* This class will be added by JavaScript when the guest scrolls to it */
 .reveal-on-scroll.is-visible {
-    opacity: 1;
-    transform: translateY(0);
+opacity: 1;
+transform: translateY(0);
 }
 
 /* The 'Soft Glide' Animation */
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(15px); /* Shorter distance = feels faster */
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+from {
+opacity: 0;
+transform: translateY(15px); /* Shorter distance = feels faster */
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
 }
 /* Apply this to the text elements */
 .reveal-text {
-    opacity: 0;
+opacity: 0;
 }
 
 .show-site .reveal-text {
-    animation: fadeInUp .8s ease-out forwards;
+animation: fadeInUp .8s ease-out forwards;
 }
 .show-site .delay-1 { animation-delay: 0.1s; } /* Names pop in almost immediately */
 .show-site .delay-2 { animation-delay: 0.3s; } /* Date follows quickly */
 .show-site .delay-3 { animation-delay: 0.5s; } /* Save the Date finishes it off */
-    
-    @font-face {
-    font-family: 'Arielle';
-    src: url('https://fonts.cdnfonts.com/s/16288/Arielle.woff');
-    font-weight: normal;
-    font-style: normal;
+
+@font-face {
+font-family: 'Arielle';
+src: url('https://fonts.cdnfonts.com/s/16288/Arielle.woff');
+font-weight: normal;
+font-style: normal;
 }
-    :root { 
-        --paper: #fcfaf7; --gold: #bfa17a; --text: #4a4a4a; --accent: #043927; --pink: #f4cfe0; 
-    }
+:root { 
+--paper: #fcfaf7; --gold: #bfa17a; --text: #4a4a4a; --accent: #043927; --pink: #f4cfe0; 
+}
 
-    body, html { 
-        margin: 0; padding: 0; background-color: #e5e0d8; 
-        font-family: 'Montserrat', sans-serif; color: var(--text); 
-        overflow: hidden; height: 100%; 
-    }
+body, html { 
+margin: 0; padding: 0; background-color: #e5e0d8; 
+font-family: 'Montserrat', sans-serif; color: var(--text); 
+overflow: hidden; height: 100%; 
+}
 
-    #envelope-wrapper {
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        display: flex; justify-content: center; align-items: center;
-        z-index: 9999 !important; background-color: #f4f1ea;
-        transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease;
-    }
+#envelope-wrapper {
+position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+display: flex; justify-content: center; align-items: center;
+z-index: 9999 !important; background-color: #f4f1ea;
+transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease;
+}
 
-    .envelope {
-        position: relative; width: 90vw; height: 60vw;
-        max-width: 600px; max-height: 400px;
-        z-index: 10 !important; perspective: 1500px; 
-    }
+.envelope {
+position: relative; width: 90vw; height: 60vw;
+max-width: 600px; max-height: 400px;
+z-index: 10 !important; perspective: 1500px; 
+}
 
-    /* 1. BACKING */
-    .envelope-back {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: url('6938.jpg') center/cover no-repeat;
-        z-index: 1 !important; filter: brightness(0.9);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    }
+/* 1. BACKING */
+.envelope-back {
+position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+background: url('6938.jpg') center/cover no-repeat;
+z-index: 1 !important; filter: brightness(0.9);
+box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
 
-    /* 2. POCKET MOUTH DEPTH */
-    
-    /* 3. POCKET PAPER */
-    .envelope-pocket-main { 
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-        z-index: 3 !important; background: url('6938.jpg') center/cover no-repeat;
-        clip-path: polygon(0 0, 50% 60%, 100% 0, 100% 100%, 0 100%);
-    }
+/* 2. POCKET MOUTH DEPTH */
 
-    /* 4. MAIN V-LINES (Lightened) */
-    .envelope-lines {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        z-index: 4 !important; pointer-events: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L50,60 L100,0' fill='none' stroke='black' stroke-opacity='0.05' stroke-width='0.4'/%3E%3C/svg%3E");
-        background-size: 100% 100%;
-    }
+/* 3. POCKET PAPER */
+.envelope-pocket-main { 
+position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+z-index: 3 !important; background: url('6938.jpg') center/cover no-repeat;
+clip-path: polygon(0 0, 50% 60%, 100% 0, 100% 100%, 0 100%);
+}
+
+/* 4. MAIN V-LINES (Lightened) */
+.envelope-lines {
+position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+z-index: 4 !important; pointer-events: none;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L50,60 L100,0' fill='none' stroke='black' stroke-opacity='0.05' stroke-width='0.4'/%3E%3C/svg%3E");
+background-size: 100% 100%;
+}
 
 /* --- THE LETTER (Always Inside) AND EVERYTHING INSIDE IT --- */
 .letter {
-    position: absolute;
-    bottom: 0;
-    left: 15%; 
-    width: 70%; 
-    height: 70%; 
-    background: white;
-    z-index: 2 !important; 
-    border: 1px solid var(--gold); 
-    
-    display: flex;
-    flex-direction: column;
-    
-    /* Back to center! */
-    justify-content: center !important; 
-    align-items: center;
-    text-align: center;
-    
-    /* The Trick: More bottom padding pushes the 'center' UP */
-    padding-top: 20px !important;
-    padding-bottom: 60px !important; /* Increase this to move text HIGHER */
-    
-    padding-left: 20px;
-    padding-right: 20px;
-    box-sizing: border-box;
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+position: absolute;
+bottom: 0;
+left: 15%; 
+width: 70%; 
+height: 70%; 
+background: white;
+z-index: 2 !important; 
+border: 1px solid var(--gold); 
 
-    /* Animation defaults */
-    transform: translateY(0);
-    opacity: 0;
-    visibility: hidden;
-    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
+display: flex;
+flex-direction: column;
+
+/* Back to center! */
+justify-content: center !important; 
+align-items: center;
+text-align: center;
+
+/* The Trick: More bottom padding pushes the 'center' UP */
+padding-top: 20px !important;
+padding-bottom: 60px !important; /* Increase this to move text HIGHER */
+
+padding-left: 20px;
+padding-right: 20px;
+box-sizing: border-box;
+box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+
+/* Animation defaults */
+transform: translateY(0);
+opacity: 0;
+visibility: hidden;
+transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
 }
 
 .letter h2 {
-    font-family: 'Allison', cursive !important;
-    font-size: 3.2rem !important;
-    color: var(--accent);
-    font-weight: 400;
-    margin-top: 0 !important; /* Keeps it tight */
-    margin-bottom: 5px;
-    line-height: 1;
+font-family: 'Allison', cursive !important;
+font-size: 3.2rem !important;
+color: var(--accent);
+font-weight: 400;
+margin-top: 0 !important; /* Keeps it tight */
+margin-bottom: 5px;
+line-height: 1;
 }
 .letter p {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--text);
-    margin: 10px 0 20px 0;
+font-family: 'Montserrat', sans-serif;
+font-size: 0.85rem;
+text-transform: uppercase;
+letter-spacing: 2px;
+color: var(--text);
+margin: 10px 0 20px 0;
 }
 
 /* Buttons inside the Letter */
 .letter button {
-    padding: 10px 25px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    border: 1px solid var(--accent);
-    transition: all 0.3s ease;
+padding: 10px 25px;
+font-family: 'Montserrat', sans-serif;
+font-size: 0.8rem;
+text-transform: uppercase;
+letter-spacing: 1px;
+cursor: pointer;
+border: 1px solid var(--accent);
+transition: all 0.3s ease;
 }
 
 /* The "YES" Button Style */
 .letter button.btn-yes {
-    background-color: var(--accent);
-    color: white;
+background-color: var(--accent);
+color: white;
 }
 .letter button.btn-yes:hover {
-    background-color: var(--gold);
-    border-color: var(--gold);
+background-color: var(--gold);
+border-color: var(--gold);
 }
 
 /* The "NO" Button Style */
 .letter button.btn-no {
-    background-color: transparent;
-    color: var(--accent);
+background-color: transparent;
+color: var(--accent);
 }
 .letter button.btn-no:hover {
-    background-color: #fcfaf7;
-    color: var(--gold);
-    border-color: var(--gold);
+background-color: #fcfaf7;
+color: var(--gold);
+border-color: var(--gold);
 }
 
 /* --- ENVELOPE EXIT ANIMATION --- */
 .wrapper-exit {
-    opacity: 0 !important;
-    transform: scale(1.15); /* Slightly more growth feels more 'cinematic' */
-    pointer-events: none;
-    
-    /* Reduced from 1s to 0.5s for a snappier feel */
-    /* cubic-bezier makes it start fast and finish soft */
-    transition: opacity 0.5s ease-out, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+opacity: 0 !important;
+transform: scale(1.15); /* Slightly more growth feels more 'cinematic' */
+pointer-events: none;
+
+/* Reduced from 1s to 0.5s for a snappier feel */
+/* cubic-bezier makes it start fast and finish soft */
+transition: opacity 0.5s ease-out, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* --- THE SLIDE ANIMATION --- */
 .open .letter {
-    visibility: visible;
-    opacity: 1;
-    /* Slides up nicely to show the centered content */
-    transform: translateY(-50%); 
+visibility: visible;
+opacity: 1;
+/* Slides up nicely to show the centered content */
+transform: translateY(-50%); 
 }
 /* --- THE BALANCED NARROW BOTTOM FLAP --- */
 .bottom-flap {
-    position: absolute; 
-    bottom: 0; left: 0; 
-    width: 100%; 
-    height: 43%; /* Adjusted from 35% for a slightly taller, balanced look */
-    z-index: 6; 
-    background: url('6938.jpg') center/cover no-repeat;
-    /* Maintained the very narrow 45%/55% top edge */
-    clip-path: polygon(0 100%, 100% 100%, 55% 0, 45% 0);
-    filter: brightness(0.98);
+position: absolute; 
+bottom: 0; left: 0; 
+width: 100%; 
+height: 43%; /* Adjusted from 35% for a slightly taller, balanced look */
+z-index: 6; 
+background: url('6938.jpg') center/cover no-repeat;
+/* Maintained the very narrow 45%/55% top edge */
+clip-path: polygon(0 100%, 100% 100%, 55% 0, 45% 0);
+filter: brightness(0.98);
 }
 
 /* --- THE MATCHING BALANCED LINES --- */
 .bottom-flap-lines {
-    position: absolute; 
-    bottom: 0; left: 0; 
-    width: 100%; 
-    height: 43%; /* Must match the 43% height above */
-    z-index: 7; 
-    pointer-events: none;
-    /* SVG path remains synchronized with the narrow top edge */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 L45,0 L55,0 L100,100' fill='none' stroke='black' stroke-opacity='0.08' stroke-width='0.4'/%3E%3C/svg%3E");
-    background-size: 100% 100%;
+position: absolute; 
+bottom: 0; left: 0; 
+width: 100%; 
+height: 43%; /* Must match the 43% height above */
+z-index: 7; 
+pointer-events: none;
+/* SVG path remains synchronized with the narrow top edge */
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 L45,0 L55,0 L100,100' fill='none' stroke='black' stroke-opacity='0.08' stroke-width='0.4'/%3E%3C/svg%3E");
+background-size: 100% 100%;
 }
-    /* 7. TOP FLAP CONTAINER */
-    .flap-container {
-        position: absolute; top: 0; left: 0; width: 100%; height: 60%;
-        z-index: 10 !important; transform-origin: top; transform-style: preserve-3d;
-        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: flap-bob 4s ease-in-out infinite;
-        filter: drop-shadow(0 5px 6px rgba(0,0,0,0.3));
-    }
-    .top-flap {
-        width: 100%; height: 100%;
-        background: url('6938.jpg') center/cover no-repeat;
-        clip-path: polygon(0 0, 100% 0, 50% 100%);
-    }
+/* 7. TOP FLAP CONTAINER */
+.flap-container {
+position: absolute; top: 0; left: 0; width: 100%; height: 60%;
+z-index: 10 !important; transform-origin: top; transform-style: preserve-3d;
+transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+animation: flap-bob 4s ease-in-out infinite;
+filter: drop-shadow(0 5px 6px rgba(0,0,0,0.3));
+}
+.top-flap {
+width: 100%; height: 100%;
+background: url('6938.jpg') center/cover no-repeat;
+clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
 
-    /* 8. THE SEAL (Always on top) */
+/* 8. THE SEAL (Always on top) */
 #seal {
-    position: relative;
-    transform: translate(-50%, -50%);
-    width: 100%;
+position: relative;
+transform: translate(-50%, -50%);
+width: 100%;
 }
 #seal img { width: 100%; display: block; }    
 .seal-bob-wrapper {
-    position: absolute;
-    top: 58%;
-    left: 50%;
-    width: 18%;
-    min-width: 65px;
-    z-index: 100 !important;
-    animation: flap-bob 4s ease-in-out infinite; 
-    cursor: pointer;
+position: absolute;
+top: 58%;
+left: 50%;
+width: 18%;
+min-width: 65px;
+z-index: 100 !important;
+animation: flap-bob 4s ease-in-out infinite; 
+cursor: pointer;
 }
 
-    /* Animations & Utilities */
-    .open .flap-container { animation: none !important; transform: rotateX(160deg); z-index: 1 !important; }
-    @keyframes flap-bob { 
-    0%, 100% { 
-        transform: translateY(0); 
-    } 
-    50% { 
-        /* Reduced from -8px to -3px for a barely-there breath */
-        transform: translateY(-3px); 
-    } 
+/* Animations & Utilities */
+.open .flap-container { animation: none !important; transform: rotateX(160deg); z-index: 1 !important; }
+@keyframes flap-bob { 
+0%, 100% { 
+transform: translateY(0); 
+} 
+50% { 
+/* Reduced from -8px to -3px for a barely-there breath */
+transform: translateY(-3px); 
+} 
 }    @keyframes seal-bob { 0%, 100% { transform: translate(-50%, -50%); } 
-    50% { transform: translate(-50%, -53%); } /* Very slight nudge */ } }
-    @keyframes elegantPulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.4; }
-    50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.8; }
+50% { transform: translate(-50%, -53%); } /* Very slight nudge */ } }
+@keyframes elegantPulse {
+0%, 100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.4; }
+50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.8; }
 }
-    .hidden { display: none !important; }
+.hidden { display: none !important; }
 
 /* --- RSVP FORM STYLING --- */
 .rsvp-card {
-    background: #fff;
-    padding: 40px;
-    max-width: 600px;
-    margin: 0 auto;
-    border: 1px solid var(--gold); /* Adds a classy gold border */
-    box-shadow: 0 10px 30px rgba(4, 57, 39, 0.1); /* Soft shadow */
-    text-align: center; /* Centers the "Hi [Name]" */
-    display: flex;
-    flex-direction: column;
+background: #fff;
+padding: 40px;
+max-width: 600px;
+margin: 0 auto;
+border: 1px solid var(--gold); /* Adds a classy gold border */
+box-shadow: 0 10px 30px rgba(4, 57, 39, 0.1); /* Soft shadow */
+text-align: center; /* Centers the "Hi [Name]" */
+display: flex;
+flex-direction: column;
 }
 
 /* Elegant Header */
 .rsvp-card h2 {
-    font-family: 'Great Vibes', cursive;
-    color: var(--accent);
-    font-size: 3rem;
-    margin-bottom: 20px;
+font-family: 'Great Vibes', cursive;
+color: var(--accent);
+font-size: 3rem;
+margin-bottom: 20px;
 }
 
 /* Labels */
 .rsvp-card label {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--text);
-    margin-bottom: 8px;
-    text-align: left; /* Labels look better aligned left */
-    width: 100%;
-    display: block;
+font-family: 'Montserrat', sans-serif;
+font-size: 0.9rem;
+text-transform: uppercase;
+letter-spacing: 2px;
+color: var(--text);
+margin-bottom: 8px;
+text-align: left; /* Labels look better aligned left */
+width: 100%;
+display: block;
 }
 
 /* Inputs & Selects */
 .rsvp-card input, 
 .rsvp-card select, 
 .rsvp-card textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1rem;
-    background: #fcfaf7; /* Slight off-white to match theme */
-    color: var(--accent);
-    box-sizing: border-box; /* Prevents padding from breaking width */
+width: 100%;
+padding: 12px;
+margin-bottom: 20px;
+border: 1px solid #ddd;
+border-radius: 4px;
+font-family: 'Montserrat', sans-serif;
+font-size: 1rem;
+background: #fcfaf7; /* Slight off-white to match theme */
+color: var(--accent);
+box-sizing: border-box; /* Prevents padding from breaking width */
 }
 
 /* Focus State (When you click an input) */
 .rsvp-card input:focus, 
 .rsvp-card select:focus, 
 .rsvp-card textarea:focus {
-    outline: none;
-    border-color: var(--gold);
-    background: white;
+outline: none;
+border-color: var(--gold);
+background: white;
 }
 
 /* The Confirm Button */
 .rsvp-card button {
-    background-color: var(--accent);
-    color: white;
-    font-family: 'Montserrat', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 15px 30px;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.3s ease;
+background-color: var(--accent);
+color: white;
+font-family: 'Montserrat', sans-serif;
+text-transform: uppercase;
+letter-spacing: 2px;
+padding: 15px 30px;
+border: none;
+cursor: pointer;
+margin-top: 10px;
+transition: background 0.3s ease;
 }
 
 .rsvp-card button:hover {
-    background-color: var(--gold);
+background-color: var(--gold);
 }
 
 /* --- THE GUEST LABEL (On top of the pocket) --- */
 #envelope-label {
-    position: absolute;
-    /* This anchors it to the bottom. 10% is usually the sweet spot. */
-    bottom: 5% !important; 
-    left: 0;
-    width: 100%;
-    text-align: center;
-    
-    /* CRITICAL: Higher than all flaps (which are usually 1-10) */
-    z-index: 1000 !important; 
-    
-    /* Ensure it's visible for testing */
-    display: block !important;
-    
-    /* Styles */
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: #666;
-    
-    /* Transition */
-    opacity: 0;
-    transition: opacity 1.5s ease;
-    pointer-events: none;
+position: absolute;
+/* This anchors it to the bottom. 10% is usually the sweet spot. */
+bottom: 5% !important; 
+left: 0;
+width: 100%;
+text-align: center;
+
+/* CRITICAL: Higher than all flaps (which are usually 1-10) */
+z-index: 1000 !important; 
+
+/* Ensure it's visible for testing */
+display: block !important;
+
+/* Styles */
+font-family: 'Montserrat', sans-serif;
+font-size: 0.7rem;
+letter-spacing: 5px;
+text-transform: uppercase;
+color: #666;
+
+/* Transition */
+opacity: 0;
+transition: opacity 1.5s ease;
+pointer-events: none;
 }
 
 #envelope-label span {
-    display: block;
-    font-family: 'Great Vibes', cursive;
-    font-size: 2.5rem;
-    color: var(--accent);
-    text-transform: none;
-    margin-top: 5px;
+display: block;
+font-family: 'Great Vibes', cursive;
+font-size: 2.5rem;
+color: var(--accent);
+text-transform: none;
+margin-top: 5px;
 }
 
 /* Make sure this class is still working */
 #envelope-label.reveal-active {
-    opacity: 1 !important;
+opacity: 1 !important;
 }
-    /* 1. Make the envelope slightly taller on mobile to give more room */
-    .envelope {
-        width: 95vw;      /* Use almost full screen width */
-        height: 70vw;     /* Make it taller (was 60vw) */
-    }
-    #envelope-label {
-        bottom: 15%; /* Push it lower on phones */
-        font-size: 0.75rem;
-    }
+/* 1. Make the envelope slightly taller on mobile to give more room */
+.envelope {
+width: 95vw;      /* Use almost full screen width */
+height: 70vw;     /* Make it taller (was 60vw) */
+}
+#envelope-label {
+bottom: 15%; /* Push it lower on phones */
+font-size: 0.75rem;
+}
 
-    /* 2. Make the letter occupy more space inside the envelope */
-    .letter {
-        width: 90%;       /* Wider paper */
-        height: 85%;      /* Taller paper (was 70%) */
-        left: 5%;         /* Re-center it: (100% - 90%) / 2 = 5% */
-        padding: 10px;    /* Reduce padding so content fits */
-    }
+/* 2. Make the letter occupy more space inside the envelope */
+.letter {
+width: 90%;       /* Wider paper */
+height: 85%;      /* Taller paper (was 70%) */
+left: 5%;         /* Re-center it: (100% - 90%) / 2 = 5% */
+padding: 10px;    /* Reduce padding so content fits */
+}
 
-    /* 3. Shrink the Title Text */
-    .letter h2 {
-        font-size: 1.8rem; /* Smaller than the desktop 2.3rem */
-        margin-bottom: 5px;
-    }
+/* 3. Shrink the Title Text */
+.letter h2 {
+font-size: 1.8rem; /* Smaller than the desktop 2.3rem */
+margin-bottom: 5px;
+}
 
-    /* 4. Shrink the Question Text */
-    .letter p {
-        font-size: 0.7rem; /* Tiny but readable text */
-        margin: 5px 0 10px 0;
-    }
+/* 4. Shrink the Question Text */
+.letter p {
+font-size: 0.7rem; /* Tiny but readable text */
+margin: 5px 0 10px 0;
+}
 
-    /* 5. Compact Buttons */
-    .letter button {
-        padding: 6px 15px;
-        font-size: 0.7rem;
-    }
-    
-    /* 6. Slide it UP HIGHER on mobile */
-    .open .letter {
-        /* Move up 60% instead of 50% to ensure buttons clear the pocket */
-        transform: translateY(-60%); 
-    }
+/* 5. Compact Buttons */
+.letter button {
+padding: 6px 15px;
+font-size: 0.7rem;
+}
+
+/* 6. Slide it UP HIGHER on mobile */
+.open .letter {
+/* Move up 60% instead of 50% to ensure buttons clear the pocket */
+transform: translateY(-60%); 
+}
 }
 body, html {
-    background: url('1.jpg') no-repeat center 20% fixed;
-    background-size: cover;
+background: url('1.jpg') no-repeat center 20% fixed;
+background-size: cover;
 }
 
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-    40% {transform: translateY(-5px);}
-    60% {transform: translateY(-3px);}
+0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+40% {transform: translateY(-5px);}
+60% {transform: translateY(-3px);}
 }
 
 /* This forces the landing page to be a perfect 'window' */
 #main-site section:first-of-type {
-    height: 100dvh !important;
-    width: 100%;
-    position: relative;
-    /* This is the secret: it cuts off anything outside the 100dvh box */
-    clip-path: inset(0 0 0 0); 
-    overflow: hidden;
-    background-color: #043927; /* Matches your theme for safety */
+height: 100dvh !important;
+width: 100%;
+position: relative;
+/* This is the secret: it cuts off anything outside the 100dvh box */
+clip-path: inset(0 0 0 0); 
+overflow: hidden;
+background-color: #043927; /* Matches your theme for safety */
 }
 /* We move the image to a 'pseudo-element' so it's trapped inside the box */
 #main-site section:first-of-type::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('1.jpg') no-repeat center top;
-    background-size: cover;
-    z-index: 0;
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: url('1.jpg') no-repeat center top;
+background-size: cover;
+z-index: 0;
 }
 /* Ensure the NEXT section starts exactly where the photo ends */
 #main-site section:nth-of-type(2) {
-    position: relative;
-    z-index: 10;
-    margin-top: 0;
+position: relative;
+z-index: 10;
+margin-top: 0;
 }
 
 /* Target the landing section specifically */
 #landing-hero {
-    height: 100dvh !important;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    /* The Guillotine: prevents any part of the photo from leaking out */
-    clip-path: inset(0 0 0 0); 
-    background-color: #043927;
+height: 100dvh !important;
+width: 100%;
+position: relative;
+overflow: hidden;
+/* The Guillotine: prevents any part of the photo from leaking out */
+clip-path: inset(0 0 0 0); 
+background-color: #043927;
 }
 
 /* This puts the photo BEHIND your text and anchors it to the TOP */
 #landing-hero::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('1.jpg') no-repeat center top;
-    background-size: cover;
-    z-index: 0;
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: url('1.jpg') no-repeat center top;
+background-size: cover;
+z-index: 0;
 }
 
 /* iPhone 15 Plus Fix: Nudge the RSVP up on mobile screens */
 @media (max-width: 768px) {
-    #scroll-container {
-        bottom: 90px !important; 
-        right: 25px !important;
-    }
+#scroll-container {
+bottom: 90px !important; 
+right: 25px !important;
 }
-    
+}
+
 </style>
 </head>
 <body>
 
 <div id="envelope-wrapper">
-    <div class="envelope">
-        <div class="envelope-back"></div>
-        <div class="letter">
-            <div class="letter-content">
-                <h2 style="font-family: 'Great Vibes'; color: var(--accent); margin: 0; font-size: 2.3rem;">M & J</h2>
-                <p style="font-family: 'Montserrat'; font-size: 0.8rem; margin: 10px 0;">Experience with music?</p>
-                <div style="display:flex; gap:10px; justify-content:center;">
-                    <button type="button" onclick="handleMusic(true, event)" style="padding:8px 20px; background:var(--accent); color:white; border:none; cursor:pointer;">YES</button>
-                    <button type="button" onclick="handleMusic(false, event)" style="padding:8px 20px; background:white; border:1px solid var(--accent); cursor:pointer;">NO</button>
-                </div>
-            </div>
-        </div>
-        <div class="internal-shadow"></div> <div class="flap-container">
-        <div class="top-flap"></div> </div>
+<div class="envelope">
+<div class="envelope-back"></div>
+<div class="letter">
+<div class="letter-content">
+<h2 style="font-family: 'Great Vibes'; color: var(--accent); margin: 0; font-size: 2.3rem;">M & J</h2>
+<p style="font-family: 'Montserrat'; font-size: 0.8rem; margin: 10px 0;">Experience with music?</p>
+<div style="display:flex; gap:10px; justify-content:center;">
+<button type="button" onclick="handleMusic(true, event)" style="padding:8px 20px; background:var(--accent); color:white; border:none; cursor:pointer;">YES</button>
+<button type="button" onclick="handleMusic(false, event)" style="padding:8px 20px; background:white; border:1px solid var(--accent); cursor:pointer;">NO</button>
+</div>
+</div>
+</div>
+<div class="internal-shadow"></div> <div class="flap-container">
+<div class="top-flap"></div> </div>
 
-    <div class="envelope-pocket-main"></div> <div class="envelope-lines"></div> <div class="bottom-flap"></div> <div class="bottom-flap-lines"></div> <div id="envelope-label">Fetching invitation...</div>
-   <div class="seal-bob-wrapper">
-    <div id="seal" onclick="openInvitation()">
-        <img src="seal.png" alt="Seal">
-    </div>
+<div class="envelope-pocket-main"></div> <div class="envelope-lines"></div> <div class="bottom-flap"></div> <div class="bottom-flap-lines"></div> <div id="envelope-label">Fetching invitation...</div>
+<div class="seal-bob-wrapper">
+<div id="seal" onclick="openInvitation()">
+<img src="seal.png" alt="Seal">
+</div>
 </div>
 </div>
 </div>
@@ -578,474 +582,473 @@ body, html {
 <audio id="bg-music" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
 <div id="main-site">
 <section style="height: 100dvh !important; width: 100% !important; position: relative !important; overflow: hidden !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: flex-start !important; padding-top: 5dvh !important; background: url('1.jpg') no-repeat center top / cover scroll !important; clip-path: inset(0 0 0 0);">
-    
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(to bottom, rgba(4, 57, 39, 0.8) 0%, rgba(4, 57, 39, 0) 100%); z-index: 1;"></div>
 
-    <div style="position: relative; text-align: center; z-index: 2; max-width: 90vw;">
-        <h1 class="reveal-text delay-1" style="font-family: 'Great Vibes', cursive; font-size: clamp(50px, 8vw, 100px); color: #d4af37; margin: 0; line-height: 1.1; text-shadow: 2px 2px 12px rgba(0,0,0,0.6);">
-            Mariel <span style="font-family: 'Georgia', serif; font-size: 0.4em; letter-spacing: 5px; color: #f4cfe0; vertical-align: middle;">&</span> Jasper
-        </h1>
-        
-        <div class="reveal-text delay-2" style="width: 80px; height: 1px; background: #d4af37; margin: 15px auto;"></div>
-        
-        <p class="reveal-text delay-2" style="font-family: 'Georgia', serif; letter-spacing: 4px; font-size: 14px; text-transform: uppercase; color: #fff; margin: 5px 0;">
-            November 06, 2027
-        </p>
-        
-        <p class="reveal-text delay-3" style="font-family: 'Georgia', serif; font-style: italic; color: #f4cfe0; font-size: 14px; margin: 0;">
-            Save the Date
-        </p>
-    </div>
+<div style="position: absolute; top: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(to bottom, rgba(4, 57, 39, 0.8) 0%, rgba(4, 57, 39, 0) 100%); z-index: 1;"></div>
 
-    <div style="position: absolute; bottom: 10dvh; right: 20px; text-align: right; z-index: 9999; color: #d4af37; text-transform: uppercase; font-family: 'Georgia', serif;">
-        <div style="font-size: 14px; letter-spacing: 3px; font-weight: bold; text-shadow: 2px 2px 3px rgba(0,0,0,1), -1px -1px 2px rgba(0,0,0,1);">
-            Scroll to RSVP 
-            <span style="display:block; font-size: 28px; margin-top: 2px; animation: bounce 2s infinite;">↓</span>
-        </div>
-    </div>
+<div style="position: relative; text-align: center; z-index: 2; max-width: 90vw;">
+<h1 class="reveal-text delay-1" style="font-family: 'Great Vibes', cursive; font-size: clamp(50px, 8vw, 100px); color: #d4af37; margin: 0; line-height: 1.1; text-shadow: 2px 2px 12px rgba(0,0,0,0.6);">
+Mariel <span style="font-family: 'Georgia', serif; font-size: 0.4em; letter-spacing: 5px; color: #f4cfe0; vertical-align: middle;">&</span> Jasper
+</h1>
+
+<div class="reveal-text delay-2" style="width: 80px; height: 1px; background: #d4af37; margin: 15px auto;"></div>
+
+<p class="reveal-text delay-2" style="font-family: 'Georgia', serif; letter-spacing: 4px; font-size: 14px; text-transform: uppercase; color: #fff; margin: 5px 0;">
+November 06, 2027
+</p>
+
+<p class="reveal-text delay-3" style="font-family: 'Georgia', serif; font-style: italic; color: #f4cfe0; font-size: 14px; margin: 0;">
+Save the Date
+</p>
+</div>
+
+<div style="position: absolute; bottom: 10dvh; right: 20px; text-align: right; z-index: 9999; color: #d4af37; text-transform: uppercase; font-family: 'Georgia', serif;">
+<div style="font-size: 14px; letter-spacing: 3px; font-weight: bold; text-shadow: 2px 2px 3px rgba(0,0,0,1), -1px -1px 2px rgba(0,0,0,1);">
+Scroll to RSVP 
+<span style="display:block; font-size: 28px; margin-top: 2px; animation: bounce 2s infinite;">↓</span>
+</div>
+</div>
 </section>
 
 <section id="formal-invitation" class="paper-texture" style="padding: 80px 20px; color: #043927; text-align: center; position: relative; z-index: 10; margin-top: -1px; overflow: hidden;">
-    
-    <div class="reveal-on-scroll" style="max-width: 600px; margin: 0 auto; border: 1px solid #d4af37; padding: 12px; position: relative; z-index: 1; background: #ffffff; box-shadow: 0 15px 40px rgba(0,0,0,0.1);">
-        <div style="border: 1.5px solid #d4af37; padding: 60px 25px; position: relative;">
-            <div style="position: absolute; top: 10px; left: 10px; width: 25px; height: 25px; border-top: 1.5px solid #d4af37; border-left: 1.5px solid #d4af37;"></div>
-            <div style="position: absolute; top: 10px; right: 10px; width: 25px; height: 25px; border-top: 1.5px solid #d4af37; border-right: 1.5px solid #d4af37;"></div>
 
-            <p style="font-family: 'Georgia', serif; letter-spacing: 5px; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 30px;">Together with their families</p>
-            <h2 style="font-family: 'Great Vibes', cursive; font-size: clamp(52px, 10vw, 85px); color: #d4af37; margin: 0; font-weight: 400; line-height: 1.1;">Mariel & Jasper</h2>
-            <div style="margin: 30px 0; color: #f4cfe0; font-size: 30px; line-height: 1;">❦</div>
-            <p style="font-family: 'Georgia', serif; font-size: 17px; line-height: 1.9; color: #043927; font-style: italic; max-width: 85%; margin: 0 auto;">
-                request the honor of your presence as they exchange marriage vows and celebrate the beginning of their life together
-            </p>
-            <div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid #f4cfe0; display: inline-block;">
-                <p style="font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 5px; font-size: 13px; text-transform: uppercase; color: #d4af37; margin: 0;">Saturday</p>
-                <p style="font-family: 'Playfair Display', serif; font-size: 30px; margin: 12px 0; color: #043927; letter-spacing: 3px; font-weight: 700;">NOVEMBER 06, 2027</p>
-                <p style="font-family: 'Montserrat', sans-serif; font-weight: 400; letter-spacing: 5px; font-size: 13px; text-transform: uppercase; color: #d4af37; margin: 0;">At Two O'Clock in the Afternoon</p>
-            </div>
-            <div style="position: absolute; bottom: 10px; left: 10px; width: 25px; height: 25px; border-bottom: 1.5px solid #d4af37; border-left: 1.5px solid #d4af37;"></div>
-            <div style="position: absolute; bottom: 10px; right: 10px; width: 25px; height: 25px; border-bottom: 1.5px solid #d4af37; border-right: 1.5px solid #d4af37;"></div>
-        </div>
-    </div>
+<div class="reveal-on-scroll" style="max-width: 600px; margin: 0 auto; border: 1px solid #d4af37; padding: 12px; position: relative; z-index: 1; background: #ffffff; box-shadow: 0 15px 40px rgba(0,0,0,0.1);">
+<div style="border: 1.5px solid #d4af37; padding: 60px 25px; position: relative;">
+<div style="position: absolute; top: 10px; left: 10px; width: 25px; height: 25px; border-top: 1.5px solid #d4af37; border-left: 1.5px solid #d4af37;"></div>
+<div style="position: absolute; top: 10px; right: 10px; width: 25px; height: 25px; border-top: 1.5px solid #d4af37; border-right: 1.5px solid #d4af37;"></div>
 
-    
-  <div class="reveal-on-scroll" style="margin: 60px auto 20px auto; max-width: 600px; text-align: center;">
-    
+<p style="font-family: 'Georgia', serif; letter-spacing: 5px; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 30px;">Together with their families</p>
+<h2 style="font-family: 'Great Vibes', cursive; font-size: clamp(52px, 10vw, 85px); color: #d4af37; margin: 0; font-weight: 400; line-height: 1.1;">Mariel & Jasper</h2>
+<div style="margin: 30px 0; color: #f4cfe0; font-size: 30px; line-height: 1;">❦</div>
+<p style="font-family: 'Georgia', serif; font-size: 17px; line-height: 1.9; color: #043927; font-style: italic; max-width: 85%; margin: 0 auto;">
+request the honor of your presence as they exchange marriage vows and celebrate the beginning of their life together
+</p>
+<div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid #f4cfe0; display: inline-block;">
+<p style="font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 5px; font-size: 13px; text-transform: uppercase; color: #d4af37; margin: 0;">Saturday</p>
+<p style="font-family: 'Playfair Display', serif; font-size: 30px; margin: 12px 0; color: #043927; letter-spacing: 3px; font-weight: 700;">NOVEMBER 06, 2027</p>
+<p style="font-family: 'Montserrat', sans-serif; font-weight: 400; letter-spacing: 5px; font-size: 13px; text-transform: uppercase; color: #d4af37; margin: 0;">At Two O'Clock in the Afternoon</p>
+</div>
+<div style="position: absolute; bottom: 10px; left: 10px; width: 25px; height: 25px; border-bottom: 1.5px solid #d4af37; border-left: 1.5px solid #d4af37;"></div>
+<div style="position: absolute; bottom: 10px; right: 10px; width: 25px; height: 25px; border-bottom: 1.5px solid #d4af37; border-right: 1.5px solid #d4af37;"></div>
+</div>
+</div>
+
+
+<div class="reveal-on-scroll" style="margin: 60px auto 20px auto; max-width: 600px; text-align: center;">
+
 <p style="font-family: 'Pinyon Script', cursive; font-size: 32px; color: #d4af37; margin-bottom: 20px; line-height: 1;">
-    The countdown to forever...
+The countdown to forever...
 </p> 
 
-    <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.6); padding: 30px 15px; border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
-        
-        <div style="flex: 1;">
-            <span id="months" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
-            <span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Months</span>
-        </div>
+<div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.6); padding: 30px 15px; border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
 
-        <div style="flex: 1;">
-            <span id="days" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
-            <span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Days</span>
-        </div>
+<div style="flex: 1;">
+<span id="months" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
+<span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Months</span>
+</div>
 
-        <div style="flex: 1;">
-            <span id="hours" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
-            <span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Hours</span>
-        </div>
+<div style="flex: 1;">
+<span id="days" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
+<span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Days</span>
+</div>
 
-        <div style="flex: 1;">
-            <span id="minutes" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
-            <span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Mins</span>
-        </div>
+<div style="flex: 1;">
+<span id="hours" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
+<span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Hours</span>
+</div>
 
-        <div style="flex: 1;">
-            <span id="seconds" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
-            <span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Secs</span>
-        </div>
+<div style="flex: 1;">
+<span id="minutes" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
+<span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Mins</span>
+</div>
 
-    </div>
+<div style="flex: 1;">
+<span id="seconds" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
+<span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Secs</span>
+</div>
+
+</div>
 </div>
 </section>
 
 <section id="entourage" style="padding: 100px 20px; background-color: #ffffff; text-align: center;">
-    
-    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
-        <h2 style="font-family: 'Pinyon Script', cursive; font-size: 55px; color: #d4af37; margin-bottom: 10px;">The Entourage</h2>
-        <div style="width: 40px; height: 1px; background: #d4af37; opacity: 0.3; margin: 0 auto;"></div>
-    </div>
-
-    <div class="reveal-on-scroll" style="margin-bottom: 70px;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; max-width: 900px; margin: 0 auto;">
-            <div>
-                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Bride</span>
-                <p id="Parents_Bride" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
-            </div>
-            <div>
-                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Groom</span>
-                <p id="Parents_Groom" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
-            </div>
-        </div>
-    </div>
-
-    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
-        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 30px;">Principal Sponsors</span>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto;">
-            <p id="Principal_Sponsors_Male" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2;"></p>
-            <p id="Principal_Sponsors_Female" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2;"></p>
-        </div>
-    </div>
-
-    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; max-width: 900px; margin: 0 auto;">
-            <div>
-                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Maid of Honor</span>
-                <p id="Maid_of_Honor" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 1.5; margin-top: 15px;"></p>
-            </div>
-            <div>
-                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Best Man</span>
-                <p id="Best_Man" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 1.5; margin-top: 15px;"></p>
-            </div>
-        </div>
-    </div>
 
 <div class="reveal-on-scroll" style="margin-bottom: 80px;">
-    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 30px;">Secondary Sponsors</span>
-    
-    <div style="display: grid; gap: 30px; max-width: 600px; margin: 0 auto;">
-        
-        <div>
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; opacity: 0.8;">To Light Our Path (Candle)</span>
-            <p id="Sponsors_Candle" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
-        </div>
-
-        <div>
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; opacity: 0.8;">To Clothe Us As One (Veil)</span>
-            <p id="Sponsors_Veil" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
-        </div>
-
-        <div>
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; opacity: 0.8;">To Bind Us Together (Cord)</span>
-            <p id="Sponsors_Cord" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
-        </div>
-
-    </div>
+<h2 style="font-family: 'Pinyon Script', cursive; font-size: 55px; color: #d4af37; margin-bottom: 10px;">The Entourage</h2>
+<div style="width: 40px; height: 1px; background: #d4af37; opacity: 0.3; margin: 0 auto;"></div>
 </div>
 
-    <div class="reveal-on-scroll" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px; max-width: 1000px; margin: 0 auto 80px auto;">
-        <div>
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Bridesmaids</span>
-            <p id="Bridesmaids" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
-        </div>
-        <div>
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Groomsmen</span>
-            <p id="Groomsmen" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
-        </div>
-    </div>
-
-    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto;">
-        
-        <div>
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Ring Bearer</span>
-            <p id="Ring_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
-        </div>
-
-        <div>
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Coin Bearer</span>
-            <p id="Coin_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
-        </div>
-
-        <div>
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Bible Bearer</span>
-            <p id="Bible_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
-        </div>
-
-    </div>
+<div class="reveal-on-scroll" style="margin-bottom: 70px;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; max-width: 900px; margin: 0 auto;">
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Bride</span>
+<p id="Parents_Bride" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+</div>
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Groom</span>
+<p id="Parents_Groom" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+</div>
+</div>
 </div>
 
 <div class="reveal-on-scroll" style="margin-bottom: 80px;">
-    <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Flower Girls</span>
-    <p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 30px;">Principal Sponsors</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto;">
+<p id="Principal_Sponsors_Male" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2;"></p>
+<p id="Principal_Sponsors_Female" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2;"></p>
+</div>
+</div>
+
+<div class="reveal-on-scroll" style="margin-bottom: 80px;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; max-width: 900px; margin: 0 auto;">
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Maid of Honor</span>
+<p id="Maid_of_Honor" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 1.5; margin-top: 15px;"></p>
+</div>
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Best Man</span>
+<p id="Best_Man" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 1.5; margin-top: 15px;"></p>
+</div>
+</div>
+</div>
+
+<div class="reveal-on-scroll" style="margin-bottom: 80px;">
+<span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 30px;">Secondary Sponsors</span>
+
+<div style="display: grid; gap: 30px; max-width: 600px; margin: 0 auto;">
+
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; opacity: 0.8;">To Light Our Path (Candle)</span>
+<p id="Sponsors_Candle" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
+</div>
+
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; opacity: 0.8;">To Clothe Us As One (Veil)</span>
+<p id="Sponsors_Veil" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
+</div>
+
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; opacity: 0.8;">To Bind Us Together (Cord)</span>
+<p id="Sponsors_Cord" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
+</div>
+
+</div>
+</div>
+
+<div class="reveal-on-scroll" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px; max-width: 1000px; margin: 0 auto 80px auto;">
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Bridesmaids</span>
+<p id="Bridesmaids" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+</div>
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Groomsmen</span>
+<p id="Groomsmen" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+</div>
+</div>
+
+<div class="reveal-on-scroll" style="margin-bottom: 80px;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto;">
+
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Ring Bearer</span>
+<p id="Ring_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
+</div>
+
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Coin Bearer</span>
+<p id="Coin_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
+</div>
+
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Bible Bearer</span>
+<p id="Bible_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
+</div>
+
+</div>
+</div>
+
+<div class="reveal-on-scroll" style="margin-bottom: 80px;">
+<span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Flower Girls</span>
+<p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
 </div>
 
 </section>
-    
-    <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
-        <h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; margin-bottom: 50px;">The Journey to Forever</h2>
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; max-width: 1000px; margin: 0 auto;">
-            <div style="flex: 1; min-width: 300px;"><img src="2.jpg" style="width: 100%; border: 1px solid #d4af37; padding: 10px; background: #fff; box-shadow: 15px 15px 0px #043927;"></div>
-            <div style="flex: 1; min-width: 300px; margin-top: 80px;"><img src="3.jpg" style="width: 100%; border: 1px solid #d4af37; padding: 10px; background: #fff; box-shadow: -15px 15px 0px var(--pink);"></div>
-        </div>
-    </section>
 
-    <section style="padding: 80px 20px; background-color: #fcfaf7; color: #043927; text-align: center;">
-        <h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; color: #d4af37; margin-bottom: 40px;">The Celebration</h2>
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; max-width: 900px; margin: 0 auto;">
-            <div style="flex: 1; min-width: 280px; padding: 30px; border: 1px solid #f4cfe0; background: white; box-shadow: 10px 10px 0px #043927;">
-                <h3 style="font-family: 'Playfair Display'; text-transform: uppercase; font-size: 1.2rem;">The Ceremony</h3>
-                <p style="color: #d4af37; font-weight: bold;">2:00 IN THE AFTERNOON</p>
-                <p><strong>Santuario de San Antonio Parish</strong><br>Makati City</p>
-            </div>
-            <div style="flex: 1; min-width: 280px; padding: 30px; border: 1px solid #f4cfe0; background: white; box-shadow: 10px 10px 0px #f4cfe0;">
-                <h3 style="font-family: 'Playfair Display'; text-transform: uppercase; font-size: 1.2rem;">The Reception</h3>
-                <p style="color: #d4af37; font-weight: bold;">4:00 IN THE AFTERNOON</p>
-                <p><strong>The Blue Leaf</strong><br>Taguig City</p>
-            </div>
-        </div>
-    </section>
+<section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
+<h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; margin-bottom: 50px;">The Journey to Forever</h2>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; max-width: 1000px; margin: 0 auto;">
+<div style="flex: 1; min-width: 300px;"><img src="2.jpg" style="width: 100%; border: 1px solid #d4af37; padding: 10px; background: #fff; box-shadow: 15px 15px 0px #043927;"></div>
+<div style="flex: 1; min-width: 300px; margin-top: 80px;"><img src="3.jpg" style="width: 100%; border: 1px solid #d4af37; padding: 10px; background: #fff; box-shadow: -15px 15px 0px var(--pink);"></div>
+</div>
+</section>
 
-    <section style="padding: 100px 0; background-color: #043927; text-align: center;">
-        <h2 style="font-family: 'Great Vibes', cursive; font-size: 40px; color: #d4af37; margin-bottom: 30px;">Our Story in Motion</h2>
-        <div style="max-width: 800px; margin: 0 auto; padding: 0 20px;">
-            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid #d4af37;">
-                <iframe src="https://www.youtube.com/embed/8RjcJXikhrk?rel=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </div>
-    </section>
+<section style="padding: 80px 20px; background-color: #fcfaf7; color: #043927; text-align: center;">
+<h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; color: #d4af37; margin-bottom: 40px;">The Celebration</h2>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; max-width: 900px; margin: 0 auto;">
+<div style="flex: 1; min-width: 280px; padding: 30px; border: 1px solid #f4cfe0; background: white; box-shadow: 10px 10px 0px #043927;">
+<h3 style="font-family: 'Playfair Display'; text-transform: uppercase; font-size: 1.2rem;">The Ceremony</h3>
+<p style="color: #d4af37; font-weight: bold;">2:00 IN THE AFTERNOON</p>
+<p><strong>Santuario de San Antonio Parish</strong><br>Makati City</p>
+</div>
+<div style="flex: 1; min-width: 280px; padding: 30px; border: 1px solid #f4cfe0; background: white; box-shadow: 10px 10px 0px #f4cfe0;">
+<h3 style="font-family: 'Playfair Display'; text-transform: uppercase; font-size: 1.2rem;">The Reception</h3>
+<p style="color: #d4af37; font-weight: bold;">4:00 IN THE AFTERNOON</p>
+<p><strong>The Blue Leaf</strong><br>Taguig City</p>
+</div>
+</div>
+</section>
 
-    <section style="padding: 80px 20px; background: white; text-align: center;">
-        <div style="max-width: 500px; margin: 0 auto;">
-            <div id="loading" class="hidden">Checking invitation...</div>
-            <div id="content" class="hidden"></div>
-            <div id="error-msg" class="hidden rsvp-card"><p>Guest not found. Please use the original link.</p></div>
-        </div>
-    </section>
+<section style="padding: 100px 0; background-color: #043927; text-align: center;">
+<h2 style="font-family: 'Great Vibes', cursive; font-size: 40px; color: #d4af37; margin-bottom: 30px;">Our Story in Motion</h2>
+<div style="max-width: 800px; margin: 0 auto; padding: 0 20px;">
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid #d4af37;">
+<iframe src="https://www.youtube.com/embed/8RjcJXikhrk?rel=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
+</section>
+
+<section style="padding: 80px 20px; background: white; text-align: center;">
+<div style="max-width: 500px; margin: 0 auto;">
+<div id="loading" class="hidden">Checking invitation...</div>
+<div id="content" class="hidden"></div>
+<div id="error-msg" class="hidden rsvp-card"><p>Guest not found. Please use the original link.</p></div>
+</div>
+</section>
 </div>
 
 <script>
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbzrtwb3bnwahRGg94f6Eu3Qj1zsfGw3hga7Y5a23q293gI60mFJ818kGw5zbYtuKTBn/exec"; 
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('id');
-    let guestData = null;
+const webAppUrl = "https://script.google.com/macros/s/AKfycbzrtwb3bnwahRGg94f6Eu3Qj1zsfGw3hga7Y5a23q293gI60mFJ818kGw5zbYtuKTBn/exec"; 
+const urlParams = new URLSearchParams(window.location.search);
+const token = urlParams.get('id');
+let guestData = null;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        if (token) checkGuestStatus();
-        else {
-            const lbl = document.getElementById('envelope-label');
-            lbl.innerHTML = `With love, to <span>Guest</span>`;
-            lbl.classList.add('reveal-active');
-        }
-    });
+document.addEventListener('DOMContentLoaded', () => {
+if (token) checkGuestStatus();
+else {
+const lbl = document.getElementById('envelope-label');
+lbl.innerHTML = `With love, to <span>Guest</span>`;
+lbl.classList.add('reveal-active');
+}
+});
 
-    function checkGuestStatus() {
-        fetch(`${webAppUrl}?id=${encodeURIComponent(token)}`)
-            .then(res => res.json())
-            .then(data => {
-                guestData = data;
-                if (data && data.name) {
-                    const label = document.getElementById('envelope-label');
-                    label.innerHTML = `With love, to <span>${data.name}</span>`;
-                    label.classList.add('reveal-active');
-                    data.isDone ? showDoneView(data) : showMainForm();
-                }
-            }).catch(err => console.error(err));
-    }
-
-    function openInvitation() {
-        document.getElementById('envelope-wrapper').classList.add('open');
-        const seal = document.getElementById('seal');
-        seal.style.opacity = "0";
-        seal.style.pointerEvents = "none";
-    }
-
-function handleMusic(play, event) {
-    if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-
-    if (play) {
-        var audio = document.getElementById('bg-music');
-        
-        // 1. SET THE START TIME (in seconds)
-        audio.currentTime = 4; 
-
-        audio.volume = 1.0; 
-        
-        var playPromise = audio.play();
-        if (playPromise !== undefined) {
-            playPromise.then(_ => { console.log("Audio started at 4s!"); })
-            .catch(error => { console.error("Playback failed:", error); });
-        }
-    }
-
-    // ... (rest of your animation code remains the same)
-    setTimeout(() => {
-        document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
-        setTimeout(() => {
-            document.getElementById('envelope-wrapper').style.display = "none";
-            document.getElementById('main-site').style.display = 'block';
-            setTimeout(() => {
-                document.body.classList.add('show-site');
-                document.body.style.overflow = 'auto'; 
-                document.documentElement.style.overflow = 'auto';
-            }, 50);
-        }, 1000);
-    }, 100);
+function checkGuestStatus() {
+fetch(`${webAppUrl}?id=${encodeURIComponent(token)}`)
+.then(res => res.json())
+.then(data => {
+guestData = data;
+if (data && data.name) {
+const label = document.getElementById('envelope-label');
+label.innerHTML = `With love, to <span>${data.name}</span>`;
+label.classList.add('reveal-active');
+data.isDone ? showDoneView(data) : showMainForm();
+}
+}).catch(err => console.error(err));
 }
 
-    function showMainForm() {
-        const content = document.getElementById('content');
-        content.classList.remove('hidden');
-        const canP1 = String(guestData.allowPlusOne).toLowerCase() === "true";
-        content.innerHTML = `
-            <div class="rsvp-card">
-                <h2>Hi ${guestData.name},</h2>
-                <label>Will you attend?</label>
-                <select id="attending-select" onchange="togglePlusOne(${canP1})">
-                    <option value="Yes">Yes, I'll be there!</option>
-                    <option value="No">No, I can't make it</option>
-                </select>
-                <div id="p1-area"></div>
-                <label>Email Address</label>
-                <input type="email" id="guest-email" value="${guestData.email || ''}">
-                <label>Message to the couple</label>
-                <textarea id="guest-note" style="width:100%; height:100px; padding:10px; border-radius:5px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
-                <button onclick="submitRSVP()" id="submit-btn">Confirm RSVP</button>
-            </div>`;
-        togglePlusOne(canP1);
-    }
+function openInvitation() {
+document.getElementById('envelope-wrapper').classList.add('open');
+const seal = document.getElementById('seal');
+seal.style.opacity = "0";
+seal.style.pointerEvents = "none";
+}
 
-    function togglePlusOne(canP1) {
-        const area = document.getElementById('p1-area');
-        const attending = document.getElementById('attending-select').value;
-        if (attending === "Yes" && canP1) {
-            area.innerHTML = `<label>Bringing a plus one?</label><select id="bringing-p1" onchange="toggleP1Name()"><option value="No">No</option><option value="Yes">Yes</option></select><div id="p1-name-wrapper"></div>`;
-        } else { area.innerHTML = ''; }
-    }
+function handleMusic(play, event) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
 
-    function toggleP1Name() {
-        const wrapper = document.getElementById('p1-name-wrapper');
-        if (document.getElementById('bringing-p1').value === "Yes") {
-            wrapper.innerHTML = '<label>Plus One Name</label><input type="text" id="plus-one-name">';
-        } else { wrapper.innerHTML = ''; }
-    }
+if (play) {
+var audio = document.getElementById('bg-music');
 
-    function submitRSVP() {
-        const btn = document.getElementById('submit-btn');
-        btn.innerHTML = "Saving..."; btn.disabled = true;
-        const p1NameInput = document.getElementById('plus-one-name');
-        const payload = {
-            token: token, name: guestData.name,
-            email: document.getElementById('guest-email').value,
-            attending: document.getElementById('attending-select').value,
-            plusOneName: p1NameInput ? p1NameInput.value : "None",
-            note: document.getElementById('guest-note').value
-        };
-        fetch(webAppUrl, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) }).then(() => {
-            showDoneView({ ...guestData });
-        });
-    }
+// 1. SET THE START TIME (in seconds)
+audio.currentTime = 4; 
 
-    function showDoneView(data) {
-        const content = document.getElementById('content');
-        content.classList.remove('hidden');
-        content.innerHTML = `
-            <div class="rsvp-card" style="text-align:center;">
-                <h2>Thank you!</h2>
-                <p>RSVP recorded for ${data.name}.</p>
-                <button onclick="showMainForm()">Edit Response</button>
-            </div>`;
-    }
+audio.volume = 1.0; 
+
+var playPromise = audio.play();
+if (playPromise !== undefined) {
+playPromise.then(_ => { console.log("Audio started at 4s!"); })
+.catch(error => { console.error("Playback failed:", error); });
+}
+}
+
+// ... (rest of your animation code remains the same)
+setTimeout(() => {
+document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
+setTimeout(() => {
+document.getElementById('envelope-wrapper').style.display = "none";
+document.getElementById('main-site').style.display = 'block';
+setTimeout(() => {
+document.body.classList.add('show-site');
+document.body.style.overflow = 'auto'; 
+document.documentElement.style.overflow = 'auto';
+}, 50);
+}, 1000);
+}, 100);
+}
+
+function showMainForm() {
+const content = document.getElementById('content');
+content.classList.remove('hidden');
+const canP1 = String(guestData.allowPlusOne).toLowerCase() === "true";
+content.innerHTML = `
+           <div class="rsvp-card">
+               <h2>Hi ${guestData.name},</h2>
+               <label>Will you attend?</label>
+               <select id="attending-select" onchange="togglePlusOne(${canP1})">
+                   <option value="Yes">Yes, I'll be there!</option>
+                   <option value="No">No, I can't make it</option>
+               </select>
+               <div id="p1-area"></div>
+               <label>Email Address</label>
+               <input type="email" id="guest-email" value="${guestData.email || ''}">
+               <label>Message to the couple</label>
+               <textarea id="guest-note" style="width:100%; height:100px; padding:10px; border-radius:5px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
+               <button onclick="submitRSVP()" id="submit-btn">Confirm RSVP</button>
+           </div>`;
+togglePlusOne(canP1);
+}
+
+function togglePlusOne(canP1) {
+const area = document.getElementById('p1-area');
+const attending = document.getElementById('attending-select').value;
+if (attending === "Yes" && canP1) {
+area.innerHTML = `<label>Bringing a plus one?</label><select id="bringing-p1" onchange="toggleP1Name()"><option value="No">No</option><option value="Yes">Yes</option></select><div id="p1-name-wrapper"></div>`;
+} else { area.innerHTML = ''; }
+}
+
+function toggleP1Name() {
+const wrapper = document.getElementById('p1-name-wrapper');
+if (document.getElementById('bringing-p1').value === "Yes") {
+wrapper.innerHTML = '<label>Plus One Name</label><input type="text" id="plus-one-name">';
+} else { wrapper.innerHTML = ''; }
+}
+
+function submitRSVP() {
+const btn = document.getElementById('submit-btn');
+btn.innerHTML = "Saving..."; btn.disabled = true;
+const p1NameInput = document.getElementById('plus-one-name');
+const payload = {
+token: token, name: guestData.name,
+email: document.getElementById('guest-email').value,
+attending: document.getElementById('attending-select').value,
+plusOneName: p1NameInput ? p1NameInput.value : "None",
+note: document.getElementById('guest-note').value
+};
+fetch(webAppUrl, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) }).then(() => {
+showDoneView({ ...guestData });
+});
+}
+
+function showDoneView(data) {
+const content = document.getElementById('content');
+content.classList.remove('hidden');
+content.innerHTML = `
+           <div class="rsvp-card" style="text-align:center;">
+               <h2>Thank you!</h2>
+               <p>RSVP recorded for ${data.name}.</p>
+               <button onclick="showMainForm()">Edit Response</button>
+           </div>`;
+}
 
 // SMART SCROLL REVEAL OBSERVER (Fix for multiple elements)
 const observerOptions = { threshold: 0.1 }; 
 
 const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-        }
-    });
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.classList.add('is-visible');
+}
+});
 }, observerOptions);
 
 // COUNTDOWN LOGIC
 function updateCountdown() {
-    const weddingDate = new Date("Nov 6, 2027 14:00:00").getTime();
-    const now = new Date().getTime();
-    const totalGap = weddingDate - now;
+const weddingDate = new Date("Nov 6, 2027 14:00:00").getTime();
+const now = new Date().getTime();
+const totalGap = weddingDate - now;
 
-    if (totalGap <= 0) {
-        document.getElementById("months").innerText = "00";
-        document.getElementById("days").innerText = "00";
-        return;
-    }
+if (totalGap <= 0) {
+document.getElementById("months").innerText = "00";
+document.getElementById("days").innerText = "00";
+return;
+}
 
-    // 1. Calculate Months (The "Honest" way)
-    const startDate = new Date();
-    const endDate = new Date("Nov 6, 2027 14:00:00");
-    
-    let months = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
-    
-    // Check if we have actually reached the wedding day/time yet in the current month
-    const tempDate = new Date(startDate);
-    tempDate.setMonth(startDate.getMonth() + months);
-    
-    if (tempDate > endDate) {
-        months--;
-        tempDate.setMonth(startDate.getMonth() + months);
-    }
+// 1. Calculate Months (The "Honest" way)
+const startDate = new Date();
+const endDate = new Date("Nov 6, 2027 14:00:00");
 
-    // 2. Calculate the literal remainder
-    const remainingGap = endDate - tempDate;
+let months = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
 
-    const d = Math.floor(remainingGap / (1000 * 60 * 60 * 24));
-    const h = Math.floor((remainingGap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const m = Math.floor((remainingGap % (1000 * 60 * 60)) / (1000 * 60));
-    const s = Math.floor((remainingGap % (1000 * 60)) / 1000);
+// Check if we have actually reached the wedding day/time yet in the current month
+const tempDate = new Date(startDate);
+tempDate.setMonth(startDate.getMonth() + months);
 
-// 3. Update the display - STRIP EVERYTHING BUT THE NUMBER
-    const updateEl = (id, val) => {
-        const el = document.getElementById(id);
-        if (el) {
-            // We use Math.max(0, val) to ensure we never get a negative sign (-)
-            el.textContent = Math.max(0, val).toString();
-        }
-    };
+if (tempDate > endDate) {
+months--;
+tempDate.setMonth(startDate.getMonth() + months);
+}
 
-    updateEl("months", months);
-    updateEl("days", d);
-    updateEl("hours", h);
-    updateEl("minutes", m);
-    updateEl("seconds", s);
+// 2. Calculate the literal remainder
+const remainingGap = endDate - tempDate;
+
+const d = Math.floor(remainingGap / (1000 * 60 * 60 * 24));
+const h = Math.floor((remainingGap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+const m = Math.floor((remainingGap % (1000 * 60 * 60)) / (1000 * 60));
+const s = Math.floor((remainingGap % (1000 * 60)) / 1000);
+
+    // 3. Update the display - NO LEADING ZEROS
+    document.getElementById("months").innerText = months;
+    document.getElementById("days").innerText = d;
+    document.getElementById("hours").innerText = h;
+    document.getElementById("minutes").innerText = m;
+    document.getElementById("seconds").innerText = s;
+    // 3. Update the display - CLEAN & DASH-FREE
+document.getElementById("months").textContent = months;
+document.getElementById("days").textContent = d;
+document.getElementById("hours").textContent = h;
+document.getElementById("minutes").textContent = m;
+document.getElementById("seconds").textContent = s;
+}
 
 // START EVERYTHING
 document.addEventListener('DOMContentLoaded', () => {
-    // Reveal all elements with the class
-    const revealElements = document.querySelectorAll('.reveal-on-scroll');
-    revealElements.forEach(el => observer.observe(el));
-    
-    // Start countdown
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
+// Reveal all elements with the class
+const revealElements = document.querySelectorAll('.reveal-on-scroll');
+revealElements.forEach(el => observer.observe(el));
+
+// Start countdown
+setInterval(updateCountdown, 1000);
+updateCountdown();
 });
 
 function loadEntourage() {
-    console.log("--- ENTOURAGE FETCH STARTING ---");
-    console.log("Using URL:", webAppUrl);
+console.log("--- ENTOURAGE FETCH STARTING ---");
+console.log("Using URL:", webAppUrl);
 
-    fetch(`${webAppUrl}?action=getEntourage`)
-        .then(res => res.json())
-        .then(data => {
-            console.log("SUCCESS! Data received:", data);
-            
-            Object.keys(data).forEach(roleID => {
-                const el = document.getElementById(roleID);
-                if (el) {
-                    el.innerHTML = data[roleID].split(',').map(n => n.trim()).join('<br>');
-                    el.style.opacity = "1";
-                } else {
-                    console.warn("Spreadsheet has '" + roleID + "' but no HTML ID matches.");
-                }
-            });
-            // Force the scroll reveal to see the new names
-            window.dispatchEvent(new Event('scroll'));
-        })
-        .catch(err => console.error("FETCH FAILED. Error:", err));
+fetch(`${webAppUrl}?action=getEntourage`)
+.then(res => res.json())
+.then(data => {
+console.log("SUCCESS! Data received:", data);
+
+Object.keys(data).forEach(roleID => {
+const el = document.getElementById(roleID);
+if (el) {
+el.innerHTML = data[roleID].split(',').map(n => n.trim()).join('<br>');
+el.style.opacity = "1";
+} else {
+console.warn("Spreadsheet has '" + roleID + "' but no HTML ID matches.");
+}
+});
+// Force the scroll reveal to see the new names
+window.dispatchEvent(new Event('scroll'));
+})
+.catch(err => console.error("FETCH FAILED. Error:", err));
 }
 
 // FORCE TRIGGER: We call it both on load AND when the envelope opens
 document.addEventListener('DOMContentLoaded', loadEntourage);
-    
+
 </script>
 </body>
 </html>
