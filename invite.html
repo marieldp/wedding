@@ -991,14 +991,13 @@ window.dispatchEvent(new Event('scroll'));
 
 // THE LOGIC
 function updateCountdown() {
-    // We hardcode the target date clearly
     const wedding = new Date("November 6, 2027 14:00:00").getTime();
     const now = new Date().getTime();
     const diff = wedding - now;
 
     if (diff <= 0) return;
 
-    // Simplified Math to ensure non-zero results
+    // Use consistent variable names
     const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.44));
     const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -1008,15 +1007,17 @@ function updateCountdown() {
     const setDisplay = (id, val) => {
         const el = document.getElementById(id);
         if (el) {
+            // This Math.max ensures no negative numbers/dashes
             el.textContent = Math.max(0, val).toString();
         }
     };
 
+    // Update these to match the math variables above
     setDisplay("months", months);
-    setDisplay("days", d);
-    setDisplay("hours", h);
-    setDisplay("minutes", m);
-    setDisplay("seconds", s);
+    setDisplay("days", days);
+    setDisplay("hours", hours);
+    setDisplay("minutes", minutes);
+    setDisplay("seconds", seconds);
 }
 
 // THE TRIGGER (Safe and Separate)
