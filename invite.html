@@ -9,16 +9,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
-/* Force the countdown numbers to behave as single units */
+/* Clean styles for the countdown numbers */
 #months, #days, #hours, #minutes, #seconds {
-display: inline-block;
-    min-width: 1.2em; /* Ensures 3-digit numbers like 336 don't 'squish' */
-    min-width: 1.2em; /* Ensures room for 3-digit numbers like 336 */
-text-align: center;
-    white-space: nowrap; /* Prevents the browser from adding dashes to wrap text */
-    white-space: nowrap; /* Prevents the browser from inserting hyphens to wrap text */
+    display: inline-block;
+    min-width: 1.2em; 
+    text-align: center;
+    white-space: nowrap; 
+    /* This is the secret to stopping the auto-dash on mobile */
+    hyphens: none !important;
 }
 
+/* This targets the 5 individual columns in your Flexbox */
+div[style*="display: flex"] > div {
+    flex: 1;
+    min-width: 0; 
+    padding: 0 5px;
+}
 /* Adjust the container to handle the extra width on iPhone 15 Plus */
 .countdown-box > div {
     padding: 0 5px; /* Adds a tiny bit of internal space */
@@ -997,19 +1003,18 @@ const h = Math.floor((remainingGap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 const m = Math.floor((remainingGap % (1000 * 60 * 60)) / (1000 * 60));
 const s = Math.floor((remainingGap % (1000 * 60)) / 1000);
 
-    // 3. Update the display - NO LEADING ZEROS
-    document.getElementById("months").innerText = months;
-    document.getElementById("days").innerText = d;
-    document.getElementById("hours").innerText = h;
-    document.getElementById("minutes").innerText = m;
-    document.getElementById("seconds").innerText = s;
-    // 3. Update the display - CLEAN & DASH-FREE
-document.getElementById("months").textContent = months;
-document.getElementById("days").textContent = d;
-document.getElementById("hours").textContent = h;
-document.getElementById("minutes").textContent = m;
-document.getElementById("seconds").textContent = s;
-}
+// 3. Update the display - NO LEADING ZEROS & DASH-FREE
+    const update = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = Math.max(0, val).toString();
+    };
+
+    update("months", months);
+    update("days", d);
+    update("hours", h);
+    update("minutes", m);
+    update("seconds", s);
+   
 
 // START EVERYTHING
 document.addEventListener('DOMContentLoaded', () => {
