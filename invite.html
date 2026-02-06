@@ -642,27 +642,69 @@ body, html {
 
 <section id="entourage" style="padding: 100px 20px; background-color: #ffffff; text-align: center;">
     
-    <div class="reveal-on-scroll" style="margin-bottom: 60px;">
-        <h2 style="font-family: 'Pinyon Script', cursive; font-size: 55px; color: #d4af37;">The Entourage</h2>
-        <div style="width: 40px; height: 1px; background: #f4cfe0; margin: 10px auto;"></div>
+    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
+        <h2 style="font-family: 'Pinyon Script', cursive; font-size: 55px; color: #d4af37; margin-bottom: 10px;">The Entourage</h2>
+        <div style="width: 40px; height: 1px; background: #d4af37; opacity: 0.3; margin: 0 auto;"></div>
     </div>
 
-    <div class="reveal-on-scroll" style="margin-bottom: 80px; max-width: 800px; margin-left: auto; margin-right: auto;">
-        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Principal Sponsors</span>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px;">
-            <p id="Sponsors_Male" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2;"></p>
-            <p id="Sponsors_Female" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2;"></p>
+    <div class="reveal-on-scroll" style="margin-bottom: 70px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; max-width: 900px; margin: 0 auto;">
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Bride</span>
+                <p id="Parents_Bride" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+            </div>
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Groom</span>
+                <p id="Parents_Groom" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+            </div>
         </div>
     </div>
 
-    <div class="reveal-on-scroll" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px; max-width: 1000px; margin: 0 auto;">
+    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
+        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 30px;">Principal Sponsors</span>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto;">
+            <p id="Principal_Sponsors_Male" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2;"></p>
+            <p id="Principal_Sponsors_Female" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2;"></p>
+        </div>
+    </div>
+
+    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; max-width: 900px; margin: 0 auto;">
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Maid of Honor</span>
+                <p id="Maid_of_Honor" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 1.5; margin-top: 15px;"></p>
+            </div>
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Best Man</span>
+                <p id="Best_Man" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 1.5; margin-top: 15px;"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
+        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 25px;">Secondary Sponsors</span>
+        <p id="Secondary_Sponsors" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2; max-width: 700px; margin: 0 auto;"></p>
+    </div>
+
+    <div class="reveal-on-scroll" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px; max-width: 1000px; margin: 0 auto 80px auto;">
         <div>
             <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Bridesmaids</span>
-            <p id="Bridesmaids" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #043927; line-height: 2; margin-top: 15px;"></p>
+            <p id="Bridesmaids" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
         </div>
         <div>
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #043927;">Groomsmen</span>
-            <p id="Groomsmen" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #043927; line-height: 2; margin-top: 15px;"></p>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Groomsmen</span>
+            <p id="Groomsmen" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+        </div>
+    </div>
+
+    <div class="reveal-on-scroll" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 900px; margin: 0 auto;">
+        <div>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37;">Bearers</span>
+            <p id="Bearers" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2; margin-top: 10px;"></p>
+        </div>
+        <div>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37;">Flower Girls</span>
+            <p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2; margin-top: 10px;"></p>
         </div>
     </div>
 
@@ -912,28 +954,30 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadEntourage() {
-    // We use your global webAppUrl variable here
+    // Uses your existing webAppUrl variable
     fetch(`${webAppUrl}?action=getEntourage`)
         .then(response => response.json())
         .then(data => {
-            // Check if we actually got names or an error
             if (data.error) {
                 console.error("Spreadsheet Error:", data.error);
                 return;
             }
 
+            // This loop automatically finds every ID in your HTML 
+            // and fills it with the names from your spreadsheet
             Object.keys(data).forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
-                    // Turn commas from the sheet into line breaks for the list
+                    // split(',') turns "Name 1, Name 2" into a list
+                    // .join('<br>') puts each name on a new line
                     element.innerHTML = data[id].split(',').map(name => name.trim()).join('<br>');
                 }
             });
         })
-        .catch(error => console.error('Error fetching entourage:', error));
+        .catch(error => console.error('Error loading entourage:', error));
 }
 
-// Just make sure you call it once the page is ready
+// Call it when the page is ready
 document.addEventListener('DOMContentLoaded', loadEntourage);
 </script>
 </body>
