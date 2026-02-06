@@ -994,39 +994,32 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadEntourage() {
-    console.log("Fetching Entourage from:", webAppUrl); // DEBUG
+    console.log("--- ENTOURAGE FETCH STARTING ---");
+    console.log("Using URL:", webAppUrl);
 
     fetch(`${webAppUrl}?action=getEntourage`)
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-        })
+        .then(res => res.json())
         .then(data => {
-            console.log("Data successfully received:", data); // DEBUG
-
-            if (data.error) {
-                console.error("Google Script Error:", data.error);
-                return;
-            }
-
-            // Loop through all data keys sent from the spreadsheet
+            console.log("SUCCESS! Data received:", data);
+            
             Object.keys(data).forEach(roleID => {
-                const element = document.getElementById(roleID);
-                if (element) {
-                    // Turn commas into line breaks
-                    const names = data[roleID].split(',').map(n => n.trim()).join('<br>');
-                    element.innerHTML = names;
-                    element.style.opacity = "1"; // Force visibility
+                const el = document.getElementById(roleID);
+                if (el) {
+                    el.innerHTML = data[roleID].split(',').map(n => n.trim()).join('<br>');
+                    el.style.opacity = "1";
                 } else {
-                    console.warn("Mismatch: Spreadsheet has '" + roleID + "' but no HTML ID matches.");
+                    console.warn("Spreadsheet has '" + roleID + "' but no HTML ID matches.");
                 }
             });
-            
-            // Wake up the scroll reveal
+            // Force the scroll reveal to see the new names
             window.dispatchEvent(new Event('scroll'));
         })
-        .catch(err => console.error("Fetch failed:", err));
+        .catch(err => console.error("FETCH FAILED. Error:", err));
 }
+
+// FORCE TRIGGER: We call it both on load AND when the envelope opens
+document.addEventListener('DOMContentLoaded', loadEntourage);
+    
 </script>
 </body>
 </html>
