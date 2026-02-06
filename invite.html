@@ -9,16 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
-    #months, #days, #hours, #minutes, #seconds {
+/* Force the countdown numbers to behave as single units */
+#months, #days, #hours, #minutes, #seconds {
     display: inline-block;
-    min-width: 1.2em; /* Ensures 3-digit numbers like 336 don't 'squish' */
+    min-width: 1.2em; /* Ensures room for 3-digit numbers like 336 */
     text-align: center;
-    white-space: nowrap; /* Prevents the browser from adding dashes to wrap text */
+    white-space: nowrap; /* Prevents the browser from inserting hyphens to wrap text */
 }
 
-/* Adjust the container to handle the extra width on iPhone 15 Plus */
-.countdown-box > div {
-    padding: 0 5px; /* Adds a tiny bit of internal space */
+/* Ensure the flex boxes don't squish the text */
+#countdown-container > div {
+    flex: 1;
+    min-width: 0; /* Prevents flex-items from overflowing their container */
 }
 /* Makes the names easier to read on mobile screens */
 #entourage p {
@@ -989,12 +991,12 @@ function updateCountdown() {
     const m = Math.floor((remainingGap % (1000 * 60 * 60)) / (1000 * 60));
     const s = Math.floor((remainingGap % (1000 * 60)) / 1000);
 
-    // 3. Update the display - NO LEADING ZEROS
-    document.getElementById("months").innerText = months;
-    document.getElementById("days").innerText = d;
-    document.getElementById("hours").innerText = h;
-    document.getElementById("minutes").innerText = m;
-    document.getElementById("seconds").innerText = s;
+    // 3. Update the display - CLEAN & DASH-FREE
+document.getElementById("months").textContent = months;
+document.getElementById("days").textContent = d;
+document.getElementById("hours").textContent = h;
+document.getElementById("minutes").textContent = m;
+document.getElementById("seconds").textContent = s;
 }
 
 // START EVERYTHING
