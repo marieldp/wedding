@@ -688,10 +688,28 @@ body, html {
         </div>
     </div>
 
-    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
-        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 25px;">Secondary Sponsors</span>
-        <p id="Secondary_Sponsors" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2; max-width: 700px; margin: 0 auto;"></p>
+<div class="reveal-on-scroll" style="margin-bottom: 80px;">
+    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 30px;">Secondary Sponsors</span>
+    
+    <div style="display: grid; gap: 30px; max-width: 600px; margin: 0 auto;">
+        
+        <div>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; opacity: 0.8;">To Light Our Path (Candle)</span>
+            <p id="Sponsors_Candle" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
+        </div>
+
+        <div>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; opacity: 0.8;">To Clothe Us As One (Veil)</span>
+            <p id="Sponsors_Veil" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
+        </div>
+
+        <div>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; opacity: 0.8;">To Bind Us Together (Cord)</span>
+            <p id="Sponsors_Cord" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
+        </div>
+
     </div>
+</div>
 
     <div class="reveal-on-scroll" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px; max-width: 1000px; margin: 0 auto 80px auto;">
         <div>
@@ -961,31 +979,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadEntourage() {
-    // Uses your existing webAppUrl variable
     fetch(`${webAppUrl}?action=getEntourage`)
         .then(response => response.json())
         .then(data => {
-            if (data.error) {
-                console.error("Spreadsheet Error:", data.error);
-                return;
-            }
+            console.log("Full Data Received from Google:", data); // Check this in F12
 
-            // This loop automatically finds every ID in your HTML 
-            // and fills it with the names from your spreadsheet
             Object.keys(data).forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
-                    // split(',') turns "Name 1, Name 2" into a list
-                    // .join('<br>') puts each name on a new line
+                    // Split names by comma and join with line breaks
                     element.innerHTML = data[id].split(',').map(name => name.trim()).join('<br>');
+                } else {
+                    console.warn("Website ID mismatch: Could not find HTML element with ID:", id);
                 }
             });
         })
-        .catch(error => console.error('Error loading entourage:', error));
+        .catch(error => console.error('Connection Error:', error));
 }
-
-// Call it when the page is ready
-document.addEventListener('DOMContentLoaded', loadEntourage);
 </script>
 </body>
 </html>
