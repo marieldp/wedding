@@ -197,10 +197,13 @@
 
 /* --- ENVELOPE EXIT ANIMATION --- */
 .wrapper-exit {
-    opacity: 0 !important;          /* Fades out */
-    transform: scale(1.1);          /* Slightly grows while fading */
-    pointer-events: none;           /* Prevents double clicking */
-    transition: opacity 1s ease, transform 1s ease; /* ensuring smooth transition */
+    opacity: 0 !important;
+    transform: scale(1.15); /* Slightly more growth feels more 'cinematic' */
+    pointer-events: none;
+    
+    /* Reduced from 1s to 0.5s for a snappier feel */
+    /* cubic-bezier makes it start fast and finish soft */
+    transition: opacity 0.5s ease-out, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* --- THE SLIDE ANIMATION --- */
