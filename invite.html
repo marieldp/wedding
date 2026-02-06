@@ -9,6 +9,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
+    #months, #days, #hours, #minutes, #seconds {
+    display: inline-block;
+    white-space: nowrap !important;
+    hyphens: none !important;
+    min-width: 1.2em; /* Gives 336 enough room */
+}
 
 /* Makes the names easier to read on mobile screens */
 #entourage p {
@@ -812,6 +818,8 @@ document.addEventListener('DOMContentLoaded', () => {
             lbl.innerHTML = `With love, to <span>Guest</span>`;
             lbl.classList.add('reveal-active');
         }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
     }
 
     // 2. THE FIX: Wake up the invisible sections
@@ -982,9 +990,42 @@ window.dispatchEvent(new Event('scroll'));
 .catch(err => console.error("FETCH FAILED. Error:", err));
 }
 
-// FORCE TRIGGER: We call it both on load AND when the envelope opens
+function updateCountdown() {
+    const weddingDate = new Date("Nov 6, 2027 14:00:00").getTime();
+    const now = new Date().getTime();
+    const totalGap = weddingDate - now;
 
+    if (totalGap <= 0) return;
 
+    const startDate = new Date();
+    const endDate = new Date("Nov 6, 2027 14:00:00");
+    let months = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
+    
+    const tempDate = new Date(startDate);
+    tempDate.setMonth(startDate.getMonth() + months);
+    if (tempDate > endDate) {
+        months--;
+        tempDate.setMonth(startDate.getMonth() + months);
+    }
+
+    const remainingGap = endDate - tempDate;
+    const d = Math.floor(remainingGap / 86400000);
+    const h = Math.floor((remainingGap % 86400000) / 3600000);
+    const m = Math.floor((remainingGap % 3600000) / 60000);
+    const s = Math.floor((remainingGap % 60000) / 1000);
+
+    // THE FIX: Math.max(0, val) ensures no negative sign (-) ever appears.
+    const setDisplay = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = Math.max(0, val).toString();
+    };
+
+    setDisplay("months", months);
+    setDisplay("days", d);
+    setDisplay("hours", h);
+    setDisplay("minutes", m);
+    setDisplay("seconds", s);
+}
            
 
 </script>
