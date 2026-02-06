@@ -818,8 +818,7 @@ document.addEventListener('DOMContentLoaded', () => {
             lbl.innerHTML = `With love, to <span>Guest</span>`;
             lbl.classList.add('reveal-active');
         }
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+        
     }
 
     // 2. THE FIX: Wake up the invisible sections
@@ -990,44 +989,42 @@ window.dispatchEvent(new Event('scroll'));
 .catch(err => console.error("FETCH FAILED. Error:", err));
 }
 
+// THE LOGIC
 function updateCountdown() {
-    const weddingDate = new Date("Nov 6, 2027 14:00:00").getTime();
+    // We hardcode the target date clearly
+    const wedding = new Date("November 6, 2027 14:00:00").getTime();
     const now = new Date().getTime();
-    const totalGap = weddingDate - now;
+    const diff = wedding - now;
 
-    if (totalGap <= 0) return;
+    if (diff <= 0) return;
 
-    // 1. Math Calculation
-    const startDate = new Date();
-    const endDate = new Date("Nov 6, 2027 14:00:00");
-    let months = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
-    
-    const tempDate = new Date(startDate);
-    tempDate.setMonth(startDate.getMonth() + months);
-    if (tempDate > endDate) {
-        months--;
-        tempDate.setMonth(startDate.getMonth() + months);
-    }
+    // Simplified Math to ensure non-zero results
+    const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.44));
+    const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    const remainingGap = endDate - tempDate;
-    const d = Math.floor(remainingGap / 86400000);
-    const h = Math.floor((remainingGap % 86400000) / 3600000);
-    const m = Math.floor((remainingGap % 3600000) / 60000);
-    const s = Math.floor((remainingGap % 60000) / 1000);
-
-    // 2. The Display Fix (No Dash, No Leading Zero)
-    const setSafe = (id, val) => {
+    const setDisplay = (id, val) => {
         const el = document.getElementById(id);
-        // Math.max(0, val) removes the negative sign (the dash)
-        if (el) el.textContent = Math.max(0, val).toString();
+        if (el) {
+            el.textContent = Math.max(0, val).toString();
+        }
     };
 
-    setSafe("months", months);
-    setSafe("days", d);
-    setSafe("hours", h);
-    setSafe("minutes", m);
-    setSafe("seconds", s);
+    setDisplay("months", months);
+    setDisplay("days", d);
+    setDisplay("hours", h);
+    setDisplay("minutes", m);
+    setDisplay("seconds", s);
 }
+
+// THE TRIGGER (Safe and Separate)
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Countdown starting...");
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+});
            
 
 </script>
