@@ -722,16 +722,31 @@ body, html {
         </div>
     </div>
 
-    <div class="reveal-on-scroll" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 900px; margin: 0 auto;">
+    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto;">
+        
         <div>
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37;">Bearers</span>
-            <p id="Bearers" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2; margin-top: 10px;"></p>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Ring Bearer</span>
+            <p id="Ring_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
         </div>
+
         <div>
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37;">Flower Girls</span>
-            <p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2; margin-top: 10px;"></p>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Coin Bearer</span>
+            <p id="Coin_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
         </div>
+
+        <div>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Bible Bearer</span>
+            <p id="Bible_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
+        </div>
+
     </div>
+</div>
+
+<div class="reveal-on-scroll" style="margin-bottom: 80px;">
+    <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Flower Girls</span>
+    <p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+</div>
 
 </section>
     
@@ -979,22 +994,38 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadEntourage() {
-    fetch(`${webAppUrl}?action=getEntourage`)
-        .then(response => response.json())
-        .then(data => {
-            console.log("Full Data Received from Google:", data); // Check this in F12
+    console.log("Fetching Entourage from:", webAppUrl); // DEBUG
 
-            Object.keys(data).forEach(id => {
-                const element = document.getElementById(id);
+    fetch(`${webAppUrl}?action=getEntourage`)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            console.log("Data successfully received:", data); // DEBUG
+
+            if (data.error) {
+                console.error("Google Script Error:", data.error);
+                return;
+            }
+
+            // Loop through all data keys sent from the spreadsheet
+            Object.keys(data).forEach(roleID => {
+                const element = document.getElementById(roleID);
                 if (element) {
-                    // Split names by comma and join with line breaks
-                    element.innerHTML = data[id].split(',').map(name => name.trim()).join('<br>');
+                    // Turn commas into line breaks
+                    const names = data[roleID].split(',').map(n => n.trim()).join('<br>');
+                    element.innerHTML = names;
+                    element.style.opacity = "1"; // Force visibility
                 } else {
-                    console.warn("Website ID mismatch: Could not find HTML element with ID:", id);
+                    console.warn("Mismatch: Spreadsheet has '" + roleID + "' but no HTML ID matches.");
                 }
             });
+            
+            // Wake up the scroll reveal
+            window.dispatchEvent(new Event('scroll'));
         })
-        .catch(error => console.error('Connection Error:', error));
+        .catch(err => console.error("Fetch failed:", err));
 }
 </script>
 </body>
