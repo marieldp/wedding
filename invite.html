@@ -9,6 +9,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
+    #months, #days, #hours, #minutes, #seconds {
+    display: inline-block;
+    min-width: 1.2em; /* Ensures 3-digit numbers like 336 don't 'squish' */
+    text-align: center;
+    white-space: nowrap; /* Prevents the browser from adding dashes to wrap text */
+}
+
+/* Adjust the container to handle the extra width on iPhone 15 Plus */
+.countdown-box > div {
+    padding: 0 5px; /* Adds a tiny bit of internal space */
+}
 /* Makes the names easier to read on mobile screens */
 #entourage p {
     font-weight: 400;
@@ -623,27 +634,27 @@ body, html {
     <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.6); padding: 30px 15px; border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
         
         <div style="flex: 1;">
-            <span id="months" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">00</span>
+            <span id="months" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
             <span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Months</span>
         </div>
 
         <div style="flex: 1;">
-            <span id="days" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">00</span>
+            <span id="days" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
             <span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Days</span>
         </div>
 
         <div style="flex: 1;">
-            <span id="hours" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">00</span>
+            <span id="hours" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
             <span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Hours</span>
         </div>
 
         <div style="flex: 1;">
-            <span id="minutes" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">00</span>
+            <span id="minutes" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
             <span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Mins</span>
         </div>
 
         <div style="flex: 1;">
-            <span id="seconds" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">00</span>
+            <span id="seconds" style="display: block; font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 38px); font-weight: 700; color: #d4af37; line-height: 1;">0</span>
             <span style="display: block; font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 700; margin-top: 10px;">Secs</span>
         </div>
 
