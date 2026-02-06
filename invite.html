@@ -946,65 +946,7 @@ entry.target.classList.add('is-visible');
 
 
 // COUNTDOWN LOGIC
-function updateCountdown() {
-const weddingDate = new Date("Nov 6, 2027 14:00:00").getTime();
-const now = new Date().getTime();
-const totalGap = weddingDate - now;
 
-if (totalGap <= 0) {
-document.getElementById("months").innerText = "00";
-document.getElementById("days").innerText = "00";
-return;
-}
-
-// 1. Calculate Months (The "Honest" way)
-const startDate = new Date();
-const endDate = new Date("Nov 6, 2027 14:00:00");
-
-let months = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
-
-// Check if we have actually reached the wedding day/time yet in the current month
-const tempDate = new Date(startDate);
-tempDate.setMonth(startDate.getMonth() + months);
-
-if (tempDate > endDate) {
-months--;
-tempDate.setMonth(startDate.getMonth() + months);
-}
-
-// 2. Calculate the literal remainder
-const remainingGap = endDate - tempDate;
-
-const d = Math.floor(remainingGap / (1000 * 60 * 60 * 24));
-const h = Math.floor((remainingGap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-const m = Math.floor((remainingGap % (1000 * 60 * 60)) / (1000 * 60));
-const s = Math.floor((remainingGap % (1000 * 60)) / 1000);
-
-// 3. Update the display - NO LEADING ZEROS & DASH-FREE
-    const update = (id, val) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = Math.max(0, val).toString();
-    };
-
-    update("months", months);
-    update("days", d);
-    update("hours", h);
-    update("minutes", m);
-    update("seconds", s);
-
-   
-
-// START EVERYTHING
-document.addEventListener('DOMContentLoaded', () => {
-// Reveal all elements with the class
-const revealElements = document.querySelectorAll('.reveal-on-scroll');
-revealElements.forEach(el => observer.observe(el));
-
-// Start countdown
-setInterval(updateCountdown, 1000);
-updateCountdown();
-});
-}
 
 function loadEntourage() {
 console.log("--- ENTOURAGE FETCH STARTING ---");
