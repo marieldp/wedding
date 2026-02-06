@@ -9,11 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
-    #months, #days, #hours, #minutes, #seconds {
+#months, #days, #hours, #minutes, #seconds {
     display: inline-block;
     white-space: nowrap !important;
     hyphens: none !important;
-    min-width: 1.2em; /* Gives 336 enough room */
+    -webkit-hyphens: none !important;
 }
 
 /* Makes the names easier to read on mobile screens */
@@ -997,6 +997,7 @@ function updateCountdown() {
 
     if (totalGap <= 0) return;
 
+    // 1. Math Calculation
     const startDate = new Date();
     const endDate = new Date("Nov 6, 2027 14:00:00");
     let months = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
@@ -1014,17 +1015,18 @@ function updateCountdown() {
     const m = Math.floor((remainingGap % 3600000) / 60000);
     const s = Math.floor((remainingGap % 60000) / 1000);
 
-    // THE FIX: Math.max(0, val) ensures no negative sign (-) ever appears.
-    const setDisplay = (id, val) => {
+    // 2. The Display Fix (No Dash, No Leading Zero)
+    const setSafe = (id, val) => {
         const el = document.getElementById(id);
+        // Math.max(0, val) removes the negative sign (the dash)
         if (el) el.textContent = Math.max(0, val).toString();
     };
 
-    setDisplay("months", months);
-    setDisplay("days", d);
-    setDisplay("hours", h);
-    setDisplay("minutes", m);
-    setDisplay("seconds", s);
+    setSafe("months", months);
+    setSafe("days", d);
+    setSafe("hours", h);
+    setSafe("minutes", m);
+    setSafe("seconds", s);
 }
            
 
