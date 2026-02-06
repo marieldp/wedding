@@ -9,18 +9,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
-/* Force the countdown numbers to behave as single units */
+/* Target the spans directly by their IDs */
 #months, #days, #hours, #minutes, #seconds {
-    display: inline-block;
-    min-width: 1.2em; /* Ensures room for 3-digit numbers like 336 */
+    display: inline-block !important;
+    white-space: nowrap !important; /* Forces the number to stay on one line */
+    hyphens: none !important;      /* Explicitly kills the 'auto-dash' feature */
+    -webkit-hyphens: none !important;
+    min-width: 45px;               /* Gives the number a 'safe zone' so it doesn't hit the edge */
     text-align: center;
-    white-space: nowrap; /* Prevents the browser from inserting hyphens to wrap text */
 }
 
-/* Ensure the flex boxes don't squish the text */
-#countdown-container > div {
-    flex: 1;
-    min-width: 0; /* Prevents flex-items from overflowing their container */
+/* Fix the flex containers so they don't crush the numbers */
+.countdown-box > div {
+    flex: 1 0 auto !important;     /* Tells the box: 'Grow if you need to, but never shrink below content size' */
+    padding: 0 10px;
 }
 /* Makes the names easier to read on mobile screens */
 #entourage p {
@@ -991,13 +993,20 @@ function updateCountdown() {
     const m = Math.floor((remainingGap % (1000 * 60 * 60)) / (1000 * 60));
     const s = Math.floor((remainingGap % (1000 * 60)) / 1000);
 
-    // 3. Update the display - CLEAN & DASH-FREE
-document.getElementById("months").textContent = months;
-document.getElementById("days").textContent = d;
-document.getElementById("hours").textContent = h;
-document.getElementById("minutes").textContent = m;
-document.getElementById("seconds").textContent = s;
-}
+// 3. Update the display - STRIP EVERYTHING BUT THE NUMBER
+    const updateEl = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) {
+            // We use Math.max(0, val) to ensure we never get a negative sign (-)
+            el.textContent = Math.max(0, val).toString();
+        }
+    };
+
+    updateEl("months", months);
+    updateEl("days", d);
+    updateEl("hours", h);
+    updateEl("minutes", m);
+    updateEl("seconds", s);
 
 // START EVERYTHING
 document.addEventListener('DOMContentLoaded', () => {
