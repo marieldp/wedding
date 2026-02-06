@@ -804,12 +804,22 @@ const token = urlParams.get('id');
 let guestData = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-if (token) checkGuestStatus();
-else {
-const lbl = document.getElementById('envelope-label');
-lbl.innerHTML = `With love, to <span>Guest</span>`;
-lbl.classList.add('reveal-active');
-}
+    // 1. GUEST CHECK
+    if (token) checkGuestStatus();
+    else {
+        const lbl = document.getElementById('envelope-label');
+        if (lbl) {
+            lbl.innerHTML = `With love, to <span>Guest</span>`;
+            lbl.classList.add('reveal-active');
+        }
+    }
+
+    // 2. THE FIX: Wake up the invisible sections
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    revealElements.forEach(el => observer.observe(el));
+    
+    // 3. Keep your entourage loading
+    loadEntourage();
 });
 
 function checkGuestStatus() {
@@ -973,7 +983,9 @@ window.dispatchEvent(new Event('scroll'));
 }
 
 // FORCE TRIGGER: We call it both on load AND when the envelope opens
-document.addEventListener('DOMContentLoaded', loadEntourage);
+
+
+           
 
 </script>
 </body>
