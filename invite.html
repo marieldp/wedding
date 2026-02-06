@@ -9,31 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
-/* Clean styles for the countdown numbers */
-#months, #days, #hours, #minutes, #seconds {
-    display: inline-block;
-    min-width: 1.2em; 
-    text-align: center;
-    white-space: nowrap; 
-    /* This is the secret to stopping the auto-dash on mobile */
-    hyphens: none !important;
-}
 
-/* This targets the 5 individual columns in your Flexbox */
-div[style*="display: flex"] > div {
-    flex: 1;
-    min-width: 0; 
-    padding: 0 5px;
-}
-/* Adjust the container to handle the extra width on iPhone 15 Plus */
-.countdown-box > div {
-    padding: 0 5px; /* Adds a tiny bit of internal space */
-/* Ensure the flex boxes don't squish the text */
-}
-#countdown-container > div {
-    flex: 1;
-    min-width: 0; /* Prevents flex-items from overflowing their container */
-}
 /* Makes the names easier to read on mobile screens */
 #entourage p {
 font-weight: 400;
