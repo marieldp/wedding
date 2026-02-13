@@ -214,14 +214,14 @@ border-color: var(--gold);
 }
 
 /* --- ENVELOPE EXIT ANIMATION --- */
-.wrapper-exit {
-opacity: 0 !important;
-transform: scale(1.15); /* Slightly more growth feels more 'cinematic' */
-pointer-events: none;
-
-/* Reduced from 1s to 0.5s for a snappier feel */
-/* cubic-bezier makes it start fast and finish soft */
-transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+/* This specific combination overrides the 0.6s base transition */
+#envelope-wrapper.wrapper-exit {
+    opacity: 0 !important;
+    transform: scale(1.15) !important;
+    pointer-events: none;
+    
+    /* Set this to 0.8s (or your preferred duration) */
+    transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
 /* --- THE SLIDE ANIMATION --- */
