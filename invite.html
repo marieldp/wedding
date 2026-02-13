@@ -967,7 +967,10 @@ playPromise.then(_ => { console.log("Audio started at 4s!"); })
 }
 
 // ... (rest of your animation code remains the same)
-// This tells the site to start revealing names almost immediately (0.1s)
+// 1. Start the exit animation immediately (this is the .6s CSS fade)
+document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
+
+// 2. THE REVEAL: Wait only 100ms (.1s) before Mariel & Jasper start appearing
 setTimeout(() => {
     document.getElementById('main-site').style.display = 'block';
     document.body.classList.add('show-site');
@@ -975,10 +978,11 @@ setTimeout(() => {
     document.documentElement.style.overflow = 'auto';
 }, 100);
 
-// This cleans up the envelope after its 0.6s fade is done
+// 3. THE CLEANUP: Wait 600ms (.6s) to hide the envelope once the fade is done
 setTimeout(() => {
-    wrapper.style.display = "none";
+    document.getElementById('envelope-wrapper').style.display = "none";
 }, 600);
+} // Ensure this bracket closes the handleMusic function
 
 function showMainForm() {
 const content = document.getElementById('content');
