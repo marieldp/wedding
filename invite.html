@@ -532,10 +532,25 @@ z-index: 0;
 
 /* iPhone 15 Plus Fix: Nudge the RSVP up on mobile screens */
 @media (max-width: 768px) {
-#scroll-container {
-bottom: 90px !important; 
-right: 25px !important;
-}
+    /* Your existing scroll container fix */
+    #scroll-container {
+        bottom: 90px !important; 
+        right: 25px !important;
+    }
+
+    /* Fix for the Entourage names cutting off */
+    #entourage p {
+        /* Dropping this to 15px/16px gives the long names room to breathe */
+        font-size: 16px !important; 
+        line-height: 1.4 !important;
+        margin-top: 5px !important;
+        padding: 0 15px; /* Keeps text from hitting the very edge of the phone */
+    }
+
+    /* Optional: Shrink the 'The Entourage' header slightly for mobile */
+    #entourage h2 {
+        font-size: 42px !important;
+    }
 }
 
 </style>
