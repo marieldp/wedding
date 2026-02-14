@@ -9,74 +9,54 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
-.timeline-container {
-    position: relative;
-    max-width: 800px;
+.modern-timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 20px 0;
+    padding: 0 20px;
 }
 
-/* The Emerald Vertical Line */
-.timeline-container::after {
-    content: '';
-    position: absolute;
-    width: 2px;
-    background-color: #043927;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    margin-left: -1px;
+.timeline-card {
+    background: #ffffff;
+    padding: 45px 30px;
+    text-align: center;
+    border-radius: 2px; /* Very slight rounding like high-end paper */
+    box-shadow: 0 15px 35px rgba(4, 57, 39, 0.05); /* Emerald-tinted shadow */
+    border-top: 6px solid #043927; /* Your Emerald Green */
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.timeline-item {
-    padding: 10px 40px;
-    position: relative;
-    background-color: inherit;
-    width: 50%;
-    box-sizing: border-box;
+.timeline-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(4, 57, 39, 0.1);
 }
 
-/* The dots on the timeline */
-.timeline-item::after {
-    content: '';
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    right: -8px;
-    background-color: #f4f1ea; /* Matches your Ecru background */
-    border: 2px solid #043927;
-    top: 15px;
-    border-radius: 50%;
-    z-index: 1;
-}
-
-/* Alternating sides for Desktop */
-.timeline-item:nth-child(odd) { left: 0; text-align: right; }
-.timeline-item:nth-child(even) { left: 50%; text-align: left; }
-.timeline-item:nth-child(even)::after { left: -8px; }
-
-.timeline-content {
-    padding: 20px;
-    background: white;
-    position: relative;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Soft shadow like paper */
-}
-
-.timeline-content .time {
-    display: block;
-    font-family: 'Cinzel', serif; /* Or your preferred font */
-    color: #043927;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.timeline-content h3 {
-    margin: 0;
-    color: #043927;
+.event-time {
     font-family: 'Cinzel', serif;
+    color: #043927;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: block;
 }
 
+.timeline-card h3 {
+    font-family: 'Cinzel', serif;
+    color: #043927;
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.timeline-card p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+}
+    
 /* This locks the site vertically and prevents side-scrolling */
 body, html {
     margin: 0;
@@ -991,39 +971,50 @@ The countdown to forever...
 
 </section>
 
-<section id="timeline" class="reveal-on-scroll">
-    <h2 class="script-font" style="color: #043927; text-align: center; font-size: 50px; margin-bottom: 40px;">Our Wedding Day</h2>
+<section id="timeline" class="reveal-on-scroll" style="background-color: #f4f1ea; padding: 80px 20px;">
+    <h2 class="script-font" style="color: #043927; text-align: center; font-size: 55px; margin-bottom: 60px;">The Day's Events</h2>
     
-    <div class="timeline-container">
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <span class="time">1:30 PM</span>
-                <h3>Ceremony</h3>
+    <div class="modern-timeline">
+        <div class="timeline-card">
+            <div class="card-header">
+                <span class="event-time">01:30 PM</span>
+            </div>
+            <div class="card-body">
+                <h3>The Ceremony</h3>
                 <p>Santuario de San Antonio Parish</p>
+                <div class="emerald-divider"></div>
             </div>
         </div>
 
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <span class="time">3:30 PM</span>
-                <h3>Cocktails</h3>
+        <div class="timeline-card">
+            <div class="card-header">
+                <span class="event-time">03:30 PM</span>
+            </div>
+            <div class="card-body">
+                <h3>After-Ceremony Cocktails</h3>
                 <p>The Blue Leaf (Foyer)</p>
+                <div class="emerald-divider"></div>
             </div>
         </div>
 
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <span class="time">4:30 PM</span>
-                <h3>Reception</h3>
+        <div class="timeline-card">
+            <div class="card-header">
+                <span class="event-time">04:30 PM</span>
+            </div>
+            <div class="card-body">
+                <h3>Dinner & Reception</h3>
                 <p>The Blue Leaf (Main Hall)</p>
+                <div class="emerald-divider"></div>
             </div>
         </div>
 
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <span class="time">7:00 PM</span>
-                <h3>Party & Dancing</h3>
-                <p>Let's celebrate!</p>
+        <div class="timeline-card">
+            <div class="card-header">
+                <span class="event-time">07:00 PM</span>
+            </div>
+            <div class="card-body">
+                <h3>Celebration & Dancing</h3>
+                <p>Join us on the dance floor</p>
             </div>
         </div>
     </div>
