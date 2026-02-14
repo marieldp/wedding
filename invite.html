@@ -9,6 +9,74 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
+.timeline-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* The Emerald Vertical Line */
+.timeline-container::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    background-color: #043927;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -1px;
+}
+
+.timeline-item {
+    padding: 10px 40px;
+    position: relative;
+    background-color: inherit;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+/* The dots on the timeline */
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    right: -8px;
+    background-color: #f4f1ea; /* Matches your Ecru background */
+    border: 2px solid #043927;
+    top: 15px;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+/* Alternating sides for Desktop */
+.timeline-item:nth-child(odd) { left: 0; text-align: right; }
+.timeline-item:nth-child(even) { left: 50%; text-align: left; }
+.timeline-item:nth-child(even)::after { left: -8px; }
+
+.timeline-content {
+    padding: 20px;
+    background: white;
+    position: relative;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Soft shadow like paper */
+}
+
+.timeline-content .time {
+    display: block;
+    font-family: 'Cinzel', serif; /* Or your preferred font */
+    color: #043927;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.timeline-content h3 {
+    margin: 0;
+    color: #043927;
+    font-family: 'Cinzel', serif;
+}
+
 /* This locks the site vertically and prevents side-scrolling */
 body, html {
     margin: 0;
@@ -591,6 +659,18 @@ z-index: 0;
         text-align: center;
         gap: 8px !important;
     }
+
+    .timeline-container::after { left: 31px; } /* Move line to the left */
+    
+    .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+        text-align: left !important;
+    }
+    
+    .timeline-item:nth-child(even) { left: 0%; }
+    .timeline-item::after { left: 22px !important; }
 }
 
 </style>
@@ -909,6 +989,44 @@ The countdown to forever...
 <p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
 </div>
 
+</section>
+
+<section id="timeline" class="reveal-on-scroll">
+    <h2 class="script-font" style="color: #043927; text-align: center; font-size: 50px; margin-bottom: 40px;">Our Wedding Day</h2>
+    
+    <div class="timeline-container">
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <span class="time">1:30 PM</span>
+                <h3>Ceremony</h3>
+                <p>Santuario de San Antonio Parish</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <span class="time">3:30 PM</span>
+                <h3>Cocktails</h3>
+                <p>The Blue Leaf (Foyer)</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <span class="time">4:30 PM</span>
+                <h3>Reception</h3>
+                <p>The Blue Leaf (Main Hall)</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <span class="time">7:00 PM</span>
+                <h3>Party & Dancing</h3>
+                <p>Let's celebrate!</p>
+            </div>
+        </div>
+    </div>
 </section>
 
 <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
