@@ -9,122 +9,219 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
-/* --- ELEGANT VERTICAL TIMELINE --- */
-/* --- EMERALD & ROSE TIMELINE --- */
+/* --- BALANCED SPLIT TIMELINE --- */
 #timeline {
     position: relative;
     overflow: hidden;
-    /* Optional: subtle background texture if you want it */
-    /* background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png"); */
 }
 
 .timeline-container {
-    position: relative;
-    max-width: 900px;
+    max-width: 1000px; /* Wider to accommodate images */
     margin: 0 auto;
-    padding: 40px 0;
+    padding: 60px 20px;
+    position: relative;
 }
 
-/* THE VERTICAL LINE -> Now Emerald Green */
-.timeline-container::after {
+/* THE CENTRAL VERTICAL LINE */
+.timeline-container::before {
     content: '';
     position: absolute;
-    width: 2px;
-    /* Solid Emerald Green */
-    background-color: #043927;
     top: 0;
     bottom: 0;
     left: 50%;
-    margin-left: -1px;
+    width: 2px;
+    background: #043927; /* Emerald */
+    transform: translateX(-50%);
+    opacity: 0.3; /* Subtle line */
     z-index: 0;
-    opacity: 0.8; /* Slight transparency so it's not too harsh */
 }
 
-/* Container for text and icon */
-.timeline-item {
-    padding: 10px 60px; /* More space for the icon */
+/* THE ROW WRAPPER */
+.timeline-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 80px; /* Space between events */
     position: relative;
-    background-color: transparent;
-    width: 50%;
-    box-sizing: border-box;
-    margin-bottom: 50px;
+    z-index: 1;
 }
 
-.left { left: 0; text-align: right; }
-.right { left: 50%; text-align: left; }
+/* THE TWO SIDES (50% Width Each) */
+.timeline-content-side, 
+.timeline-image-side {
+    width: 45%; /* Leaves 10% gap in middle */
+    position: relative;
+}
 
-/* --- THE ICON CIRCLE --- */
-.timeline-icon {
-    position: absolute;
-    width: 55px;
-    height: 55px;
-    background: #ffffff;
-    /* BORDER IS NOW ROSE PINK */
-    border: 2px solid #F4CFE0; 
-    border-radius: 50%;
-    top: 0px; 
-    z-index: 10;
-    /* This shadow creates a white 'halo' so the green line doesn't touch the circle */
-    box-shadow: 0 0 0 8px #f4f1ea; 
+/* --- THE TEXT SIDE --- */
+.timeline-content-side {
+    padding: 20px;
+}
+
+/* --- THE IMAGE SIDE --- */
+.timeline-image-side {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.4s ease;
 }
 
-/* Hover Effect: Turns the border Gold */
-.timeline-item:hover .timeline-icon {
-    border-color: #d4af37;
-    transform: scale(1.1);
-    box-shadow: 0 0 0 8px #f4f1ea, 0 5px 15px rgba(4, 57, 39, 0.15);
-}
-
-/* --- THE ICON IMAGE --- */
-.timeline-icon img {
-    width: 55%;
-    height: 55%;
+/* THE IMAGE ITSELF */
+.timeline-image-side img {
+    max-width: 180px; /* Size of the icon */
+    max-height: 180px;
     object-fit: contain;
-    /* MAGIC FILTER: 
-       This turns a standard BLACK png icon into EMERALD GREEN (#043927).
-       If your icons are already colored, remove this line!
+    /* Optional: A soft float animation */
+    animation: floatIcon 6s ease-in-out infinite;
+    /* KEEP THIS if your icons are black and you want them EMERALD.
+       REMOVE THIS if your icons are already colored.
     */
     filter: invert(16%) sepia(34%) saturate(1478%) hue-rotate(119deg) brightness(93%) contrast(93%);
+    opacity: 0.8; 
 }
 
-/* Positioning the Icons */
-.left .timeline-icon { right: -27.5px; } /* Half of 55px */
-.right .timeline-icon { left: -27.5px; }
+/* THE CENTER DOT (Using the Dot to anchor the line) */
+.center-dot {
+    position: absolute;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    background: #d4af37; /* Gold Center */
+    border: 4px solid #F4CFE0; /* Rose Pink Border */
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 0 5px #fcfaf7; /* White Halo */
+}
 
 /* --- TYPOGRAPHY --- */
-
-/* Time: Gold */
-.timeline-content .event-time {
+.event-time {
     font-family: 'Montserrat', sans-serif;
     color: #d4af37; /* Gold */
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 2px;
-    font-size: 11px;
     text-transform: uppercase;
+    margin-bottom: 10px;
     display: block;
-    margin-bottom: 5px;
 }
 
-/* Header: Emerald Green */
-.timeline-content h3 {
+.timeline-content-side h3 {
     font-family: 'Playfair Display', serif;
     color: #043927; /* Emerald */
-    font-size: 1.8rem;
-    margin: 0 0 8px 0;
+    font-size: 2.2rem;
+    margin: 0 0 15px 0;
     line-height: 1.1;
 }
 
-/* Body: Dark Grey */
-.timeline-content p {
+.timeline-content-side p {
     font-family: 'Georgia', serif;
-    color: #555;
-    font-size: 15px;
-    margin: 0;
-    line-height: 1.5;
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+/* --- ALTERNATING SIDES LOGIC --- */
+
+/* NORMAL ROW (Text Left, Image Right) */
+.timeline-row.normal {
+    flex-direction: row;
+}
+.timeline-row.normal .timeline-content-side {
+    text-align: right; /* Align text towards center */
+}
+
+/* REVERSE ROW (Image Left, Text Right) */
+.timeline-row.reverse {
+    flex-direction: row-reverse;
+}
+.timeline-row.reverse .timeline-content-side {
+    text-align: left; /* Align text towards center */
+}
+
+/* FLOATING ANIMATION */
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* iPhone 15 Plus Fix: Nudge the RSVP up on mobile screens */
+@media (max-width: 768px) {
+    /* Your existing scroll container fix */
+    #scroll-container {
+        bottom: 90px !important; 
+        right: 25px !important;
+    }
+
+    /* Fix for the Entourage names cutting off */
+    #entourage p {
+        /* Dropping this to 15px/16px gives the long names room to breathe */
+        font-size: 16px !important; 
+        line-height: 1.4 !important;
+        margin-top: 5px !important;
+        padding: 0 15px; /* Keeps text from hitting the very edge of the phone */
+    }
+
+    /* Optional: Shrink the 'The Entourage' header slightly for mobile */
+    #entourage h2 {
+        font-size: 42px !important;
+    }
+    #dress-code div[style*="display: grid"] {
+        grid-template-columns: 1fr !important; /* Stack images one by one */
+        gap: 40px !important;
+        padding: 0 10px;
+    }
+
+    #dress-code img {
+        max-height: 250px !important; /* Makes images slightly larger on mobile */
+    }
+
+    /* 2. Aligns the Celebration Color Palette */
+    #dress-code div[style*="flex-wrap: wrap"] {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important; /* Neatly aligns circles 2x2 */
+        gap: 30px 10px !important;
+        justify-items: center;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    /* 3. Centers the text under each color circle */
+    #dress-code div[style*="display: flex; align-items: center; gap: 12px"] {
+        flex-direction: column !important; /* Puts label under the circle */
+        text-align: center;
+        gap: 8px !important;
+    }
+
+   .timeline-container::before {
+        left: 20px; /* Move line to far left */
+    }
+    
+    .timeline-row, 
+    .timeline-row.reverse {
+        flex-direction: column-reverse; /* Text bottom, Image top */
+        margin-bottom: 60px;
+        align-items: flex-start;
+    }
+    
+    .timeline-content-side, 
+    .timeline-image-side {
+        width: 100%;
+        text-align: left !important;
+        padding-left: 50px; /* Make room for line */
+    }
+    
+    .timeline-image-side {
+        justify-content: flex-start;
+        margin-bottom: 15px;
+    }
+    
+    .timeline-image-side img {
+        max-width: 100px; /* Smaller icons on mobile */
+    }
+    
+    .center-dot {
+        left: 20px; /* Move dot to line */
+    }
 }
  
 /* This locks the site vertically and prevents side-scrolling */
@@ -662,72 +759,7 @@ background-size: cover;
 z-index: 0;
 }
 
-/* iPhone 15 Plus Fix: Nudge the RSVP up on mobile screens */
-@media (max-width: 768px) {
-    /* Your existing scroll container fix */
-    #scroll-container {
-        bottom: 90px !important; 
-        right: 25px !important;
-    }
 
-    /* Fix for the Entourage names cutting off */
-    #entourage p {
-        /* Dropping this to 15px/16px gives the long names room to breathe */
-        font-size: 16px !important; 
-        line-height: 1.4 !important;
-        margin-top: 5px !important;
-        padding: 0 15px; /* Keeps text from hitting the very edge of the phone */
-    }
-
-    /* Optional: Shrink the 'The Entourage' header slightly for mobile */
-    #entourage h2 {
-        font-size: 42px !important;
-    }
-    #dress-code div[style*="display: grid"] {
-        grid-template-columns: 1fr !important; /* Stack images one by one */
-        gap: 40px !important;
-        padding: 0 10px;
-    }
-
-    #dress-code img {
-        max-height: 250px !important; /* Makes images slightly larger on mobile */
-    }
-
-    /* 2. Aligns the Celebration Color Palette */
-    #dress-code div[style*="flex-wrap: wrap"] {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important; /* Neatly aligns circles 2x2 */
-        gap: 30px 10px !important;
-        justify-items: center;
-        max-width: 300px;
-        margin: 0 auto;
-    }
-
-    /* 3. Centers the text under each color circle */
-    #dress-code div[style*="display: flex; align-items: center; gap: 12px"] {
-        flex-direction: column !important; /* Puts label under the circle */
-        text-align: center;
-        gap: 8px !important;
-    }
-
-   .timeline-container::after { left: 40px; }
-    
-    .timeline-item {
-        width: 100%;
-        padding-left: 90px;
-        padding-right: 20px;
-        text-align: left !important;
-        margin-bottom: 40px;
-    }
-    
-    .left, .right { left: 0%; }
-    
-    .left .timeline-icon, 
-    .right .timeline-icon {
-        left: 12.5px; /* Centers over the 40px line */
-        right: auto;
-    }
-}
 
 </style>
 </head>
@@ -1047,56 +1079,60 @@ The countdown to forever...
 
 </section>
 
-<section id="timeline" class="reveal-on-scroll" style="background-color: #f4f1ea; padding: 100px 20px;">
+<section id="timeline" class="reveal-on-scroll" style="background-color: #fcfaf7; padding: 100px 20px;">
     
     <div style="text-align: center; margin-bottom: 80px;">
-        <h2 style="font-family: 'Pinyon Script', cursive; color: #043927; font-size: clamp(50px, 8vw, 70px); margin: 0; line-height: 1;">The Day's Events</h2>
-        <div style="font-size: 20px; color: #F4CFE0; margin-top: 10px;">✦ ✦ ✦</div>
+        <h2 style="font-family: 'Pinyon Script', cursive; color: #043927; font-size: clamp(50px, 8vw, 75px); margin: 0; line-height: 1;">The Celebration</h2>
+        <p style="font-family: 'Montserrat'; font-size: 11px; letter-spacing: 3px; color: #d4af37; text-transform: uppercase; margin-top: 15px;">Order of Events</p>
     </div>
     
     <div class="timeline-container">
         
-        <div class="timeline-item left">
-            <div class="timeline-icon">
-                <img src="icon-church.png" alt="Church">
-            </div>
-            <div class="timeline-content">
+        <div class="timeline-row normal">
+            <div class="timeline-content-side">
                 <span class="event-time">01:30 PM</span>
                 <h3>The Ceremony</h3>
-                <p>Santuario de San Antonio Parish</p>
+                <p>Santuario de San Antonio Parish<br>McKinley Rd, Makati</p>
+            </div>
+            <div class="center-dot"></div>
+            <div class="timeline-image-side">
+                <img src="icon-church.png" alt="Church">
             </div>
         </div>
 
-        <div class="timeline-item right">
-            <div class="timeline-icon">
-                <img src="icon-toast.png" alt="Cocktails">
-            </div>
-            <div class="timeline-content">
+        <div class="timeline-row reverse">
+            <div class="timeline-content-side">
                 <span class="event-time">03:30 PM</span>
-                <h3>After-Ceremony Cocktails</h3>
-                <p>The Blue Leaf (Foyer)</p>
+                <h3>Cocktail Hour</h3>
+                <p>The Blue Leaf Foyer<br>A time for toasts & conversations</p>
+            </div>
+            <div class="center-dot"></div>
+            <div class="timeline-image-side">
+                <img src="icon-toast.png" alt="Toast">
             </div>
         </div>
 
-        <div class="timeline-item left">
-            <div class="timeline-icon">
-                <img src="icon-dinner.png" alt="Dinner">
-            </div>
-            <div class="timeline-content">
+        <div class="timeline-row normal">
+            <div class="timeline-content-side">
                 <span class="event-time">04:30 PM</span>
                 <h3>Dinner & Reception</h3>
-                <p>The Blue Leaf (Main Hall)</p>
+                <p>The Blue Leaf Main Hall<br>Grand Entrance of the Couple</p>
+            </div>
+            <div class="center-dot"></div>
+            <div class="timeline-image-side">
+                <img src="icon-dinner.png" alt="Dinner">
             </div>
         </div>
 
-        <div class="timeline-item right">
-            <div class="timeline-icon">
-                <img src="icon-music.png" alt="Party">
-            </div>
-            <div class="timeline-content">
+        <div class="timeline-row reverse">
+            <div class="timeline-content-side">
                 <span class="event-time">07:00 PM</span>
-                <h3>Celebration & Dancing</h3>
-                <p>Join us on the dance floor</p>
+                <h3>The After Party</h3>
+                <p>Dancing Under the Stars<br>Drinks & Late Night Snacks</p>
+            </div>
+            <div class="center-dot"></div>
+            <div class="timeline-image-side">
+                <img src="icon-music.png" alt="Music">
             </div>
         </div>
 
