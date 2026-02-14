@@ -551,6 +551,32 @@ z-index: 0;
     #entourage h2 {
         font-size: 42px !important;
     }
+    #dress-code div[style*="display: grid"] {
+        grid-template-columns: 1fr !important; /* Stack images one by one */
+        gap: 40px !important;
+        padding: 0 10px;
+    }
+
+    #dress-code img {
+        max-height: 250px !important; /* Makes images slightly larger on mobile */
+    }
+
+    /* 2. Aligns the Celebration Color Palette */
+    #dress-code div[style*="flex-wrap: wrap"] {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important; /* Neatly aligns circles 2x2 */
+        gap: 30px 10px !important;
+        justify-items: center;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    /* 3. Centers the text under each color circle */
+    #dress-code div[style*="display: flex; align-items: center; gap: 12px"] {
+        flex-direction: column !important; /* Puts label under the circle */
+        text-align: center;
+        gap: 8px !important;
+    }
 }
 
 </style>
