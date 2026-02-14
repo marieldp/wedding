@@ -10,90 +10,122 @@
 <style>
 
 /* --- ELEGANT VERTICAL TIMELINE --- */
+/* --- EMERALD & ROSE TIMELINE --- */
 #timeline {
     position: relative;
+    overflow: hidden;
+    /* Optional: subtle background texture if you want it */
+    /* background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png"); */
 }
 
 .timeline-container {
     position: relative;
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 40px 0;
 }
 
-/* The vertical line */
+/* THE VERTICAL LINE -> Now Emerald Green */
 .timeline-container::after {
     content: '';
     position: absolute;
-    width: 1px;
-    background: linear-gradient(to bottom, transparent, var(--gold), var(--gold), transparent);
+    width: 2px;
+    /* Solid Emerald Green */
+    background-color: #043927;
     top: 0;
     bottom: 0;
     left: 50%;
-    margin-left: -0.5px;
+    margin-left: -1px;
+    z-index: 0;
+    opacity: 0.8; /* Slight transparency so it's not too harsh */
 }
 
+/* Container for text and icon */
 .timeline-item {
-    padding: 10px 40px;
+    padding: 10px 60px; /* More space for the icon */
     position: relative;
-    background-color: inherit;
+    background-color: transparent;
     width: 50%;
     box-sizing: border-box;
-    margin-bottom: 30px;
-}
-
-/* The Gold Dots */
-.timeline-item::after {
-    content: '❦';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    right: -13px;
-    background-color: #f4f1ea;
-    color: var(--gold);
-    top: 15px;
-    z-index: 1;
-    font-size: 18px;
-    text-align: center;
+    margin-bottom: 50px;
 }
 
 .left { left: 0; text-align: right; }
 .right { left: 50%; text-align: left; }
 
-.right::after { left: -11px; }
-
-.timeline-content {
-    padding: 20px;
-    background: transparent;
-    position: relative;
+/* --- THE ICON CIRCLE --- */
+.timeline-icon {
+    position: absolute;
+    width: 55px;
+    height: 55px;
+    background: #ffffff;
+    /* BORDER IS NOW ROSE PINK */
+    border: 2px solid #F4CFE0; 
+    border-radius: 50%;
+    top: 0px; 
+    z-index: 10;
+    /* This shadow creates a white 'halo' so the green line doesn't touch the circle */
+    box-shadow: 0 0 0 8px #f4f1ea; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
 }
 
-.timeline-content h3 {
-    font-family: 'Playfair Display', serif;
-    color: var(--accent);
-    font-size: 1.4rem;
-    margin: 5px 0;
-    letter-spacing: 1px;
+/* Hover Effect: Turns the border Gold */
+.timeline-item:hover .timeline-icon {
+    border-color: #d4af37;
+    transform: scale(1.1);
+    box-shadow: 0 0 0 8px #f4f1ea, 0 5px 15px rgba(4, 57, 39, 0.15);
 }
 
+/* --- THE ICON IMAGE --- */
+.timeline-icon img {
+    width: 55%;
+    height: 55%;
+    object-fit: contain;
+    /* MAGIC FILTER: 
+       This turns a standard BLACK png icon into EMERALD GREEN (#043927).
+       If your icons are already colored, remove this line!
+    */
+    filter: invert(16%) sepia(34%) saturate(1478%) hue-rotate(119deg) brightness(93%) contrast(93%);
+}
+
+/* Positioning the Icons */
+.left .timeline-icon { right: -27.5px; } /* Half of 55px */
+.right .timeline-icon { left: -27.5px; }
+
+/* --- TYPOGRAPHY --- */
+
+/* Time: Gold */
 .timeline-content .event-time {
     font-family: 'Montserrat', sans-serif;
-    color: var(--gold);
+    color: #d4af37; /* Gold */
     font-weight: 700;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     font-size: 11px;
     text-transform: uppercase;
+    display: block;
     margin-bottom: 5px;
 }
 
-.timeline-content p {
-    font-family: 'Georgia', serif;
-    font-style: italic;
-    color: #666;
-    font-size: 14px;
-    margin: 0;
+/* Header: Emerald Green */
+.timeline-content h3 {
+    font-family: 'Playfair Display', serif;
+    color: #043927; /* Emerald */
+    font-size: 1.8rem;
+    margin: 0 0 8px 0;
+    line-height: 1.1;
 }
 
+/* Body: Dark Grey */
+.timeline-content p {
+    font-family: 'Georgia', serif;
+    color: #555;
+    font-size: 15px;
+    margin: 0;
+    line-height: 1.5;
+}
  
 /* This locks the site vertically and prevents side-scrolling */
 body, html {
@@ -678,18 +710,23 @@ z-index: 0;
         gap: 8px !important;
     }
 
-    .timeline-container::after { left: 31px; }
+   .timeline-container::after { left: 40px; }
+    
     .timeline-item {
         width: 100%;
-        padding-left: 70px;
-        padding-right: 25px;
+        padding-left: 90px;
+        padding-right: 20px;
         text-align: left !important;
+        margin-bottom: 40px;
     }
-    .timeline-item::after {
-        left: 21px;
+    
+    .left, .right { left: 0%; }
+    
+    .left .timeline-icon, 
+    .right .timeline-icon {
+        left: 12.5px; /* Centers over the 40px line */
         right: auto;
     }
-    .right { left: 0%; }
 }
 
 </style>
@@ -1011,11 +1048,18 @@ The countdown to forever...
 </section>
 
 <section id="timeline" class="reveal-on-scroll" style="background-color: #f4f1ea; padding: 100px 20px;">
-    <h2 style="font-family: 'Pinyon Script', cursive; color: var(--accent); text-align: center; font-size: clamp(45px, 8vw, 60px); margin-bottom: 20px;">The Day's Events</h2>
-    <p style="text-align: center; font-family: 'Montserrat'; letter-spacing: 4px; font-size: 10px; color: var(--gold); text-transform: uppercase; margin-bottom: 60px;">A celebration of love</p>
+    
+    <div style="text-align: center; margin-bottom: 80px;">
+        <h2 style="font-family: 'Pinyon Script', cursive; color: #043927; font-size: clamp(50px, 8vw, 70px); margin: 0; line-height: 1;">The Day's Events</h2>
+        <div style="font-size: 20px; color: #F4CFE0; margin-top: 10px;">✦ ✦ ✦</div>
+    </div>
     
     <div class="timeline-container">
+        
         <div class="timeline-item left">
+            <div class="timeline-icon">
+                <img src="icon-church.png" alt="Church">
+            </div>
             <div class="timeline-content">
                 <span class="event-time">01:30 PM</span>
                 <h3>The Ceremony</h3>
@@ -1024,28 +1068,38 @@ The countdown to forever...
         </div>
 
         <div class="timeline-item right">
+            <div class="timeline-icon">
+                <img src="icon-toast.png" alt="Cocktails">
+            </div>
             <div class="timeline-content">
                 <span class="event-time">03:30 PM</span>
-                <h3>Cocktail Hour</h3>
-                <p>The Blue Leaf Foyer</p>
+                <h3>After-Ceremony Cocktails</h3>
+                <p>The Blue Leaf (Foyer)</p>
             </div>
         </div>
 
         <div class="timeline-item left">
+            <div class="timeline-icon">
+                <img src="icon-dinner.png" alt="Dinner">
+            </div>
             <div class="timeline-content">
                 <span class="event-time">04:30 PM</span>
                 <h3>Dinner & Reception</h3>
-                <p>The Blue Leaf Main Hall</p>
+                <p>The Blue Leaf (Main Hall)</p>
             </div>
         </div>
 
         <div class="timeline-item right">
+            <div class="timeline-icon">
+                <img src="icon-music.png" alt="Party">
+            </div>
             <div class="timeline-content">
                 <span class="event-time">07:00 PM</span>
-                <h3>Dancing & After Party</h3>
-                <p>Under the stars</p>
+                <h3>Celebration & Dancing</h3>
+                <p>Join us on the dance floor</p>
             </div>
         </div>
+
     </div>
 </section>
 
