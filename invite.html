@@ -1193,234 +1193,241 @@ The countdown to forever...
 </div>
 
 <script>
+<script>
+// --- CONFIGURATION ---
 const webAppUrl = "https://script.google.com/macros/s/AKfycbzrtwb3bnwahRGg94f6Eu3Qj1zsfGw3hga7Y5a23q293gI60mFJ818kGw5zbYtuKTBn/exec"; 
 const urlParams = new URLSearchParams(window.location.search);
 const token = urlParams.get('id');
 let guestData = null;
 
+// --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. GUEST CHECK
-    if (token) checkGuestStatus();
-    else {
+    // 1. Start Music Logic (Paused by default)
+    var audio = document.getElementById('bg-music');
+    if(audio) audio.volume = 0.5;
+
+    // 2. Check Guest or Default
+    if (token) {
+        checkGuestStatus();
+    } else {
+        // No ID in URL? Default to generic view
         const lbl = document.getElementById('envelope-label');
         if (lbl) {
             lbl.innerHTML = `With love, to <span>Guest</span>`;
             lbl.classList.add('reveal-active');
         }
-        
     }
 
-    // 2. THE FIX: Wake up the invisible sections
+    // 3. Initialize Scroll Animations
     const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, { threshold: 0.1 });
+    
     revealElements.forEach(el => observer.observe(el));
     
-    // 3. Keep your entourage loading
+    // 4. Load Entourage
     loadEntourage();
+    
+    // 5. Start Countdown
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
 });
+
+// --- CORE FUNCTIONS ---
 
 function checkGuestStatus() {
-fetch(`${webAppUrl}?id=${encodeURIComponent(token)}`)
-.then(res => res.json())
-.then(data => {
-guestData = data;
-if (data && data.name) {
-const label = document.getElementById('envelope-label');
-label.innerHTML = `With love, to <span>${data.name}</span>`;
-label.classList.add('reveal-active');
-data.isDone ? showDoneView(data) : showMainForm();
-}
-}).catch(err => console.error(err));
-}
-
-function openInvitation() {
-document.getElementById('envelope-wrapper').classList.add('open');
-const seal = document.getElementById('seal');
-seal.style.opacity = "0";
-seal.style.pointerEvents = "none";
-}
-
-function handleMusic(play, event) {
-if (event) {
-event.preventDefault();
-event.stopPropagation();
-}
-
-if (play) {
-var audio = document.getElementById('bg-music');
-
-// 1. SET THE START TIME (in seconds)
-audio.currentTime = 4; 
-
-audio.volume = 1.0; 
-
-var playPromise = audio.play();
-if (playPromise !== undefined) {
-playPromise.then(_ => { console.log("Audio started at 4s!"); })
-.catch(error => { console.error("Playback failed:", error); });
-}
-}
-
-// ... (rest of your animation code remains the same)
-// 1. Start the exit animation immediately (this is the .6s CSS fade)
-document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
-
-// 2. THE REVEAL: Wait only 100ms (.1s) before Mariel & Jasper start appearing
-setTimeout(() => {
-    document.getElementById('main-site').style.display = 'block';
-    document.body.classList.add('show-site');
-    document.body.style.overflow = 'auto'; 
-    document.documentElement.style.overflow = 'auto';
-}, 100);
-
-// 3. THE CLEANUP: Wait 600ms (.6s) to hide the envelope once the fade is done
-setTimeout(() => {
-    document.getElementById('envelope-wrapper').style.display = "none";
-}, 800);
-} // Ensure this bracket closes the handleMusic function
-
-function showMainForm() {
-const content = document.getElementById('content');
-content.classList.remove('hidden');
-const canP1 = String(guestData.allowPlusOne).toLowerCase() === "true";
-content.innerHTML = `
-           <div class="rsvp-card">
-               <h2>Hi ${guestData.name},</h2>
-               <label>Will you attend?</label>
-               <select id="attending-select" onchange="togglePlusOne(${canP1})">
-                   <option value="Yes">Yes, I'll be there!</option>
-                   <option value="No">No, I can't make it</option>
-               </select>
-               <div id="p1-area"></div>
-               <label>Email Address</label>
-               <input type="email" id="guest-email" value="${guestData.email || ''}">
-               <label>Message to the couple</label>
-               <textarea id="guest-note" style="width:100%; height:100px; padding:10px; border-radius:5px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
-               <button onclick="submitRSVP()" id="submit-btn">Confirm RSVP</button>
-           </div>`;
-togglePlusOne(canP1);
-}
-
-function togglePlusOne(canP1) {
-const area = document.getElementById('p1-area');
-const attending = document.getElementById('attending-select').value;
-if (attending === "Yes" && canP1) {
-area.innerHTML = `<label>Bringing a plus one?</label><select id="bringing-p1" onchange="toggleP1Name()"><option value="No">No</option><option value="Yes">Yes</option></select><div id="p1-name-wrapper"></div>`;
-} else { area.innerHTML = ''; }
-}
-
-function toggleP1Name() {
-const wrapper = document.getElementById('p1-name-wrapper');
-if (document.getElementById('bringing-p1').value === "Yes") {
-wrapper.innerHTML = '<label>Plus One Name</label><input type="text" id="plus-one-name">';
-} else { wrapper.innerHTML = ''; }
-}
-
-function submitRSVP() {
-const btn = document.getElementById('submit-btn');
-btn.innerHTML = "Saving..."; btn.disabled = true;
-const p1NameInput = document.getElementById('plus-one-name');
-const payload = {
-token: token, name: guestData.name,
-email: document.getElementById('guest-email').value,
-attending: document.getElementById('attending-select').value,
-plusOneName: p1NameInput ? p1NameInput.value : "None",
-note: document.getElementById('guest-note').value
-};
-fetch(webAppUrl, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) }).then(() => {
-showDoneView({ ...guestData });
-});
-}
-
-function showDoneView(data) {
-const content = document.getElementById('content');
-content.classList.remove('hidden');
-content.innerHTML = `
-           <div class="rsvp-card" style="text-align:center;">
-               <h2>Thank you!</h2>
-               <p>RSVP recorded for ${data.name}.</p>
-               <button onclick="showMainForm()">Edit Response</button>
-           </div>`;
-}
-
-// SMART SCROLL REVEAL OBSERVER (Fix for multiple elements)
-const observerOptions = { threshold: 0.1 }; 
-
-const observer = new IntersectionObserver((entries) => {
-entries.forEach(entry => {
-if (entry.isIntersecting) {
-entry.target.classList.add('is-visible');
-}
-});
-}, observerOptions);
-
-
-// COUNTDOWN LOGIC
-
-
-function loadEntourage() {
-    console.log("--- DEBUG MODE: ENTOURAGE FETCH ---");
+    const lbl = document.getElementById('envelope-label');
+    const loading = document.getElementById('loading');
     
-    // 1. Check if URL exists
-    if (!webAppUrl) {
-        alert("Error: The 'webAppUrl' is missing at the top of the script!");
-        return;
-    }
-
-    // 2. Try to fetch the data
-    fetch(`${webAppUrl}?action=getEntourage`)
-    .then(response => {
-        // Check if the request was actually successful (status 200)
-        if (!response.ok) {
-            throw new Error(`Server returned ${response.status} ${response.statusText}`);
-        }
-        return response.text(); // Get text first to check if it's valid JSON
-    })
-    .then(textData => {
-        console.log("Raw Response:", textData);
+    fetch(`${webAppUrl}?id=${encodeURIComponent(token)}`)
+    .then(res => res.json())
+    .then(data => {
+        console.log("Guest Data Received:", data); // Check Console for this
         
-        // Check if we got an HTML error page instead of data (Common Issue)
-        if (textData.trim().startsWith("<")) {
-            alert("CRITICAL ERROR: The Google Script is returning a Webpage, not Data.\n\nLikely Cause: The script permission is not set to 'Anyone'.\n\nFix: Go to Google Apps Script > Deploy > New Deployment > Who can access: 'Anyone'.");
-            throw new Error("Received HTML instead of JSON");
-        }
-
-        const data = JSON.parse(textData);
-        
-        // Check if data is empty
-        if (Object.keys(data).length === 0) {
-            alert("Connection successful, but the Spreadsheet returned NO names.\nCheck your Google Sheet column headers.");
+        if (data.error) {
+            lbl.innerHTML = "Guest not found";
+            lbl.classList.add('reveal-active');
+            if(loading) loading.innerText = "Guest not found in list.";
             return;
         }
 
-        // 3. If we get here, we have data! Let's fill it in.
-        let matchCount = 0;
-        Object.keys(data).forEach(roleID => {
-            const el = document.getElementById(roleID);
-            if (el) {
-                el.innerHTML = data[roleID].split(',').map(n => n.trim()).join('<br>');
-                // FORCE REVEAL
-                el.style.opacity = "1";
-                el.closest('.reveal-on-scroll')?.classList.add('is-visible');
-                matchCount++;
-            } else {
-                console.warn(`Spreadsheet has column '${roleID}' but HTML has no matching ID.`);
-            }
-        });
+        // --- THE FIX: HANDLE CAPITALIZATION ---
+        // We try lowercase 'name', then Capital 'Name', then generic
+        const safeName = data.name || data.Name || data["Guest Name"] || "Guest";
+        
+        // Save normalized data
+        guestData = {
+            ...data,
+            name: safeName
+        };
 
-        if (matchCount === 0) {
-            alert("Data received, but no HTML matches found.\n\nExample mismatch:\nSheet says: 'MaidOfHonor'\nHTML expects: 'Maid_of_Honor'");
+        // 1. Update Envelope Name
+        lbl.innerHTML = `With love, to <span>${safeName}</span>`;
+        lbl.classList.add('reveal-active');
+
+        // 2. Show RSVP Form
+        if (loading) loading.classList.add('hidden');
+        
+        // Check if "isDone" is true (handled by script) OR if "Attending" column has text
+        const isDone = data.isDone === true || (data.attending && data.attending.length > 0);
+        
+        if (isDone) {
+            showDoneView(guestData);
+        } else {
+            showMainForm();
         }
     })
     .catch(err => {
-        console.error("Entourage Load Failed:", err);
-        // Only alert if it wasn't the HTML error we already alerted for
-        if (err.message !== "Received HTML instead of JSON") {
-            alert("Failed to load Entourage: " + err.message);
-        }
+        console.error("Connection Error:", err);
+        lbl.innerHTML = "Connection Error";
+        lbl.classList.add('reveal-active');
     });
 }
 
-// THE LOGIC
+function showMainForm() {
+    const content = document.getElementById('content');
+    content.classList.remove('hidden');
+    
+    // Assume Plus One is allowed if the column exists in the data, or default to true for now
+    const canP1 = true; 
+
+    content.innerHTML = `
+        <div class="rsvp-card">
+            <h2>Hi ${guestData.name},</h2>
+            <label>Will you attend?</label>
+            <select id="attending-select" onchange="togglePlusOne(${canP1})">
+                <option value="Yes">Yes, I'll be there!</option>
+                <option value="No">No, I can't make it</option>
+            </select>
+            
+            <div id="p1-area"></div>
+            
+            <label>Email Address</label>
+            <input type="email" id="guest-email" value="${guestData.email || ''}" placeholder="For updates">
+            
+            <label>Message to the couple</label>
+            <textarea id="guest-note" style="width:100%; height:100px; padding:10px; border-radius:5px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
+            
+            <button onclick="submitRSVP()" id="submit-btn">Confirm RSVP</button>
+        </div>`;
+    
+    // Trigger logic to show/hide P1 based on initial selection
+    togglePlusOne(canP1);
+}
+
+function showDoneView(data) {
+    const content = document.getElementById('content');
+    content.classList.remove('hidden');
+    content.innerHTML = `
+        <div class="rsvp-card" style="text-align:center;">
+            <h2>Thank you!</h2>
+            <p>RSVP recorded for ${data.name}.</p>
+            <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-radius: 4px;">
+                <strong>Status:</strong> ${data.attending}<br>
+                ${data.plusOneName && data.plusOneName !== "None" ? `<strong>Plus One:</strong> ${data.plusOneName}` : ''}
+            </div>
+            <button onclick="showMainForm()">Edit Response</button>
+        </div>`;
+}
+
+function togglePlusOne(canP1) {
+    const area = document.getElementById('p1-area');
+    const attending = document.getElementById('attending-select').value;
+    
+    // Logic: Only show Plus One option if they say YES
+    if (attending === "Yes") {
+        area.innerHTML = `
+            <label>Bringing a plus one?</label>
+            <select id="bringing-p1" onchange="toggleP1Name()">
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+            </select>
+            <div id="p1-name-wrapper"></div>
+        `;
+        // Restore previous value if available
+        if(guestData.plusOneName && guestData.plusOneName !== "None" && guestData.plusOneName !== "") {
+             document.getElementById('bringing-p1').value = "Yes";
+             toggleP1Name(guestData.plusOneName);
+        }
+    } else { 
+        area.innerHTML = ''; 
+    }
+}
+
+function toggleP1Name(prefillValue = "") {
+    const wrapper = document.getElementById('p1-name-wrapper');
+    const select = document.getElementById('bringing-p1');
+    
+    if (select && select.value === "Yes") {
+        wrapper.innerHTML = `<label>Plus One Name</label><input type="text" id="plus-one-name" value="${prefillValue}">`;
+    } else { 
+        wrapper.innerHTML = ''; 
+    }
+}
+
+function submitRSVP() {
+    const btn = document.getElementById('submit-btn');
+    btn.innerHTML = "Saving..."; 
+    btn.disabled = true;
+    
+    const p1Input = document.getElementById('plus-one-name');
+    const p1Value = p1Input ? p1Input.value : "None";
+    
+    const payload = {
+        token: token, 
+        name: guestData.name,
+        email: document.getElementById('guest-email').value,
+        attending: document.getElementById('attending-select').value,
+        plusOneName: p1Value,
+        note: document.getElementById('guest-note').value
+    };
+    
+    // Send to Google Script
+    fetch(webAppUrl, { 
+        method: "POST", 
+        mode: "no-cors", 
+        body: JSON.stringify(payload) 
+    }).then(() => {
+        // Update local data so "Edit" works correctly
+        guestData.attending = payload.attending;
+        guestData.plusOneName = payload.plusOneName;
+        guestData.email = payload.email;
+        guestData.note = payload.note;
+        
+        showDoneView(guestData);
+    }).catch(e => {
+        alert("Error saving. Please try again.");
+        btn.innerHTML = "Confirm RSVP";
+        btn.disabled = false;
+    });
+}
+
+function loadEntourage() {
+    // 3-Column Logic: Checkbox | Role | Name
+    fetch(`${webAppUrl}?action=getEntourage`)
+    .then(res => res.json())
+    .then(data => {
+        Object.keys(data).forEach(roleID => {
+            const el = document.getElementById(roleID);
+            if (el) {
+                // Fill text
+                el.innerHTML = data[roleID].split(',').map(n => n.trim()).join('<br>');
+                // Force Visible
+                el.style.opacity = "1";
+                // Trigger Scroll Reveal
+                const parent = el.closest('.reveal-on-scroll');
+                if(parent) parent.classList.add('is-visible');
+            }
+        });
+    })
+    .catch(console.error);
+}
+
 function updateCountdown() {
     const wedding = new Date("November 6, 2027 14:00:00").getTime();
     const now = new Date().getTime();
@@ -1428,37 +1435,57 @@ function updateCountdown() {
 
     if (diff <= 0) return;
 
-    // Use consistent variable names
-    const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.44));
-    const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
     const setDisplay = (id, val) => {
         const el = document.getElementById(id);
-        if (el) {
-            // This Math.max ensures no negative numbers/dashes
-            el.textContent = Math.max(0, val).toString();
-        }
+        if (el) el.textContent = Math.max(0, Math.floor(val));
     };
 
-    // Update these to match the math variables above
-    setDisplay("months", months);
-    setDisplay("days", days);
-    setDisplay("hours", hours);
-    setDisplay("minutes", minutes);
-    setDisplay("seconds", seconds);
+    setDisplay("months", diff / (1000 * 60 * 60 * 24 * 30.44));
+    setDisplay("days", (diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+    setDisplay("hours", (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    setDisplay("minutes", (diff % (1000 * 60 * 60)) / (1000 * 60));
+    setDisplay("seconds", (diff % (1000 * 60)) / 1000);
 }
 
-// THE TRIGGER (Safe and Separate)
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("Countdown starting...");
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-});
-           
+// --- UI HELPERS ---
+function openInvitation() {
+    document.getElementById('envelope-wrapper').classList.add('open');
+    const seal = document.getElementById('seal');
+    if(seal) {
+        seal.style.opacity = "0";
+        seal.style.pointerEvents = "none";
+    }
+}
 
+function handleMusic(play, event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    if (play) {
+        var audio = document.getElementById('bg-music');
+        if(audio) {
+            audio.currentTime = 0; 
+            audio.play().catch(e => console.log("Audio play blocked:", e));
+        }
+    }
+
+    const wrapper = document.getElementById('envelope-wrapper');
+    wrapper.classList.add('wrapper-exit');
+
+    setTimeout(() => {
+        document.getElementById('main-site').style.display = 'block';
+        document.body.classList.add('show-site');
+        document.body.style.overflow = 'auto'; 
+        document.documentElement.style.overflow = 'auto';
+    }, 100);
+
+    setTimeout(() => {
+        wrapper.style.display = "none";
+    }, 800);
+}
+</script>
 </script>
 </body>
 </html>
