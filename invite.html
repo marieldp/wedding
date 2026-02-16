@@ -928,10 +928,20 @@ The countdown to forever...
 
 
 <section id="entourage" style="
-    padding: 100px 20px; 
+    padding: 120px 20px; /* Increased padding for flowers */
     /* Back to Emerald Green */
     background-color: #043927; 
-    text-align: center;">
+    text-align: center;
+    position: relative;">
+
+    <img src="image_10.png" alt="Floral decoration" style="
+        width: 100%;
+        max-width: 900px; /* Match the paper width */
+        display: block;
+        margin: 0 auto -30px auto; /* Negative margin to overlap the paper */
+        position: relative;
+        z-index: 2; /* Ensure it sits on top */
+    ">
 
     <div class="reveal-on-scroll paper-texture" style="
         background-color: #fcfaf7; 
@@ -942,7 +952,9 @@ The countdown to forever...
         /* DEEP SHADOW EFFECT */
         box-shadow: 0 30px 70px rgba(0,0,0,0.5);
         /* Optional: A very subtle gold border to frame the paper */
-        border: 1px solid #d4af37;">
+        border: 1px solid #d4af37;
+        position: relative;
+        z-index: 1;">
 
         <div style="margin-bottom: 70px;">
             <h2 style="font-family: 'Pinyon Script', cursive; font-size: 60px; color: #d4af37; margin-bottom: 10px;">The Entourage</h2>
@@ -1036,6 +1048,17 @@ The countdown to forever...
         </div>
 
     </div>
+
+    <img src="flower.png" alt="Floral decoration" style="
+        width: 100%;
+        max-width: 900px; /* Match the paper width */
+        display: block;
+        margin: -30px auto 0 auto; /* Negative margin to overlap the paper */
+        position: relative;
+        z-index: 2; /* Ensure it sits on top */
+        transform: rotate(180deg); /* Flip the bottom image */
+    ">
+
 </section>
     
 <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
