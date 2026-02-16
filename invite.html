@@ -11,112 +11,112 @@
 
 /* --- BALANCED SPLIT TIMELINE --- */
 #timeline {
-    position: relative;
-    overflow: hidden;
-    padding: 100px 20px;
-    background-color: #fcfaf7;
+position: relative;
+overflow: hidden;
+padding: 100px 20px;
+background-color: #fcfaf7;
 }
 
 .timeline-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    position: relative;
+max-width: 1000px;
+margin: 0 auto;
+position: relative;
 }
 
 /* THE CENTRAL VERTICAL LINE */
 .timeline-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 2px;
-    background: #043927; /* Emerald */
-    transform: translateX(-50%);
-    opacity: 0.3;
-    z-index: 0;
+content: '';
+position: absolute;
+top: 0;
+bottom: 0;
+left: 50%;
+width: 2px;
+background: #043927; /* Emerald */
+transform: translateX(-50%);
+opacity: 0.3;
+z-index: 0;
 }
 
 /* THE ROW WRAPPER */
 .timeline-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 60px; /* Reduced gap between events */
-    position: relative;
-    z-index: 1;
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 60px; /* Reduced gap between events */
+position: relative;
+z-index: 1;
 }
 
 /* THE TWO SIDES */
 .timeline-content-side, 
 .timeline-image-side {
-    width: 49%; /* INCREASED to make them closer */
-    position: relative;
+width: 49%; /* INCREASED to make them closer */
+position: relative;
 }
 
 /* --- THE IMAGE SIDE --- */
 .timeline-image-side {
-    display: flex;
-    align-items: center;
+display: flex;
+align-items: center;
 }
 
 /* THE IMAGE ITSELF */
 .timeline-image-side img {
-    max-width: 180px; 
-    max-height: 180px;
-    object-fit: contain;
-    
-    /* 1. NO ANIMATION on the image itself */
-    animation: none; 
-    
-    /* 2. NO FILTER (Fixes the Blue/Teal issue) */
-    filter: none !important; 
-    
-    opacity: 1; 
+max-width: 180px; 
+max-height: 180px;
+object-fit: contain;
+
+/* 1. NO ANIMATION on the image itself */
+animation: none; 
+
+/* 2. NO FILTER (Fixes the Blue/Teal issue) */
+filter: none !important; 
+
+opacity: 1; 
 }
 
 /* THE CENTER DOT */
 .center-dot {
-    position: absolute;
-    left: 50%;
-    top: 50%; /* Center vertically relative to the row */
-    width: 16px;
-    height: 16px;
-    background: #d4af37; 
-    border: 4px solid #F4CFE0; 
-    border-radius: 50%;
-    transform: translate(-50%, -50%); /* Perfectly centered */
-    box-shadow: 0 0 0 5px #fcfaf7; 
-    z-index: 10;
+position: absolute;
+left: 50%;
+top: 50%; /* Center vertically relative to the row */
+width: 16px;
+height: 16px;
+background: #d4af37; 
+border: 4px solid #F4CFE0; 
+border-radius: 50%;
+transform: translate(-50%, -50%); /* Perfectly centered */
+box-shadow: 0 0 0 5px #fcfaf7; 
+z-index: 10;
 }
 
 /* --- TYPOGRAPHY --- */
 .event-time {
-    font-family: 'Montserrat', sans-serif;
-    color: #d4af37; 
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    display: block;
+font-family: 'Montserrat', sans-serif;
+color: #d4af37; 
+font-size: 13px;
+font-weight: 700;
+letter-spacing: 2px;
+text-transform: uppercase;
+margin-bottom: 5px;
+display: block;
 }
 
 .timeline-content-side h3 {
-    font-family: 'Playfair Display', serif;
-    color: #043927; 
-    font-size: 2.2rem;
-    margin: 0 0 10px 0;
-    line-height: 1.1;
+font-family: 'Playfair Display', serif;
+color: #043927; 
+font-size: 2.2rem;
+margin: 0 0 10px 0;
+line-height: 1.1;
 }
 
 .timeline-content-side p {
-    font-family: 'Georgia', serif;
-    font-size: 16px;
-    color: #666;
-    line-height: 1.5;
-    font-style: italic;
-    margin: 0;
+font-family: 'Georgia', serif;
+font-size: 16px;
+color: #666;
+line-height: 1.5;
+font-style: italic;
+margin: 0;
 }
 
 /* --- ALTERNATING SIDES LOGIC (HUGGING THE LINE) --- */
@@ -124,30 +124,30 @@
 /* NORMAL ROW (Text Left, Image Right) */
 /* Actually in your code: Content is 1st div, Image is 2nd div */
 .timeline-row.normal {
-    flex-direction: row;
+flex-direction: row;
 }
 .timeline-row.normal .timeline-content-side {
-    text-align: right; 
-    padding-right: 30px; /* Push text closer to line */
+text-align: right; 
+padding-right: 30px; /* Push text closer to line */
 }
 /* Align image to START (Left) to hug the center line */
 .timeline-row.normal .timeline-image-side {
-    justify-content: flex-start; 
-    padding-left: 30px; /* Push image closer to line */
+justify-content: flex-start; 
+padding-left: 30px; /* Push image closer to line */
 }
 
 /* REVERSE ROW (Image Left, Text Right) */
 .timeline-row.reverse {
-    flex-direction: row-reverse;
+flex-direction: row-reverse;
 }
 .timeline-row.reverse .timeline-content-side {
-    text-align: left; 
-    padding-left: 30px; /* Push text closer to line */
+text-align: left; 
+padding-left: 30px; /* Push text closer to line */
 }
 /* Align image to END (Right) to hug the center line */
 .timeline-row.reverse .timeline-image-side {
-    justify-content: flex-end; 
-    padding-right: 30px; /* Push image closer to line */
+justify-content: flex-end; 
+padding-right: 30px; /* Push image closer to line */
 }
 
 
@@ -200,74 +200,74 @@ gap: 8px !important;
 }
 
 .timeline-container {
-        padding: 40px 5px !important; 
-        width: 100% !important;
-    }
+padding: 40px 5px !important; 
+width: 100% !important;
+}
 
-    /* 2. THE LINE: Stay perfectly in the center */
-    .timeline-container::before {
-        left: 50% !important;
-        transform: translateX(-50%);
-    }
+/* 2. THE LINE: Stay perfectly in the center */
+.timeline-container::before {
+left: 50% !important;
+transform: translateX(-50%);
+}
 
-    /* 3. THE SIDES: Force them to be exactly half the screen */
-    .timeline-content-side, 
-    .timeline-image-side {
-        width: 50% !important;
-        box-sizing: border-box; /* Ensures padding doesn't break the layout */
-    }
+/* 3. THE SIDES: Force them to be exactly half the screen */
+.timeline-content-side, 
+.timeline-image-side {
+width: 50% !important;
+box-sizing: border-box; /* Ensures padding doesn't break the layout */
+}
 
-    /* 4. SHRINK THE IMAGES significantly */
-    .timeline-image-side img {
-        max-width: 70px !important; /* Much smaller to fit half-screen */
-        max-height: 70px !important;
-    }
+/* 4. SHRINK THE IMAGES significantly */
+.timeline-image-side img {
+max-width: 70px !important; /* Much smaller to fit half-screen */
+max-height: 70px !important;
+}
 
-    /* 5. SHRINK THE TEXT to prevent wrapping issues */
-    .timeline-content-side h3 {
-        font-size: 1.1rem !important; /* Smaller header */
-        margin-bottom: 5px !important;
-    }
-    .timeline-content-side p {
-        font-size: 0.7rem !important; /* Smaller body text */
-        line-height: 1.3 !important;
-    }
-    .event-time {
-        font-size: 9px !important; /* Tiny time label */
-    }
+/* 5. SHRINK THE TEXT to prevent wrapping issues */
+.timeline-content-side h3 {
+font-size: 1.1rem !important; /* Smaller header */
+margin-bottom: 5px !important;
+}
+.timeline-content-side p {
+font-size: 0.7rem !important; /* Smaller body text */
+line-height: 1.3 !important;
+}
+.event-time {
+font-size: 9px !important; /* Tiny time label */
+}
 
-    /* 6. TIGHTEN THE GAPS (Crucial for the split look) */
-    
-    /* Normal Row (Text Left, Image Right) */
-    .timeline-row.normal .timeline-content-side {
-        padding-right: 15px !important; /* Only 15px gap from line */
-        text-align: right !important;
-    }
-    .timeline-row.normal .timeline-image-side {
-        padding-left: 15px !important;
-        justify-content: flex-start !important;
-    }
+/* 6. TIGHTEN THE GAPS (Crucial for the split look) */
 
-    /* Reverse Row (Image Left, Text Right) */
-    .timeline-row.reverse .timeline-content-side {
-        padding-left: 15px !important;
-        text-align: left !important;
-    }
-    .timeline-row.reverse .timeline-image-side {
-        padding-right: 15px !important;
-        justify-content: flex-end !important;
-    }
+/* Normal Row (Text Left, Image Right) */
+.timeline-row.normal .timeline-content-side {
+padding-right: 15px !important; /* Only 15px gap from line */
+text-align: right !important;
+}
+.timeline-row.normal .timeline-image-side {
+padding-left: 15px !important;
+justify-content: flex-start !important;
+}
 
-    /* 7. CENTER DOT */
-    .center-dot {
-        width: 12px !important; /* Slightly smaller dot */
-        height: 12px !important;
-        border-width: 2px !important;
-        left: 50% !important;
-    }
+/* Reverse Row (Image Left, Text Right) */
+.timeline-row.reverse .timeline-content-side {
+padding-left: 15px !important;
+text-align: left !important;
+}
+.timeline-row.reverse .timeline-image-side {
+padding-right: 15px !important;
+justify-content: flex-end !important;
+}
 
-    /* --- YOUR EXISTING MOBILE FIXES BELOW (Preserved) --- */
-   }
+/* 7. CENTER DOT */
+.center-dot {
+width: 12px !important; /* Slightly smaller dot */
+height: 12px !important;
+border-width: 2px !important;
+left: 50% !important;
+}
+
+/* --- YOUR EXISTING MOBILE FIXES BELOW (Preserved) --- */
+}
 
 /* This locks the site vertically and prevents side-scrolling */
 body, html {
@@ -865,6 +865,41 @@ Scroll to RSVP
 </div>
 </section>
 
+<section id="formal-invitation" class="paper-texture" style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center; position: relative; z-index: 10; margin-top: -1px; overflow: hidden;">
+
+<div class="reveal-on-scroll" style="max-width: 620px; margin: 0 auto; position: relative;">
+
+        <div style="position: absolute; top: 20px; left: 20px; right: -20px; bottom: -20px; background-color: #043927; border-radius: 2px; z-index: 0; box-shadow: 0 10px 40px rgba(0,0,0,0.3); transform: rotate(0.5deg);"></div>
+        <div style="position: absolute; top: 20px; left: 20px; right: -20px; bottom: -20px; background-color: #043927; border: 1px solid #d4af37; border-radius: 2px; z-index: 0; box-shadow: 0 10px 40px rgba(0,0,0,0.3); transform: rotate(0.5deg);"></div>
+
+<div style="background: #ffffff; border: 1px solid #d4af37; padding: 15px; position: relative; z-index: 1; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+<div style="border: 1.5px solid #d4af37; padding: 70px 30px; position: relative;">
+
+<div style="position: absolute; top: 12px; left: 12px; width: 30px; height: 30px; border-top: 2px solid #d4af37; border-left: 2px solid #d4af37;"></div>
+<div style="position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; border-top: 2px solid #d4af37; border-right: 2px solid #d4af37;"></div>
+
+<p style="font-family: 'Georgia', serif; letter-spacing: 5px; font-size: 11px; text-transform: uppercase; color: #d4af37; margin-bottom: 35px; font-weight: 700;">Together with their families</p>
+
+<h2 style="font-family: 'Great Vibes', cursive; font-size: clamp(55px, 12vw, 90px); color: #043927; margin: 0; font-weight: 400; line-height: 1.1;">Mariel & Jasper</h2>
+
+<div style="margin: 35px 0; color: #f4cfe0; font-size: 35px; line-height: 1;">❦</div>
+
+<p style="font-family: 'Georgia', serif; font-size: 18px; line-height: 2.0; color: #043927; font-style: italic; max-width: 85%; margin: 0 auto;">
+request the honor of your presence as they exchange marriage vows and celebrate the beginning of their life together
+</p>
+
+<div style="margin-top: 55px; padding-top: 35px; border-top: 1px solid #f4cfe0; display: inline-block;">
+<p style="font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 6px; font-size: 14px; text-transform: uppercase; color: #d4af37; margin: 0;">Saturday</p>
+<p style="font-family: 'Playfair Display', serif; font-size: 32px; margin: 15px 0; color: #043927; letter-spacing: 4px; font-weight: 700;">NOVEMBER 06, 2027</p>
+<p style="font-family: 'Montserrat', sans-serif; font-weight: 400; letter-spacing: 6px; font-size: 14px; text-transform: uppercase; color: #d4af37; margin: 0;">At Two O'Clock in the Afternoon</p>
+</div>
+
+<div style="position: absolute; bottom: 12px; left: 12px; width: 30px; height: 30px; border-bottom: 2px solid #d4af37; border-left: 2px solid #d4af37;"></div>
+<div style="position: absolute; bottom: 12px; right: 12px; width: 30px; height: 30px; border-bottom: 2px solid #d4af37; border-right: 2px solid #d4af37;"></div>
+</div>
+</div>
+</div>
+
 <div class="reveal-on-scroll" style="margin: 80px auto 20px auto; max-width: 620px; text-align: center;">
     
     <p style="font-family: 'Pinyon Script', cursive; font-size: 38px; color: #043927; margin-bottom: 25px; line-height: 1;">
@@ -907,141 +942,142 @@ Scroll to RSVP
         </div>
     </div>
 </div>
-
-<section id="entourage" style="
-    padding: 80px 15px; 
-    background-color: #043927; 
-    text-align: center;">
-
-    <div class="reveal-on-scroll paper-texture" style="
-        background-color: #fcfaf7; 
-        max-width: 900px; 
-        margin: 0 auto; 
-        padding: 0; 
-        border-radius: 4px; 
-        box-shadow: 0 30px 70px rgba(0,0,0,0.5);
-        border: 1px solid #d4af37;
-        overflow: hidden; 
-        position: relative; /* Container for absolute flowers */
-        display: block;">
-
-        <img src="flower.png" alt="Floral Top" style="
-    position: absolute;
-    top: -15px; /* Adjust this number (e.g., -20px or -30px) to pull it higher */
-    left: 0;
-    width: 100%;
-    height: auto;
-    display: block;
-    transform: rotate(180deg);
-    z-index: 5;
-    pointer-events: none;">
-
-        <div style="padding: 120px 20px 120px 20px; position: relative; z-index: 2;">
-
-            <div style="margin-bottom: 70px;">
-                <h2 style="font-family: 'Pinyon Script', cursive; font-size: clamp(40px, 8vw, 60px); color: #d4af37; margin-bottom: 10px;">The Entourage</h2>
-                <div style="width: 50px; height: 1px; background: #d4af37; margin: 0 auto; opacity: 0.5;"></div>
-            </div>
-
-            <div style="margin-bottom: 60px;">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;">
-                    <div>
-                        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Bride</span>
-                        <p id="Parents_Bride" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #043927; line-height: 2.0; margin-top: 15px;"></p>
-                    </div>
-                    <div>
-                        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Groom</span>
-                        <p id="Parents_Groom" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #043927; line-height: 2.0; margin-top: 15px;"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 70px;">
-                <span style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 30px;">Principal Sponsors</span>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 30px;">
-                    <p id="Principal_Sponsors_Male" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2;"></p>
-                    <p id="Principal_Sponsors_Female" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2;"></p>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 70px;">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;">
-                    <div>
-                        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Maid of Honor</span>
-                        <p id="Maid_of_Honor" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; margin-top: 10px;"></p>
-                    </div>
-                    <div>
-                        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Best Man</span>
-                        <p id="Best_Man" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; margin-top: 10px;"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 70px;">
-                <span style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 35px;">Secondary Sponsors</span>
-                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;">
-                    <div style="min-width: 180px;">
-                        <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 800;">To Light Our Path</span>
-                        <p id="Sponsors_Candle" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; margin-top: 5px;"></p>
-                    </div>
-                    <div style="min-width: 180px;">
-                        <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 800;">To Clothe Us As One</span>
-                        <p id="Sponsors_Veil" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; margin-top: 5px;"></p>
-                    </div>
-                    <div style="min-width: 180px;">
-                        <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 800;">To Bind Us Together</span>
-                        <p id="Sponsors_Cord" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; margin-top: 5px;"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 60px; margin-bottom: 70px;">
-                <div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Bridesmaids</span>
-                    <p id="Bridesmaids" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
-                </div>
-                <div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Groomsmen</span>
-                    <p id="Groomsmen" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 60px;">
-                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;">
-                    <div style="min-width: 120px;">
-                        <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Ring Bearer</span>
-                        <p id="Ring_Bearer" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; margin-top: 10px;"></p>
-                    </div>
-                    <div style="min-width: 120px;">
-                        <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Coin Bearer</span>
-                        <p id="Coin_Bearer" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; margin-top: 10px;"></p>
-                    </div>
-                    <div style="min-width: 120px;">
-                        <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Bible Bearer</span>
-                        <p id="Bible_Bearer" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; margin-top: 10px;"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Flower Girls</span>
-                <p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
-            </div>
-            
-       <img src="flower.png" alt="Floral Footer" style="
-    position: absolute;
-    bottom: -15px; /* Adjust this number to push it lower */
-    left: 0;
-    width: 100%;
-    height: auto;
-    display: block;
-    z-index: 5;
-    pointer-events: none;">
-
-    </div>
 </section>
 
-    
+<section id="entourage" style="
+   padding: 80px 15px; 
+   background-color: #043927; 
+   text-align: center;">
+
+<div class="reveal-on-scroll paper-texture" style="
+       background-color: #fcfaf7; 
+       max-width: 900px; 
+       margin: 0 auto; 
+       padding: 0; 
+       border-radius: 4px; 
+       box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+       border: 1px solid #d4af37;
+       overflow: hidden; 
+       position: relative; /* Container for absolute flowers */
+       display: block;">
+
+<img src="flower.png" alt="Floral Top" style="
+   position: absolute;
+   top: -15px; /* Adjust this number (e.g., -20px or -30px) to pull it higher */
+   left: 0;
+   width: 100%;
+   height: auto;
+   display: block;
+   transform: rotate(180deg);
+   z-index: 5;
+   pointer-events: none;">
+
+<div style="padding: 120px 20px 120px 20px; position: relative; z-index: 2;">
+
+<div style="margin-bottom: 70px;">
+<h2 style="font-family: 'Pinyon Script', cursive; font-size: clamp(40px, 8vw, 60px); color: #d4af37; margin-bottom: 10px;">The Entourage</h2>
+<div style="width: 50px; height: 1px; background: #d4af37; margin: 0 auto; opacity: 0.5;"></div>
+</div>
+
+<div style="margin-bottom: 60px;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;">
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Bride</span>
+<p id="Parents_Bride" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #043927; line-height: 2.0; margin-top: 15px;"></p>
+</div>
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Groom</span>
+<p id="Parents_Groom" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #043927; line-height: 2.0; margin-top: 15px;"></p>
+</div>
+</div>
+</div>
+
+<div style="margin-bottom: 70px;">
+<span style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 30px;">Principal Sponsors</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 30px;">
+<p id="Principal_Sponsors_Male" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2;"></p>
+<p id="Principal_Sponsors_Female" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2;"></p>
+</div>
+</div>
+
+<div style="margin-bottom: 70px;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;">
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Maid of Honor</span>
+<p id="Maid_of_Honor" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; margin-top: 10px;"></p>
+</div>
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Best Man</span>
+<p id="Best_Man" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; margin-top: 10px;"></p>
+</div>
+</div>
+</div>
+
+<div style="margin-bottom: 70px;">
+<span style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 35px;">Secondary Sponsors</span>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;">
+<div style="min-width: 180px;">
+<span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 800;">To Light Our Path</span>
+<p id="Sponsors_Candle" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; margin-top: 5px;"></p>
+</div>
+<div style="min-width: 180px;">
+<span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 800;">To Clothe Us As One</span>
+<p id="Sponsors_Veil" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; margin-top: 5px;"></p>
+</div>
+<div style="min-width: 180px;">
+<span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 800;">To Bind Us Together</span>
+<p id="Sponsors_Cord" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; margin-top: 5px;"></p>
+</div>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 60px; margin-bottom: 70px;">
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Bridesmaids</span>
+<p id="Bridesmaids" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+</div>
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Groomsmen</span>
+<p id="Groomsmen" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+</div>
+</div>
+
+<div style="margin-bottom: 60px;">
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;">
+<div style="min-width: 120px;">
+<span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Ring Bearer</span>
+<p id="Ring_Bearer" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; margin-top: 10px;"></p>
+</div>
+<div style="min-width: 120px;">
+<span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Coin Bearer</span>
+<p id="Coin_Bearer" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; margin-top: 10px;"></p>
+</div>
+<div style="min-width: 120px;">
+<span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Bible Bearer</span>
+<p id="Bible_Bearer" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; margin-top: 10px;"></p>
+</div>
+</div>
+</div>
+
+<div>
+<span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Flower Girls</span>
+<p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 16px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+</div>
+
+<img src="flower.png" alt="Floral Footer" style="
+   position: absolute;
+   bottom: -15px; /* Adjust this number to push it lower */
+   left: 0;
+   width: 100%;
+   height: auto;
+   display: block;
+   z-index: 5;
+   pointer-events: none;">
+
+</div>
+</section>
+
+
 <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
 <h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; margin-bottom: 50px;">The Journey to Forever</h2>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; max-width: 1000px; margin: 0 auto;">
@@ -1175,20 +1211,20 @@ const content = document.getElementById('content');
 content.classList.remove('hidden');
 const canP1 = String(guestData.allowPlusOne).toLowerCase() === "true";
 content.innerHTML = `
-          <div class="rsvp-card">
-              <h2>Hi ${guestData.name},</h2>
-              <label>Will you attend?</label>
-              <select id="attending-select" onchange="togglePlusOne(${canP1})">
-                  <option value="Yes">Yes, I'll be there!</option>
-                  <option value="No">No, I can't make it</option>
-              </select>
-              <div id="p1-area"></div>
-              <label>Email Address</label>
-              <input type="email" id="guest-email" value="${guestData.email || ''}">
-              <label>Message to the couple</label>
-              <textarea id="guest-note" style="width:100%; height:100px; padding:10px; border-radius:5px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
-              <button onclick="submitRSVP()" id="submit-btn">Confirm RSVP</button>
-          </div>`;
+         <div class="rsvp-card">
+             <h2>Hi ${guestData.name},</h2>
+             <label>Will you attend?</label>
+             <select id="attending-select" onchange="togglePlusOne(${canP1})">
+                 <option value="Yes">Yes, I'll be there!</option>
+                 <option value="No">No, I can't make it</option>
+             </select>
+             <div id="p1-area"></div>
+             <label>Email Address</label>
+             <input type="email" id="guest-email" value="${guestData.email || ''}">
+             <label>Message to the couple</label>
+             <textarea id="guest-note" style="width:100%; height:100px; padding:10px; border-radius:5px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
+             <button onclick="submitRSVP()" id="submit-btn">Confirm RSVP</button>
+         </div>`;
 togglePlusOne(canP1);
 }
 
@@ -1227,11 +1263,11 @@ function showDoneView(data) {
 const content = document.getElementById('content');
 content.classList.remove('hidden');
 content.innerHTML = `
-          <div class="rsvp-card" style="text-align:center;">
-              <h2>Thank you!</h2>
-              <p>RSVP recorded for ${data.name}.</p>
-              <button onclick="showMainForm()">Edit Response</button>
-          </div>`;
+         <div class="rsvp-card" style="text-align:center;">
+             <h2>Thank you!</h2>
+             <p>RSVP recorded for ${data.name}.</p>
+             <button onclick="showMainForm()">Edit Response</button>
+         </div>`;
 }
 
 // SMART SCROLL REVEAL OBSERVER (Fix for multiple elements)
