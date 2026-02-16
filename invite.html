@@ -932,7 +932,7 @@ Scroll to RSVP
 
 
 <section id="entourage" style="
-    padding: 120px 20px; 
+    padding: 100px 20px; 
     background-color: #043927; 
     text-align: center;">
 
@@ -944,23 +944,19 @@ Scroll to RSVP
         border-radius: 4px; 
         box-shadow: 0 30px 70px rgba(0,0,0,0.5);
         border: 1px solid #d4af37;
-        position: relative; /* Essential for the flower to sit on top */
-        /* Note: overflow:hidden removed to allow top flower to pop out */
-    ">
+        overflow: hidden; /* Keeps the flower inside the paper edges */
+        position: relative;">
 
         <img src="flower.jpg" alt="Floral Top" style="
             width: 100%;
             height: auto;
             display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            /* translateY(-50%) lifts it halfway up; rotate(180deg) hangs it down */
-            transform: translateY(-50%) rotate(180deg); 
-            z-index: 10;
+            /* Negative margin slides it UP to touch the edge inside the card */
+            margin-top: -20px; 
+            transform: rotate(180deg); 
         ">
 
-        <div style="padding: 100px 30px 40px 30px;">
+        <div style="padding: 40px 30px 40px 30px;">
 
             <div style="margin-bottom: 70px;">
                 <h2 style="font-family: 'Pinyon Script', cursive; font-size: 60px; color: #d4af37; margin-bottom: 10px;">The Entourage</h2>
@@ -1056,7 +1052,7 @@ Scroll to RSVP
             width: 100%;
             height: auto;
             display: block;
-            object-fit: cover;
+            margin-bottom: -20px; /* Slides it down to touch bottom edge inside */
         ">
 
     </div>
