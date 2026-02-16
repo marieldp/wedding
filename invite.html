@@ -933,7 +933,6 @@ Scroll to RSVP
 
 <section id="entourage" style="
     padding: 100px 20px; 
-    /* Emerald Green Background */
     background-color: #043927; 
     text-align: center;">
 
@@ -941,21 +940,21 @@ Scroll to RSVP
         background-color: #fcfaf7; 
         max-width: 900px; 
         margin: 0 auto; 
-        padding: 0; /* Padding removed so images touch edges */
+        padding: 0; /* Removed padding to allow flowers to touch the edges */
         border-radius: 4px; 
         box-shadow: 0 30px 70px rgba(0,0,0,0.5);
         border: 1px solid #d4af37;
-        overflow: hidden;">
+        overflow: hidden; /* Ensures images don't bleed out of rounded corners */
+        position: relative;">
 
-        <img src="flower.png" alt="Floral Top" style="
+        <img src="flower.png" alt="Floral Header" style="
             width: 100%;
             height: auto;
             display: block;
-            object-fit: cover;
-            transform: rotate(180deg); /* FLIPPED */
+            transform: rotate(180deg); /* Flips it to hang from the top */
         ">
 
-        <div style="padding: 40px 30px;">
+        <div style="padding: 60px 30px;">
 
             <div style="margin-bottom: 70px;">
                 <h2 style="font-family: 'Pinyon Script', cursive; font-size: 60px; color: #d4af37; margin-bottom: 10px;">The Entourage</h2>
@@ -998,7 +997,6 @@ Scroll to RSVP
 
             <div style="margin-bottom: 70px;">
                 <span style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 35px;">Secondary Sponsors</span>
-
                 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;">
                     <div style="min-width: 200px;">
                         <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 800;">To Light Our Path</span>
@@ -1043,17 +1041,15 @@ Scroll to RSVP
                 </div>
             </div>
 
-            <div>
+            <div style="margin-bottom: 20px;">
                 <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Flower Girls</span>
                 <p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
             </div>
             
-        </div> <img src="flower.png" alt="Floral Bottom" style="
+        </div> <img src="flower.png" alt="Floral Footer" style="
             width: 100%;
             height: auto;
             display: block;
-            object-fit: cover;
-            /* Normal orientation */
         ">
 
     </div>
