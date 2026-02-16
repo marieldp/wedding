@@ -944,16 +944,17 @@ Scroll to RSVP
         border-radius: 4px; 
         box-shadow: 0 30px 70px rgba(0,0,0,0.5);
         border: 1px solid #d4af37;
-        overflow: hidden; /* Keeps the flower inside the paper edges */
+        overflow: hidden; 
         position: relative;">
 
-        <img src="flower.png" alt="Floral Top" style="
+        <img src="image_10.png" alt="Floral Top" style="
             width: 100%;
             height: auto;
             display: block;
-            /* Negative margin slides it UP to touch the edge inside the card */
-            margin-top: -20px; 
+            /* Flipped to hang down from the top edge */
             transform: rotate(180deg); 
+            /* Ensures no ghost padding at the top */
+            vertical-align: top; 
         ">
 
         <div style="padding: 40px 30px 40px 30px;">
@@ -1048,11 +1049,11 @@ Scroll to RSVP
                 <p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
             </div>
             
-        </div> <img src="flower.png" alt="Floral Footer" style="
+        </div> <img src="image_10.png" alt="Floral Footer" style="
             width: 100%;
             height: auto;
             display: block;
-            margin-bottom: -20px; /* Slides it down to touch bottom edge inside */
+            vertical-align: bottom;
         ">
 
     </div>
