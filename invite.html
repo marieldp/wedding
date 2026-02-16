@@ -67,16 +67,16 @@ justify-content: center;
 
 /* THE IMAGE ITSELF */
 .timeline-image-side img {
-max-width: 180px; /* Size of the icon */
-max-height: 180px;
-object-fit: contain;
-/* Optional: A soft float animation */
-animation: floatIcon 6s ease-in-out infinite;
-/* KEEP THIS if your icons are black and you want them EMERALD.
-      REMOVE THIS if your icons are already colored.
-   */
-    filter: invert(16%) sepia(34%) saturate(1478%) hue-rotate(119deg) brightness(93%) contrast(93%);
-    opacity: 0.8; 
+    max-width: 180px; 
+    max-height: 180px;
+    object-fit: contain;
+    
+    /* 1. ANIMATION REMOVED */
+    animation: none; 
+    
+    /* 2. FILTER REMOVED (This fixes the Blue issue) */
+    filter: none; 
+    
     opacity: 1; 
 }
 
@@ -139,11 +139,6 @@ flex-direction: row-reverse;
 text-align: left; /* Align text towards center */
 }
 
-/* FLOATING ANIMATION */
-@keyframes floatIcon {
-0%, 100% { transform: translateY(0); }
-50% { transform: translateY(-10px); }
-}
 
 /* iPhone 15 Plus Fix: Nudge the RSVP up on mobile screens */
 @media (max-width: 768px) {
@@ -1109,7 +1104,7 @@ We invite our guests to celebrate with us in this color
 </div>
 <div class="center-dot"></div>
 <div class="timeline-image-side">
-<img src="icon-toast.png" alt="Toast">
+<img src="cocktail.png" alt="Toast">
 </div>
 </div>
 
@@ -1121,7 +1116,7 @@ We invite our guests to celebrate with us in this color
 </div>
 <div class="center-dot"></div>
 <div class="timeline-image-side">
-<img src="icon-dinner.png" alt="Dinner">
+<img src="reception.png" alt="Dinner">
 </div>
 </div>
 
@@ -1133,7 +1128,7 @@ We invite our guests to celebrate with us in this color
 </div>
 <div class="center-dot"></div>
 <div class="timeline-image-side">
-<img src="icon-music.png" alt="Music">
+<img src="party.png" alt="Music">
 </div>
 </div>
 
