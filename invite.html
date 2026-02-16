@@ -11,58 +11,53 @@
 
 /* --- BALANCED SPLIT TIMELINE --- */
 #timeline {
-position: relative;
-overflow: hidden;
+    position: relative;
+    overflow: hidden;
+    padding: 100px 20px;
+    background-color: #fcfaf7;
 }
 
 .timeline-container {
-max-width: 1000px; /* Wider to accommodate images */
-margin: 0 auto;
-padding: 60px 20px;
-position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
 }
 
 /* THE CENTRAL VERTICAL LINE */
 .timeline-container::before {
-content: '';
-position: absolute;
-top: 0;
-bottom: 0;
-left: 50%;
-width: 2px;
-background: #043927; /* Emerald */
-transform: translateX(-50%);
-opacity: 0.3; /* Subtle line */
-z-index: 0;
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: #043927; /* Emerald */
+    transform: translateX(-50%);
+    opacity: 0.3;
+    z-index: 0;
 }
 
 /* THE ROW WRAPPER */
 .timeline-row {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 80px; /* Space between events */
-position: relative;
-z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 60px; /* Reduced gap between events */
+    position: relative;
+    z-index: 1;
 }
 
-/* THE TWO SIDES (50% Width Each) */
+/* THE TWO SIDES */
 .timeline-content-side, 
 .timeline-image-side {
-width: 45%; /* Leaves 10% gap in middle */
-position: relative;
-}
-
-/* --- THE TEXT SIDE --- */
-.timeline-content-side {
-padding: 20px;
+    width: 49%; /* INCREASED to make them closer */
+    position: relative;
 }
 
 /* --- THE IMAGE SIDE --- */
 .timeline-image-side {
-display: flex;
-align-items: center;
-justify-content: center;
+    display: flex;
+    align-items: center;
 }
 
 /* THE IMAGE ITSELF */
@@ -71,72 +66,88 @@ justify-content: center;
     max-height: 180px;
     object-fit: contain;
     
-    /* 1. ANIMATION REMOVED */
+    /* 1. NO ANIMATION on the image itself */
     animation: none; 
     
-    /* 2. FILTER REMOVED (This fixes the Blue issue) */
-    filter: none; 
+    /* 2. NO FILTER (Fixes the Blue/Teal issue) */
+    filter: none !important; 
     
     opacity: 1; 
 }
 
-/* THE CENTER DOT (Using the Dot to anchor the line) */
+/* THE CENTER DOT */
 .center-dot {
-position: absolute;
-left: 50%;
-width: 16px;
-height: 16px;
-background: #d4af37; /* Gold Center */
-border: 4px solid #F4CFE0; /* Rose Pink Border */
-border-radius: 50%;
-transform: translateX(-50%);
-box-shadow: 0 0 0 5px #fcfaf7; /* White Halo */
+    position: absolute;
+    left: 50%;
+    top: 50%; /* Center vertically relative to the row */
+    width: 16px;
+    height: 16px;
+    background: #d4af37; 
+    border: 4px solid #F4CFE0; 
+    border-radius: 50%;
+    transform: translate(-50%, -50%); /* Perfectly centered */
+    box-shadow: 0 0 0 5px #fcfaf7; 
+    z-index: 10;
 }
 
 /* --- TYPOGRAPHY --- */
 .event-time {
-font-family: 'Montserrat', sans-serif;
-color: #d4af37; /* Gold */
-font-size: 13px;
-font-weight: 700;
-letter-spacing: 2px;
-text-transform: uppercase;
-margin-bottom: 10px;
-display: block;
+    font-family: 'Montserrat', sans-serif;
+    color: #d4af37; 
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: block;
 }
 
 .timeline-content-side h3 {
-font-family: 'Playfair Display', serif;
-color: #043927; /* Emerald */
-font-size: 2.2rem;
-margin: 0 0 15px 0;
-line-height: 1.1;
+    font-family: 'Playfair Display', serif;
+    color: #043927; 
+    font-size: 2.2rem;
+    margin: 0 0 10px 0;
+    line-height: 1.1;
 }
 
 .timeline-content-side p {
-font-family: 'Georgia', serif;
-font-size: 16px;
-color: #666;
-line-height: 1.6;
-font-style: italic;
+    font-family: 'Georgia', serif;
+    font-size: 16px;
+    color: #666;
+    line-height: 1.5;
+    font-style: italic;
+    margin: 0;
 }
 
-/* --- ALTERNATING SIDES LOGIC --- */
+/* --- ALTERNATING SIDES LOGIC (HUGGING THE LINE) --- */
 
 /* NORMAL ROW (Text Left, Image Right) */
+/* Actually in your code: Content is 1st div, Image is 2nd div */
 .timeline-row.normal {
-flex-direction: row;
+    flex-direction: row;
 }
 .timeline-row.normal .timeline-content-side {
-text-align: right; /* Align text towards center */
+    text-align: right; 
+    padding-right: 30px; /* Push text closer to line */
+}
+/* Align image to START (Left) to hug the center line */
+.timeline-row.normal .timeline-image-side {
+    justify-content: flex-start; 
+    padding-left: 30px; /* Push image closer to line */
 }
 
 /* REVERSE ROW (Image Left, Text Right) */
 .timeline-row.reverse {
-flex-direction: row-reverse;
+    flex-direction: row-reverse;
 }
 .timeline-row.reverse .timeline-content-side {
-text-align: left; /* Align text towards center */
+    text-align: left; 
+    padding-left: 30px; /* Push text closer to line */
+}
+/* Align image to END (Right) to hug the center line */
+.timeline-row.reverse .timeline-image-side {
+    justify-content: flex-end; 
+    padding-right: 30px; /* Push image closer to line */
 }
 
 
@@ -188,36 +199,21 @@ text-align: center;
 gap: 8px !important;
 }
 
-.timeline-container::before {
-left: 20px; /* Move line to far left */
-}
-
-.timeline-row, 
-.timeline-row.reverse {
-flex-direction: column-reverse; /* Text bottom, Image top */
-margin-bottom: 60px;
-align-items: flex-start;
-}
-
 .timeline-content-side, 
-.timeline-image-side {
-width: 100%;
-text-align: left !important;
-padding-left: 50px; /* Make room for line */
-}
-
-.timeline-image-side {
-justify-content: flex-start;
-margin-bottom: 15px;
-}
-
-.timeline-image-side img {
-max-width: 100px; /* Smaller icons on mobile */
-}
-
-.center-dot {
-left: 20px; /* Move dot to line */
-}
+    .timeline-image-side {
+        width: 100%;
+        text-align: left !important;
+        padding-left: 50px !important;
+        padding-right: 0 !important;
+    }
+    .timeline-row.normal .timeline-image-side,
+    .timeline-row.reverse .timeline-image-side {
+        justify-content: flex-start;
+        padding-left: 50px !important;
+    }
+    .timeline-image-side img {
+        max-width: 100px;
+    }
 }
 
 /* This locks the site vertically and prevents side-scrolling */
@@ -1075,64 +1071,64 @@ We invite our guests to celebrate with us in this color
 
 </section>
 
-<section id="timeline" class="reveal-on-scroll" style="background-color: #fcfaf7; padding: 100px 20px;">
+<section id="timeline">
 
-<div style="text-align: center; margin-bottom: 80px;">
-<h2 style="font-family: 'Pinyon Script', cursive; color: #043927; font-size: clamp(50px, 8vw, 75px); margin: 0; line-height: 1;">The Celebration</h2>
-<p style="font-family: 'Montserrat'; font-size: 11px; letter-spacing: 3px; color: #d4af37; text-transform: uppercase; margin-top: 15px;">Order of Events</p>
-</div>
+    <div class="reveal-on-scroll" style="text-align: center; margin-bottom: 80px;">
+        <h2 style="font-family: 'Pinyon Script', cursive; color: #043927; font-size: clamp(50px, 8vw, 75px); margin: 0; line-height: 1;">The Celebration</h2>
+        <p style="font-family: 'Montserrat'; font-size: 11px; letter-spacing: 3px; color: #d4af37; text-transform: uppercase; margin-top: 15px;">Order of Events</p>
+    </div>
 
-<div class="timeline-container">
+    <div class="timeline-container">
 
-<div class="timeline-row normal">
-<div class="timeline-content-side">
-<span class="event-time">01:30 PM</span>
-<h3>The Ceremony</h3>
-<p>Santuario de San Antonio Parish<br>McKinley Rd, Makati</p>
-</div>
-<div class="center-dot"></div>
-<div class="timeline-image-side">
-<img src="church.png" alt="Church">
-</div>
-</div>
+        <div class="timeline-row normal reveal-on-scroll">
+            <div class="timeline-content-side">
+                <span class="event-time">01:30 PM</span>
+                <h3>The Ceremony</h3>
+                <p>Santuario de San Antonio Parish<br>McKinley Rd, Makati</p>
+            </div>
+            <div class="center-dot"></div>
+            <div class="timeline-image-side">
+                <img src="church.png" alt="Church">
+            </div>
+        </div>
 
-<div class="timeline-row reverse">
-<div class="timeline-content-side">
-<span class="event-time">03:30 PM</span>
-<h3>Cocktail Hour</h3>
-<p>The Blue Leaf Foyer<br>A time for toasts & conversations</p>
-</div>
-<div class="center-dot"></div>
-<div class="timeline-image-side">
-<img src="cocktail.png" alt="Toast">
-</div>
-</div>
+        <div class="timeline-row reverse reveal-on-scroll">
+            <div class="timeline-content-side">
+                <span class="event-time">03:30 PM</span>
+                <h3>Cocktail Hour</h3>
+                <p>The Blue Leaf Foyer<br>A time for toasts & conversations</p>
+            </div>
+            <div class="center-dot"></div>
+            <div class="timeline-image-side">
+                <img src="cocktail hour.png" alt="Toast">
+            </div>
+        </div>
 
-<div class="timeline-row normal">
-<div class="timeline-content-side">
-<span class="event-time">04:30 PM</span>
-<h3>Dinner & Reception</h3>
-<p>The Blue Leaf Main Hall<br>Grand Entrance of the Couple</p>
-</div>
-<div class="center-dot"></div>
-<div class="timeline-image-side">
-<img src="reception.png" alt="Dinner">
-</div>
-</div>
+        <div class="timeline-row normal reveal-on-scroll">
+            <div class="timeline-content-side">
+                <span class="event-time">04:30 PM</span>
+                <h3>Dinner & Reception</h3>
+                <p>The Blue Leaf Main Hall<br>Grand Entrance of the Couple</p>
+            </div>
+            <div class="center-dot"></div>
+            <div class="timeline-image-side">
+                <img src="reception.png" alt="Dinner">
+            </div>
+        </div>
 
-<div class="timeline-row reverse">
-<div class="timeline-content-side">
-<span class="event-time">07:00 PM</span>
-<h3>The After Party</h3>
-<p>Dancing Under the Stars<br>Drinks & Late Night Snacks</p>
-</div>
-<div class="center-dot"></div>
-<div class="timeline-image-side">
-<img src="party.png" alt="Music">
-</div>
-</div>
+        <div class="timeline-row reverse reveal-on-scroll">
+            <div class="timeline-content-side">
+                <span class="event-time">07:00 PM</span>
+                <h3>The After Party</h3>
+                <p>Dancing Under the Stars<br>Drinks & Late Night Snacks</p>
+            </div>
+            <div class="center-dot"></div>
+            <div class="timeline-image-side">
+                <img src="party.png" alt="Music">
+            </div>
+        </div>
 
-</div>
+    </div>
 </section>
 
 <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
