@@ -9,12 +9,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
+/* --- BALANCED SPLIT TIMELINE --- */
 #timeline {
+position: relative;
+overflow: hidden;
     position: relative;
     overflow: hidden;
 }
 
 .timeline-container {
+max-width: 1000px; /* Wider to accommodate images */
+margin: 0 auto;
+padding: 60px 20px;
+position: relative;
     max-width: 1000px; 
     margin: 0 auto;
     padding: 60px 20px;
@@ -23,6 +30,16 @@
 
 /* THE CENTRAL VERTICAL LINE */
 .timeline-container::before {
+content: '';
+position: absolute;
+top: 0;
+bottom: 0;
+left: 50%;
+width: 2px;
+background: #043927; /* Emerald */
+transform: translateX(-50%);
+opacity: 0.3; /* Subtle line */
+z-index: 0;
     content: '';
     position: absolute;
     top: 0;
@@ -37,6 +54,12 @@
 
 /* THE ROW WRAPPER */
 .timeline-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 80px; /* Space between events */
+position: relative;
+z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -45,21 +68,28 @@
     z-index: 1;
 }
 
+/* THE TWO SIDES (50% Width Each) */
 /* THE TWO SIDES */
 /* CHANGED: Increased from 45% to 48% to close the gap */
 .timeline-content-side, 
 .timeline-image-side {
+width: 45%; /* Leaves 10% gap in middle */
+position: relative;
     width: 48%; 
     position: relative;
 }
 
 /* --- THE TEXT SIDE --- */
 .timeline-content-side {
+padding: 20px;
     padding: 20px;
 }
 
 /* --- THE IMAGE SIDE --- */
 .timeline-image-side {
+display: flex;
+align-items: center;
+justify-content: center;
     display: flex;
     align-items: center;
     /* justify-content is now handled in the Alternating Logic section below */
@@ -67,20 +97,38 @@
 
 /* THE IMAGE ITSELF */
 .timeline-image-side img {
+max-width: 180px; /* Size of the icon */
+max-height: 180px;
+object-fit: contain;
+/* Optional: A soft float animation */
+animation: floatIcon 6s ease-in-out infinite;
+/* KEEP THIS if your icons are black and you want them EMERALD.
+      REMOVE THIS if your icons are already colored.
+   */
+    filter: invert(16%) sepia(34%) saturate(1478%) hue-rotate(119deg) brightness(93%) contrast(93%);
+    opacity: 0.8; 
     max-width: 180px; 
     max-height: 180px;
     object-fit: contain;
-    filter: none !important;
-    display: block; /* Adds stability to the layout */
-    margin: 0 auto; /* Centers the image inside its 48% half */
+    
     /* CHANGED: Animation removed so image stays still */
     animation: none; 
     
-    opacity: 1; 
+opacity: 1; 
 }
 
+/* THE CENTER DOT (Using the Dot to anchor the line) */
 /* THE CENTER DOT */
 .center-dot {
+position: absolute;
+left: 50%;
+width: 16px;
+height: 16px;
+background: #d4af37; /* Gold Center */
+border: 4px solid #F4CFE0; /* Rose Pink Border */
+border-radius: 50%;
+transform: translateX(-50%);
+box-shadow: 0 0 0 5px #fcfaf7; /* White Halo */
     position: absolute;
     left: 50%;
     width: 16px;
@@ -94,6 +142,14 @@
 
 /* --- TYPOGRAPHY --- */
 .event-time {
+font-family: 'Montserrat', sans-serif;
+color: #d4af37; /* Gold */
+font-size: 13px;
+font-weight: 700;
+letter-spacing: 2px;
+text-transform: uppercase;
+margin-bottom: 10px;
+display: block;
     font-family: 'Montserrat', sans-serif;
     color: #d4af37; /* Gold */
     font-size: 13px;
@@ -105,6 +161,11 @@
 }
 
 .timeline-content-side h3 {
+font-family: 'Playfair Display', serif;
+color: #043927; /* Emerald */
+font-size: 2.2rem;
+margin: 0 0 15px 0;
+line-height: 1.1;
     font-family: 'Playfair Display', serif;
     color: #043927; /* Emerald */
     font-size: 2.2rem;
@@ -113,6 +174,11 @@
 }
 
 .timeline-content-side p {
+font-family: 'Georgia', serif;
+font-size: 16px;
+color: #666;
+line-height: 1.6;
+font-style: italic;
     font-family: 'Georgia', serif;
     font-size: 16px;
     color: #666;
@@ -120,13 +186,16 @@
     font-style: italic;
 }
 
+/* --- ALTERNATING SIDES LOGIC --- */
 /* --- ALTERNATING SIDES LOGIC (FIXED) --- */
 
 /* NORMAL ROW (Text Left, Image Right) */
 .timeline-row.normal {
+flex-direction: row;
     flex-direction: row;
 }
 .timeline-row.normal .timeline-content-side {
+text-align: right; /* Align text towards center */
     text-align: right; 
 }
 /* CHANGED: Align image to the LEFT to hug the center line */
@@ -137,19 +206,31 @@
 
 /* REVERSE ROW (Image Left, Text Right) */
 .timeline-row.reverse {
+flex-direction: row-reverse;
     flex-direction: row-reverse;
 }
 .timeline-row.reverse .timeline-content-side {
+text-align: left; /* Align text towards center */
     text-align: left; 
 }
+
+/* FLOATING ANIMATION */
+@keyframes floatIcon {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
 /* CHANGED: Align image to the RIGHT to hug the center line */
 .timeline-row.reverse .timeline-image-side {
     justify-content: flex-end; 
     padding-right: 30px; /* Small gap from line */
 }
 
+/* iPhone 15 Plus Fix: Nudge the RSVP up on mobile screens */
 /* iPhone 15 Plus Fix & Mobile Responsiveness */
 @media (max-width: 768px) {
+/* Your existing scroll container fix */
+#scroll-container {
+bottom: 90px !important; 
+right: 25px !important;
     #scroll-container {
         bottom: 90px !important; 
         right: 25px !important;
@@ -1157,72 +1238,72 @@ We invite our guests to celebrate with us in this color
 </section>
 
 <section id="timeline" class="reveal-on-scroll" style="background-color: #fcfaf7; padding: 100px 20px;">
-    
-    <div style="text-align: center; margin-bottom: 80px;">
-        <h2 style="font-family: 'Pinyon Script', cursive; color: #043927; font-size: clamp(50px, 8vw, 75px); margin: 0; line-height: 1;">The Celebration</h2>
-        <div style="width: 1px; height: 40px; background: #d4af37; margin: 20px auto;"></div>
-        <p style="font-family: 'Montserrat'; font-size: 11px; letter-spacing: 3px; color: #d4af37; text-transform: uppercase;">Order of Events</p>
-    </div>
-    
-    <div class="timeline-container">
-        
-        <div class="timeline-row normal">
-            <div class="timeline-content-side">
-                <span class="event-time">01:30 PM</span>
-                <h3>The Ceremony</h3>
-                <p>Santuario de San Antonio Parish<br>McKinley Rd, Makati</p>
-            </div>
-            
-            <div class="center-dot"></div>
-            
-            <div class="timeline-image-side">
-                <img src="church.png" alt="Church Ceremony">
-            </div>
-        </div>
 
-        <div class="timeline-row reverse">
-            <div class="timeline-content-side">
-                <span class="event-time">03:30 PM</span>
-                <h3>Cocktail Hour</h3>
-                <p>The Blue Leaf Foyer<br>Light bites & conversations</p>
-            </div>
-            
-            <div class="center-dot"></div>
-            
-            <div class="timeline-image-side">
-                <img src="cocktail.png" alt="Cocktail Hour">
-            </div>
-        </div>
+<div style="text-align: center; margin-bottom: 80px;">
+<h2 style="font-family: 'Pinyon Script', cursive; color: #043927; font-size: clamp(50px, 8vw, 75px); margin: 0; line-height: 1;">The Celebration</h2>
+<div style="width: 1px; height: 40px; background: #d4af37; margin: 20px auto;"></div>
+<p style="font-family: 'Montserrat'; font-size: 11px; letter-spacing: 3px; color: #d4af37; text-transform: uppercase;">Order of Events</p>
+</div>
 
-        <div class="timeline-row normal">
-            <div class="timeline-content-side">
-                <span class="event-time">04:30 PM</span>
-                <h3>Dinner & Reception</h3>
-                <p>The Blue Leaf Main Hall<br>Grand Entrance & Dinner</p>
-            </div>
-            
-            <div class="center-dot"></div>
-            
-            <div class="timeline-image-side">
-                <img src="reception.png" alt="Dinner Reception">
-            </div>
-        </div>
+<div class="timeline-container">
 
-        <div class="timeline-row reverse">
-            <div class="timeline-content-side">
-                <span class="event-time">07:00 PM</span>
-                <h3>The After Party</h3>
-                <p>Dancing Under the Stars<br>Let's celebrate!</p>
-            </div>
-            
-            <div class="center-dot"></div>
-            
-            <div class="timeline-image-side">
-                <img src="party.png" alt="After Party">
-            </div>
-        </div>
+<div class="timeline-row normal">
+<div class="timeline-content-side">
+<span class="event-time">01:30 PM</span>
+<h3>The Ceremony</h3>
+<p>Santuario de San Antonio Parish<br>McKinley Rd, Makati</p>
+</div>
 
-    </div>
+<div class="center-dot"></div>
+
+<div class="timeline-image-side">
+<img src="church.png" alt="Church Ceremony">
+</div>
+</div>
+
+<div class="timeline-row reverse">
+<div class="timeline-content-side">
+<span class="event-time">03:30 PM</span>
+<h3>Cocktail Hour</h3>
+<p>The Blue Leaf Foyer<br>Light bites & conversations</p>
+</div>
+
+<div class="center-dot"></div>
+
+<div class="timeline-image-side">
+<img src="cocktail.png" alt="Cocktail Hour">
+</div>
+</div>
+
+<div class="timeline-row normal">
+<div class="timeline-content-side">
+<span class="event-time">04:30 PM</span>
+<h3>Dinner & Reception</h3>
+<p>The Blue Leaf Main Hall<br>Grand Entrance & Dinner</p>
+</div>
+
+<div class="center-dot"></div>
+
+<div class="timeline-image-side">
+<img src="reception.png" alt="Dinner Reception">
+</div>
+</div>
+
+<div class="timeline-row reverse">
+<div class="timeline-content-side">
+<span class="event-time">07:00 PM</span>
+<h3>The After Party</h3>
+<p>Dancing Under the Stars<br>Let's celebrate!</p>
+</div>
+
+<div class="center-dot"></div>
+
+<div class="timeline-image-side">
+<img src="party.png" alt="After Party">
+</div>
+</div>
+
+</div>
 </section>
 
 <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
@@ -1358,20 +1439,20 @@ const content = document.getElementById('content');
 content.classList.remove('hidden');
 const canP1 = String(guestData.allowPlusOne).toLowerCase() === "true";
 content.innerHTML = `
-          <div class="rsvp-card">
-              <h2>Hi ${guestData.name},</h2>
-              <label>Will you attend?</label>
-              <select id="attending-select" onchange="togglePlusOne(${canP1})">
-                  <option value="Yes">Yes, I'll be there!</option>
-                  <option value="No">No, I can't make it</option>
-              </select>
-              <div id="p1-area"></div>
-              <label>Email Address</label>
-              <input type="email" id="guest-email" value="${guestData.email || ''}">
-              <label>Message to the couple</label>
-              <textarea id="guest-note" style="width:100%; height:100px; padding:10px; border-radius:5px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
-              <button onclick="submitRSVP()" id="submit-btn">Confirm RSVP</button>
-          </div>`;
+         <div class="rsvp-card">
+             <h2>Hi ${guestData.name},</h2>
+             <label>Will you attend?</label>
+             <select id="attending-select" onchange="togglePlusOne(${canP1})">
+                 <option value="Yes">Yes, I'll be there!</option>
+                 <option value="No">No, I can't make it</option>
+             </select>
+             <div id="p1-area"></div>
+             <label>Email Address</label>
+             <input type="email" id="guest-email" value="${guestData.email || ''}">
+             <label>Message to the couple</label>
+             <textarea id="guest-note" style="width:100%; height:100px; padding:10px; border-radius:5px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
+             <button onclick="submitRSVP()" id="submit-btn">Confirm RSVP</button>
+         </div>`;
 togglePlusOne(canP1);
 }
 
@@ -1410,11 +1491,11 @@ function showDoneView(data) {
 const content = document.getElementById('content');
 content.classList.remove('hidden');
 content.innerHTML = `
-          <div class="rsvp-card" style="text-align:center;">
-              <h2>Thank you!</h2>
-              <p>RSVP recorded for ${data.name}.</p>
-              <button onclick="showMainForm()">Edit Response</button>
-          </div>`;
+         <div class="rsvp-card" style="text-align:center;">
+             <h2>Thank you!</h2>
+             <p>RSVP recorded for ${data.name}.</p>
+             <button onclick="showMainForm()">Edit Response</button>
+         </div>`;
 }
 
 // SMART SCROLL REVEAL OBSERVER (Fix for multiple elements)
