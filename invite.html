@@ -932,129 +932,108 @@ The countdown to forever...
 
 <section id="entourage" style="
     padding: 100px 20px; 
-    /* A subtle gradient makes it look like velvet or high-quality paper, not flat paint */
-    background: radial-gradient(circle at center, #064e36 0%, #043927 100%); 
+    /* The Background is now the Rose Pink color you wanted */
+    background-color: #fdf0f5; 
     text-align: center; 
-    color: #ffffff;">
+    /* Top and Bottom Emerald borders to frame the pink section */
+    border-top: 10px solid #043927;
+    border-bottom: 10px solid #043927;">
 
-    <div style="
-        max-width: 900px; 
-        margin: 0 auto; 
-        position: relative; 
-        padding: 60px 30px; 
-        border: 1px solid #d4af37; /* Outer thin gold line */
-        box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
-        
-        <div style="
-            position: absolute; 
-            top: 10px; left: 10px; right: 10px; bottom: 10px; 
-            border: 2px solid rgba(212, 175, 55, 0.5); 
-            pointer-events: none;">
-        </div>
-
-        <div class="reveal-on-scroll" style="margin-bottom: 70px; position: relative; z-index: 2;">
-            <h2 style="font-family: 'Pinyon Script', cursive; font-size: clamp(50px, 8vw, 70px); color: #d4af37; margin-bottom: 15px; text-shadow: 0 4px 10px rgba(0,0,0,0.4);">The Entourage</h2>
-            
-            <div style="display: flex; align-items: center; justify-content: center; gap: 15px; opacity: 0.8;">
-                <div style="width: 60px; height: 1px; background: linear-gradient(90deg, transparent, #d4af37);"></div>
-                <div style="font-family: 'Great Vibes'; color: #f4cfe0; font-size: 24px;">❦</div> <div style="width: 60px; height: 1px; background: linear-gradient(90deg, #d4af37, transparent);"></div>
-            </div>
-        </div>
-
-        <div class="reveal-on-scroll" style="margin-bottom: 60px;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
-                <div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #f4cfe0; font-weight: 700; text-shadow: 0 0 10px rgba(244, 207, 224, 0.2);">Parents of the Bride</span>
-                    <p id="Parents_Bride" style="font-family: 'Playfair Display', serif; font-size: 20px; color: #ffffff; line-height: 1.8; margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;"></p>
-                </div>
-                <div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #f4cfe0; font-weight: 700; text-shadow: 0 0 10px rgba(244, 207, 224, 0.2);">Parents of the Groom</span>
-                    <p id="Parents_Groom" style="font-family: 'Playfair Display', serif; font-size: 20px; color: #ffffff; line-height: 1.8; margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;"></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="reveal-on-scroll" style="margin-bottom: 80px;">
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 25px;">Principal Sponsors</span>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
-                <p id="Principal_Sponsors_Male" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #fcfaf7; line-height: 2.2;"></p>
-                <p id="Principal_Sponsors_Female" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #fcfaf7; line-height: 2.2;"></p>
-            </div>
-        </div>
-
-        <div class="reveal-on-scroll" style="margin-bottom: 70px; background: rgba(0,0,0,0.2); padding: 30px; border-radius: 4px; border: 1px solid rgba(212, 175, 55, 0.2);">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
-                <div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #f4cfe0; font-weight: 700;">Maid of Honor</span>
-                    <p id="Maid_of_Honor" style="font-family: 'Great Vibes', cursive; font-size: clamp(30px, 5vw, 40px); color: #ffffff; margin-top: 10px; line-height: 1.4; text-shadow: 0 2px 5px rgba(0,0,0,0.5);"></p>
-                </div>
-                <div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #f4cfe0; font-weight: 700;">Best Man</span>
-                    <p id="Best_Man" style="font-family: 'Great Vibes', cursive; font-size: clamp(30px, 5vw, 40px); color: #ffffff; margin-top: 10px; line-height: 1.4; text-shadow: 0 2px 5px rgba(0,0,0,0.5);"></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="reveal-on-scroll" style="margin-bottom: 70px;">
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 35px;">Secondary Sponsors</span>
-
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;">
-                <div style="min-width: 200px;">
-                    <div style="color: #f4cfe0; font-size: 14px; margin-bottom: 5px;">✦</div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #f4cfe0; opacity: 0.9;">To Light Our Path</span>
-                    <p id="Sponsors_Candle" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #ffffff; margin-top: 8px;"></p>
-                </div>
-
-                <div style="min-width: 200px;">
-                    <div style="color: #f4cfe0; font-size: 14px; margin-bottom: 5px;">✦</div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #f4cfe0; opacity: 0.9;">To Clothe Us As One</span>
-                    <p id="Sponsors_Veil" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #ffffff; margin-top: 8px;"></p>
-                </div>
-
-                <div style="min-width: 200px;">
-                    <div style="color: #f4cfe0; font-size: 14px; margin-bottom: 5px;">✦</div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #f4cfe0; opacity: 0.9;">To Bind Us Together</span>
-                    <p id="Sponsors_Cord" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #ffffff; margin-top: 8px;"></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="reveal-on-scroll" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px; margin-bottom: 70px;">
-            <div>
-                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #f4cfe0; font-weight: 700; border-bottom: 1px solid rgba(244, 207, 224, 0.3); padding-bottom: 10px; display: inline-block; margin-bottom: 20px;">Bridesmaids</span>
-                <p id="Bridesmaids" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #ffffff; line-height: 2.2;"></p>
-            </div>
-            <div>
-                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #f4cfe0; font-weight: 700; border-bottom: 1px solid rgba(244, 207, 224, 0.3); padding-bottom: 10px; display: inline-block; margin-bottom: 20px;">Groomsmen</span>
-                <p id="Groomsmen" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #ffffff; line-height: 2.2;"></p>
-            </div>
-        </div>
-
-        <div class="reveal-on-scroll" style="margin-bottom: 60px;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px;">
-                <div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #f4cfe0;">Ring Bearer</span>
-                    <p id="Ring_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #ffffff; margin-top: 10px;"></p>
-                </div>
-                <div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #f4cfe0;">Coin Bearer</span>
-                    <p id="Coin_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #ffffff; margin-top: 10px;"></p>
-                </div>
-                <div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #f4cfe0;">Bible Bearer</span>
-                    <p id="Bible_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #ffffff; margin-top: 10px;"></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="reveal-on-scroll">
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #f4cfe0; font-weight: 700;">Flower Girls</span>
-            <p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #ffffff; line-height: 2.2; margin-top: 15px;"></p>
-        </div>
-
+    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
+        <h2 style="font-family: 'Pinyon Script', cursive; font-size: clamp(50px, 8vw, 70px); color: #d4af37; margin-bottom: 10px;">The Entourage</h2>
+        <p style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #043927; opacity: 0.7;">Witnesses to our Forever</p>
     </div>
-</section>
 
+    <div class="reveal-on-scroll" style="margin-bottom: 70px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 50px; max-width: 900px; margin: 0 auto;">
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Bride</span>
+                <p id="Parents_Bride" style="font-family: 'Playfair Display', serif; font-size: 20px; color: #043927; line-height: 2.0; margin-top: 15px;"></p>
+            </div>
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Groom</span>
+                <p id="Parents_Groom" style="font-family: 'Playfair Display', serif; font-size: 20px; color: #043927; line-height: 2.0; margin-top: 15px;"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
+        <div style="width: 100px; height: 1px; background: #d4af37; margin: 0 auto 30px auto; opacity: 0.5;"></div>
+        
+        <span style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 30px;">Principal Sponsors</span>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto;">
+            <p id="Principal_Sponsors_Male" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #043927; line-height: 2.4;"></p>
+            <p id="Principal_Sponsors_Female" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #043927; line-height: 2.4;"></p>
+        </div>
+    </div>
+
+    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; max-width: 900px; margin: 0 auto;">
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Maid of Honor</span>
+                <p id="Maid_of_Honor" style="font-family: 'Great Vibes', cursive; font-size: clamp(32px, 5vw, 42px); color: #043927; margin-top: 5px; line-height: 1.4;"></p>
+            </div>
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Best Man</span>
+                <p id="Best_Man" style="font-family: 'Great Vibes', cursive; font-size: clamp(32px, 5vw, 42px); color: #043927; margin-top: 5px; line-height: 1.4;"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="reveal-on-scroll" style="margin-bottom: 80px;">
+        <div style="width: 100px; height: 1px; background: #d4af37; margin: 0 auto 30px auto; opacity: 0.5;"></div>
+        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 30px;">Secondary Sponsors</span>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; max-width: 800px; margin: 0 auto;">
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #888;">To Light Our Path</span>
+                <p id="Sponsors_Candle" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #043927; margin-top: 5px;"></p>
+            </div>
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #888;">To Clothe Us As One</span>
+                <p id="Sponsors_Veil" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #043927; margin-top: 5px;"></p>
+            </div>
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #888;">To Bind Us Together</span>
+                <p id="Sponsors_Cord" style="font-family: 'Playfair Display', serif; font-size: 18px; color: #043927; margin-top: 5px;"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="reveal-on-scroll" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px; max-width: 1000px; margin: 0 auto 80px auto;">
+        <div>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Bridesmaids</span>
+            <p id="Bridesmaids" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+        </div>
+        <div>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Groomsmen</span>
+            <p id="Groomsmen" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+        </div>
+    </div>
+
+    <div class="reveal-on-scroll" style="margin-bottom: 60px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto;">
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Ring Bearer</span>
+                <p id="Ring_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
+            </div>
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Coin Bearer</span>
+                <p id="Coin_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
+            </div>
+            <div>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Bible Bearer</span>
+                <p id="Bible_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="reveal-on-scroll">
+        <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Flower Girls</span>
+        <p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+    </div>
+
+</section>
 <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
 <h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; margin-bottom: 50px;">The Journey to Forever</h2>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; max-width: 1000px; margin: 0 auto;">
