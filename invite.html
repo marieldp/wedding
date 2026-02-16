@@ -1201,15 +1201,19 @@ let guestData = null;
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Start Music Logic (Paused by default)
+    
+    // 1. SEAL CLICK FIX (Force Z-Index High)
+    const sealWrap = document.querySelector('.seal-bob-wrapper');
+    if(sealWrap) sealWrap.style.zIndex = "2000"; 
+
+    // 2. Music Setup
     var audio = document.getElementById('bg-music');
     if(audio) audio.volume = 0.5;
 
-    // 2. Check Guest or Default
+    // 3. Guest Check
     if (token) {
         checkGuestStatus();
     } else {
-        // No ID in URL? Default to generic view
         const lbl = document.getElementById('envelope-label');
         if (lbl) {
             lbl.innerHTML = `With love, to <span>Guest</span>`;
@@ -1217,7 +1221,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 3. Initialize Scroll Animations
+    // 4. Scroll Animation
     const revealElements = document.querySelectorAll('.reveal-on-scroll');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -1226,13 +1230,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }, { threshold: 0.1 });
-    
     revealElements.forEach(el => observer.observe(el));
     
-    // 4. Load Entourage
+    // 5. Load Entourage & Timer
     loadEntourage();
-    
-    // 5. Start Countdown
     setInterval(updateCountdown, 1000);
     updateCountdown();
 });
@@ -1246,33 +1247,25 @@ function checkGuestStatus() {
     fetch(`${webAppUrl}?id=${encodeURIComponent(token)}`)
     .then(res => res.json())
     .then(data => {
-        console.log("Guest Data Received:", data); // Check Console for this
-        
+        // Handle Error
         if (data.error) {
             lbl.innerHTML = "Guest not found";
             lbl.classList.add('reveal-active');
-            if(loading) loading.innerText = "Guest not found in list.";
+            if(loading) loading.innerHTML = "<p>Guest not found in list.</p>";
             return;
         }
 
-        // --- THE FIX: HANDLE CAPITALIZATION ---
-        // We try lowercase 'name', then Capital 'Name', then generic
+        // --- NAME FIX (Case Insensitive) ---
         const safeName = data.name || data.Name || data["Guest Name"] || "Guest";
-        
-        // Save normalized data
-        guestData = {
-            ...data,
-            name: safeName
-        };
+        guestData = { ...data, name: safeName };
 
-        // 1. Update Envelope Name
+        // 1. Update Envelope
         lbl.innerHTML = `With love, to <span>${safeName}</span>`;
         lbl.classList.add('reveal-active');
 
-        // 2. Show RSVP Form
+        // 2. Update Form
         if (loading) loading.classList.add('hidden');
         
-        // Check if "isDone" is true (handled by script) OR if "Attending" column has text
         const isDone = data.isDone === true || (data.attending && data.attending.length > 0);
         
         if (isDone) {
@@ -1282,17 +1275,24 @@ function checkGuestStatus() {
         }
     })
     .catch(err => {
-        console.error("Connection Error:", err);
-        lbl.innerHTML = "Connection Error";
+        console.error(err);
+        lbl.innerHTML = "Welcome";
         lbl.classList.add('reveal-active');
     });
+}
+
+function openInvitation() {
+    document.getElementById('envelope-wrapper').classList.add('open');
+    const seal = document.getElementById('seal');
+    if(seal) {
+        seal.style.opacity = "0";
+        seal.style.pointerEvents = "none";
+    }
 }
 
 function showMainForm() {
     const content = document.getElementById('content');
     content.classList.remove('hidden');
-    
-    // Assume Plus One is allowed if the column exists in the data, or default to true for now
     const canP1 = true; 
 
     content.innerHTML = `
@@ -1303,19 +1303,13 @@ function showMainForm() {
                 <option value="Yes">Yes, I'll be there!</option>
                 <option value="No">No, I can't make it</option>
             </select>
-            
             <div id="p1-area"></div>
-            
             <label>Email Address</label>
-            <input type="email" id="guest-email" value="${guestData.email || ''}" placeholder="For updates">
-            
+            <input type="email" id="guest-email" value="${guestData.email || ''}" placeholder="Optional">
             <label>Message to the couple</label>
-            <textarea id="guest-note" style="width:100%; height:100px; padding:10px; border-radius:5px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
-            
+            <textarea id="guest-note" style="width:100%; height:100px; padding:10px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
             <button onclick="submitRSVP()" id="submit-btn">Confirm RSVP</button>
         </div>`;
-    
-    // Trigger logic to show/hide P1 based on initial selection
     togglePlusOne(canP1);
 }
 
@@ -1326,9 +1320,8 @@ function showDoneView(data) {
         <div class="rsvp-card" style="text-align:center;">
             <h2>Thank you!</h2>
             <p>RSVP recorded for ${data.name}.</p>
-            <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-radius: 4px;">
-                <strong>Status:</strong> ${data.attending}<br>
-                ${data.plusOneName && data.plusOneName !== "None" ? `<strong>Plus One:</strong> ${data.plusOneName}` : ''}
+            <div style="margin:20px 0; padding:15px; background:#f9f9f9;">
+                Status: ${data.attending}
             </div>
             <button onclick="showMainForm()">Edit Response</button>
         </div>`;
@@ -1336,154 +1329,104 @@ function showDoneView(data) {
 
 function togglePlusOne(canP1) {
     const area = document.getElementById('p1-area');
-    const attending = document.getElementById('attending-select').value;
+    const val = document.getElementById('attending-select').value;
     
-    // Logic: Only show Plus One option if they say YES
-    if (attending === "Yes") {
+    if (val === "Yes") {
         area.innerHTML = `
             <label>Bringing a plus one?</label>
             <select id="bringing-p1" onchange="toggleP1Name()">
                 <option value="No">No</option>
                 <option value="Yes">Yes</option>
             </select>
-            <div id="p1-name-wrapper"></div>
-        `;
-        // Restore previous value if available
-        if(guestData.plusOneName && guestData.plusOneName !== "None" && guestData.plusOneName !== "") {
+            <div id="p1-name-wrapper"></div>`;
+        if(guestData.plusOneName && guestData.plusOneName !== "None") {
              document.getElementById('bringing-p1').value = "Yes";
              toggleP1Name(guestData.plusOneName);
         }
-    } else { 
-        area.innerHTML = ''; 
-    }
+    } else { area.innerHTML = ''; }
 }
 
-function toggleP1Name(prefillValue = "") {
-    const wrapper = document.getElementById('p1-name-wrapper');
-    const select = document.getElementById('bringing-p1');
-    
-    if (select && select.value === "Yes") {
-        wrapper.innerHTML = `<label>Plus One Name</label><input type="text" id="plus-one-name" value="${prefillValue}">`;
-    } else { 
-        wrapper.innerHTML = ''; 
-    }
+function toggleP1Name(prefill = "") {
+    const wrap = document.getElementById('p1-name-wrapper');
+    const sel = document.getElementById('bringing-p1');
+    if (sel && sel.value === "Yes") {
+        wrap.innerHTML = `<label>Plus One Name</label><input type="text" id="plus-one-name" value="${prefill}">`;
+    } else { wrap.innerHTML = ''; }
 }
 
 function submitRSVP() {
     const btn = document.getElementById('submit-btn');
-    btn.innerHTML = "Saving..."; 
-    btn.disabled = true;
+    btn.innerHTML = "Saving..."; btn.disabled = true;
     
     const p1Input = document.getElementById('plus-one-name');
-    const p1Value = p1Input ? p1Input.value : "None";
-    
     const payload = {
-        token: token, 
+        token: token,
         name: guestData.name,
         email: document.getElementById('guest-email').value,
         attending: document.getElementById('attending-select').value,
-        plusOneName: p1Value,
+        plusOneName: p1Input ? p1Input.value : "None",
         note: document.getElementById('guest-note').value
     };
     
-    // Send to Google Script
-    fetch(webAppUrl, { 
-        method: "POST", 
-        mode: "no-cors", 
-        body: JSON.stringify(payload) 
-    }).then(() => {
-        // Update local data so "Edit" works correctly
-        guestData.attending = payload.attending;
-        guestData.plusOneName = payload.plusOneName;
-        guestData.email = payload.email;
-        guestData.note = payload.note;
-        
+    fetch(webAppUrl, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) })
+    .then(() => {
+        guestData = { ...guestData, ...payload };
         showDoneView(guestData);
-    }).catch(e => {
-        alert("Error saving. Please try again.");
-        btn.innerHTML = "Confirm RSVP";
-        btn.disabled = false;
-    });
-}
-
-function loadEntourage() {
-    // 3-Column Logic: Checkbox | Role | Name
-    fetch(`${webAppUrl}?action=getEntourage`)
-    .then(res => res.json())
-    .then(data => {
-        Object.keys(data).forEach(roleID => {
-            const el = document.getElementById(roleID);
-            if (el) {
-                // Fill text
-                el.innerHTML = data[roleID].split(',').map(n => n.trim()).join('<br>');
-                // Force Visible
-                el.style.opacity = "1";
-                // Trigger Scroll Reveal
-                const parent = el.closest('.reveal-on-scroll');
-                if(parent) parent.classList.add('is-visible');
-            }
-        });
     })
-    .catch(console.error);
-}
-
-function updateCountdown() {
-    const wedding = new Date("November 6, 2027 14:00:00").getTime();
-    const now = new Date().getTime();
-    const diff = wedding - now;
-
-    if (diff <= 0) return;
-
-    const setDisplay = (id, val) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = Math.max(0, Math.floor(val));
-    };
-
-    setDisplay("months", diff / (1000 * 60 * 60 * 24 * 30.44));
-    setDisplay("days", (diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
-    setDisplay("hours", (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    setDisplay("minutes", (diff % (1000 * 60 * 60)) / (1000 * 60));
-    setDisplay("seconds", (diff % (1000 * 60)) / 1000);
-}
-
-// --- UI HELPERS ---
-function openInvitation() {
-    document.getElementById('envelope-wrapper').classList.add('open');
-    const seal = document.getElementById('seal');
-    if(seal) {
-        seal.style.opacity = "0";
-        seal.style.pointerEvents = "none";
-    }
+    .catch(e => { alert("Error saving"); btn.disabled = false; });
 }
 
 function handleMusic(play, event) {
-    if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-
-    if (play) {
+    if(event) { event.preventDefault(); event.stopPropagation(); }
+    if(play) {
         var audio = document.getElementById('bg-music');
-        if(audio) {
-            audio.currentTime = 0; 
-            audio.play().catch(e => console.log("Audio play blocked:", e));
-        }
+        if(audio) { audio.currentTime=0; audio.play().catch(e=>console.log(e)); }
     }
-
     const wrapper = document.getElementById('envelope-wrapper');
     wrapper.classList.add('wrapper-exit');
-
     setTimeout(() => {
         document.getElementById('main-site').style.display = 'block';
         document.body.classList.add('show-site');
         document.body.style.overflow = 'auto'; 
         document.documentElement.style.overflow = 'auto';
     }, 100);
+    setTimeout(() => { wrapper.style.display = "none"; }, 800);
+}
 
-    setTimeout(() => {
-        wrapper.style.display = "none";
-    }, 800);
+function loadEntourage() {
+    // ENTOURAGE FETCH (Reads Col A & B)
+    fetch(`${webAppUrl}?action=getEntourage`)
+    .then(res => res.json())
+    .then(data => {
+        Object.keys(data).forEach(id => {
+            const el = document.getElementById(id);
+            if(el) {
+                el.innerHTML = data[id].split(',').map(n => n.trim()).join('<br>');
+                el.style.opacity = "1";
+                const p = el.closest('.reveal-on-scroll');
+                if(p) p.classList.add('is-visible');
+            }
+        });
+    }).catch(e => console.log("Entourage error:", e));
+}
+
+function updateCountdown() {
+    const wedding = new Date("November 6, 2027 14:00:00").getTime();
+    const now = new Date().getTime();
+    const diff = wedding - now;
+    if (diff <= 0) return;
+    
+    const setDisplay = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = Math.max(0, Math.floor(val));
+    };
+    setDisplay("months", diff / (1000 * 60 * 60 * 24 * 30.44));
+    setDisplay("days", (diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+    setDisplay("hours", (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    setDisplay("minutes", (diff % (1000 * 60 * 60)) / (1000 * 60));
+    setDisplay("seconds", (diff % (1000 * 60)) / 1000);
 }
 </script>
+
 </body>
 </html>
