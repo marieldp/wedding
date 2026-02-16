@@ -1358,42 +1358,65 @@ entry.target.classList.add('is-visible');
 
 
 function loadEntourage() {
-    console.log("--- ENTOURAGE FETCH STARTING ---");
+    console.log("--- DEBUG MODE: ENTOURAGE FETCH ---");
     
-    // Check if the URL is defined
-    if (typeof webAppUrl === 'undefined') {
-        console.error("ERROR: webAppUrl is missing. Make sure the variable is defined at the top of your script.");
+    // 1. Check if URL exists
+    if (!webAppUrl) {
+        alert("Error: The 'webAppUrl' is missing at the top of the script!");
         return;
     }
 
+    // 2. Try to fetch the data
     fetch(`${webAppUrl}?action=getEntourage`)
-    .then(res => res.json())
-    .then(data => {
-        console.log("SUCCESS! Data received:", data);
+    .then(response => {
+        // Check if the request was actually successful (status 200)
+        if (!response.ok) {
+            throw new Error(`Server returned ${response.status} ${response.statusText}`);
+        }
+        return response.text(); // Get text first to check if it's valid JSON
+    })
+    .then(textData => {
+        console.log("Raw Response:", textData);
+        
+        // Check if we got an HTML error page instead of data (Common Issue)
+        if (textData.trim().startsWith("<")) {
+            alert("CRITICAL ERROR: The Google Script is returning a Webpage, not Data.\n\nLikely Cause: The script permission is not set to 'Anyone'.\n\nFix: Go to Google Apps Script > Deploy > New Deployment > Who can access: 'Anyone'.");
+            throw new Error("Received HTML instead of JSON");
+        }
 
+        const data = JSON.parse(textData);
+        
+        // Check if data is empty
+        if (Object.keys(data).length === 0) {
+            alert("Connection successful, but the Spreadsheet returned NO names.\nCheck your Google Sheet column headers.");
+            return;
+        }
+
+        // 3. If we get here, we have data! Let's fill it in.
+        let matchCount = 0;
         Object.keys(data).forEach(roleID => {
             const el = document.getElementById(roleID);
             if (el) {
-                // 1. Insert the text
                 el.innerHTML = data[roleID].split(',').map(n => n.trim()).join('<br>');
-                
-                // 2. FORCE VISIBILITY (The Fix)
-                el.style.opacity = "1"; 
-                
-                // 3. Find the parent container that might be hiding this text
-                const parentReveal = el.closest('.reveal-on-scroll');
-                if (parentReveal) {
-                    parentReveal.classList.add('is-visible');
-                    parentReveal.style.opacity = "1";
-                    parentReveal.style.transform = "translateY(0)";
-                }
+                // FORCE REVEAL
+                el.style.opacity = "1";
+                el.closest('.reveal-on-scroll')?.classList.add('is-visible');
+                matchCount++;
             } else {
-                console.warn("Spreadsheet has '" + roleID + "' but no HTML ID matches.");
+                console.warn(`Spreadsheet has column '${roleID}' but HTML has no matching ID.`);
             }
         });
+
+        if (matchCount === 0) {
+            alert("Data received, but no HTML matches found.\n\nExample mismatch:\nSheet says: 'MaidOfHonor'\nHTML expects: 'Maid_of_Honor'");
+        }
     })
     .catch(err => {
-        console.error("FETCH FAILED. Error:", err);
+        console.error("Entourage Load Failed:", err);
+        // Only alert if it wasn't the HTML error we already alerted for
+        if (err.message !== "Received HTML instead of JSON") {
+            alert("Failed to load Entourage: " + err.message);
+        }
     });
 }
 
