@@ -927,6 +927,17 @@ The countdown to forever...
 </section>
 
 
+This is the specific fix. To make the flowers spans the **full width** of the paper (touching the edges), we have to remove the padding from the main card and apply it only to the text inside.
+
+I have structured it like a **Letterhead**:
+
+1. **Top Image:** Full width, sitting at the very top edge.
+2. **Text Content:** Padded inside the middle.
+3. **Bottom Image:** Full width, sitting at the very bottom edge, flipped upside down (`transform: rotate(180deg)`).
+
+Replace your entire Entourage section with this:
+
+```html
 <section id="entourage" style="
     padding: 100px 20px; 
     /* Emerald Green Background */
@@ -937,121 +948,123 @@ The countdown to forever...
         background-color: #fcfaf7; 
         max-width: 900px; 
         margin: 0 auto; 
-        padding: 60px 30px; /* Slightly reduced top/bottom padding to accommodate images */
+        padding: 0; /* CRITICAL: Padding removed so images are full width */
         border-radius: 4px; 
-        /* DEEP SHADOW EFFECT */
         box-shadow: 0 30px 70px rgba(0,0,0,0.5);
-        border: 1px solid #d4af37;">
+        border: 1px solid #d4af37;
+        overflow: hidden; /* Keeps images inside rounded corners */">
 
-        <img src="flower.png" alt="Floral decoration" style="
+        <img src="image_10.png" alt="Floral Top" style="
             width: 100%;
-            max-width: 600px; /* Keeps it from getting too huge */
+            height: auto;
             display: block;
-            margin: 0 auto 40px auto; /* Centers it and adds space below */
+            object-fit: cover;
         ">
 
-        <div style="margin-bottom: 70px;">
-            <h2 style="font-family: 'Pinyon Script', cursive; font-size: 60px; color: #d4af37; margin-bottom: 10px;">The Entourage</h2>
-            <div style="width: 50px; height: 1px; background: #d4af37; margin: 0 auto; opacity: 0.5;"></div>
-        </div>
+        <div style="padding: 40px 30px;">
 
-        <div style="margin-bottom: 60px;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
-                <div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Bride</span>
-                    <p id="Parents_Bride" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 2.0; margin-top: 15px;"></p>
-                </div>
-                <div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Groom</span>
-                    <p id="Parents_Groom" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 2.0; margin-top: 15px;"></p>
+            <div style="margin-bottom: 70px;">
+                <h2 style="font-family: 'Pinyon Script', cursive; font-size: 60px; color: #d4af37; margin-bottom: 10px;">The Entourage</h2>
+                <div style="width: 50px; height: 1px; background: #d4af37; margin: 0 auto; opacity: 0.5;"></div>
+            </div>
+
+            <div style="margin-bottom: 60px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
+                    <div>
+                        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Bride</span>
+                        <p id="Parents_Bride" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 2.0; margin-top: 15px;"></p>
+                    </div>
+                    <div>
+                        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Parents of the Groom</span>
+                        <p id="Parents_Groom" style="font-family: 'Playfair Display', serif; font-size: 19px; color: #043927; line-height: 2.0; margin-top: 15px;"></p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div style="margin-bottom: 70px;">
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 30px;">Principal Sponsors</span>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
-                <p id="Principal_Sponsors_Male" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2;"></p>
-                <p id="Principal_Sponsors_Female" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2;"></p>
+            <div style="margin-bottom: 70px;">
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 30px;">Principal Sponsors</span>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                    <p id="Principal_Sponsors_Male" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2;"></p>
+                    <p id="Principal_Sponsors_Female" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2;"></p>
+                </div>
             </div>
-        </div>
 
-        <div style="margin-bottom: 70px;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
+            <div style="margin-bottom: 70px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
+                    <div>
+                        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Maid of Honor</span>
+                        <p id="Maid_of_Honor" style="font-family: 'Playfair Display', serif; font-size: 20px; color: #043927; margin-top: 10px;"></p>
+                    </div>
+                    <div>
+                        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Best Man</span>
+                        <p id="Best_Man" style="font-family: 'Playfair Display', serif; font-size: 20px; color: #043927; margin-top: 10px;"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 70px;">
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 35px;">Secondary Sponsors</span>
+
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;">
+                    <div style="min-width: 200px;">
+                        <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 800;">To Light Our Path</span>
+                        <p id="Sponsors_Candle" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
+                    </div>
+                    <div style="min-width: 200px;">
+                        <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 800;">To Clothe Us As One</span>
+                        <p id="Sponsors_Veil" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
+                    </div>
+                    <div style="min-width: 200px;">
+                        <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 800;">To Bind Us Together</span>
+                        <p id="Sponsors_Cord" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px; margin-bottom: 70px;">
                 <div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Maid of Honor</span>
-                    <p id="Maid_of_Honor" style="font-family: 'Playfair Display', serif; font-size: 20px; color: #043927; margin-top: 10px;"></p>
+                    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Bridesmaids</span>
+                    <p id="Bridesmaids" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
                 </div>
                 <div>
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Best Man</span>
-                    <p id="Best_Man" style="font-family: 'Playfair Display', serif; font-size: 20px; color: #043927; margin-top: 10px;"></p>
+                    <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Groomsmen</span>
+                    <p id="Groomsmen" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
                 </div>
             </div>
-        </div>
 
-        <div style="margin-bottom: 70px;">
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #d4af37; font-weight: 700; display: block; margin-bottom: 35px;">Secondary Sponsors</span>
-
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;">
-                <div style="min-width: 200px;">
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 800;">To Light Our Path</span>
-                    <p id="Sponsors_Candle" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
-                </div>
-                <div style="min-width: 200px;">
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 800;">To Clothe Us As One</span>
-                    <p id="Sponsors_Veil" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
-                </div>
-                <div style="min-width: 200px;">
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #d4af37; font-weight: 800;">To Bind Us Together</span>
-                    <p id="Sponsors_Cord" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 5px;"></p>
+            <div style="margin-bottom: 60px;">
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; max-width: 900px; margin: 0 auto;">
+                    <div style="min-width: 150px;">
+                        <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Ring Bearer</span>
+                        <p id="Ring_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
+                    </div>
+                    <div style="min-width: 150px;">
+                        <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Coin Bearer</span>
+                        <p id="Coin_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
+                    </div>
+                    <div style="min-width: 150px;">
+                        <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Bible Bearer</span>
+                        <p id="Bible_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px; margin-bottom: 70px;">
             <div>
-                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Bridesmaids</span>
-                <p id="Bridesmaids" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Flower Girls</span>
+                <p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
             </div>
-            <div>
-                <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Groomsmen</span>
-                <p id="Groomsmen" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
-            </div>
-        </div>
-
-        <div style="margin-bottom: 60px;">
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; max-width: 900px; margin: 0 auto;">
-                <div style="min-width: 150px;">
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Ring Bearer</span>
-                    <p id="Ring_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
-                </div>
-                <div style="min-width: 150px;">
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Coin Bearer</span>
-                    <p id="Coin_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
-                </div>
-                <div style="min-width: 150px;">
-                    <span style="font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37;">Bible Bearer</span>
-                    <p id="Bible_Bearer" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; margin-top: 10px;"></p>
-                </div>
-            </div>
-        </div>
-
-        <div style="margin-bottom: 40px;">
-            <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; font-weight: 700;">Flower Girls</span>
-            <p id="Flower_Girls" style="font-family: 'Playfair Display', serif; font-size: 17px; color: #043927; line-height: 2.2; margin-top: 15px;"></p>
-        </div>
-
-        <img src="flower.png" alt="Floral decoration" style="
+            
+        </div> <img src="image_10.png" alt="Floral Bottom" style="
             width: 100%;
-            max-width: 600px;
+            height: auto;
             display: block;
-            margin: 0 auto; /* Centers it */
-            transform: rotate(180deg); /* Flips it for the bottom */
+            object-fit: cover;
+            transform: rotate(180deg);
         ">
 
     </div>
-
 </section>
+
     
 <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
 <h2 style="font-family: 'Great Vibes', cursive; font-size: 45px; margin-bottom: 50px;">The Journey to Forever</h2>
