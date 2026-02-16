@@ -11,240 +11,239 @@
 
 /* --- BALANCED SPLIT TIMELINE --- */
 #timeline {
-    position: relative;
-    overflow: hidden;
+position: relative;
+overflow: hidden;
 }
 
 .timeline-container {
-    max-width: 1000px; 
-    margin: 0 auto;
-    padding: 60px 20px;
-    position: relative;
+max-width: 1000px; /* Wider to accommodate images */
+margin: 0 auto;
+padding: 60px 20px;
+position: relative;
 }
 
 /* THE CENTRAL VERTICAL LINE */
 .timeline-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 2px;
-    background: #043927; /* Emerald */
-    transform: translateX(-50%);
-    opacity: 0.3; 
-    z-index: 0;
+content: '';
+position: absolute;
+top: 0;
+bottom: 0;
+left: 50%;
+width: 2px;
+background: #043927; /* Emerald */
+transform: translateX(-50%);
+opacity: 0.3; /* Subtle line */
+z-index: 0;
 }
 
 /* THE ROW WRAPPER */
 .timeline-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 80px; 
-    position: relative;
-    z-index: 1;
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 80px; /* Space between events */
+position: relative;
+z-index: 1;
 }
 
-/* THE TWO SIDES */
-/* CHANGED: Increased from 45% to 48% to close the gap */
+/* THE TWO SIDES (50% Width Each) */
 .timeline-content-side, 
 .timeline-image-side {
-    width: 48%; 
-    position: relative;
+width: 45%; /* Leaves 10% gap in middle */
+position: relative;
 }
 
 /* --- THE TEXT SIDE --- */
 .timeline-content-side {
-    padding: 20px;
+padding: 20px;
 }
 
 /* --- THE IMAGE SIDE --- */
 .timeline-image-side {
-    display: flex;
-    align-items: center;
-    /* justify-content is now handled in the Alternating Logic section below */
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
 /* THE IMAGE ITSELF */
 .timeline-image-side img {
-    max-width: 180px; 
-    max-height: 180px;
-    object-fit: contain;
-    
-    /* CHANGED: Animation removed so image stays still */
-    animation: none; 
-    
+max-width: 180px; /* Size of the icon */
+max-height: 180px;
+object-fit: contain;
+/* Optional: A soft float animation */
+animation: floatIcon 6s ease-in-out infinite;
+/* KEEP THIS if your icons are black and you want them EMERALD.
+      REMOVE THIS if your icons are already colored.
+   */
+    filter: invert(16%) sepia(34%) saturate(1478%) hue-rotate(119deg) brightness(93%) contrast(93%);
+    opacity: 0.8; 
     opacity: 1; 
 }
 
-/* THE CENTER DOT */
+/* THE CENTER DOT (Using the Dot to anchor the line) */
 .center-dot {
-    position: absolute;
-    left: 50%;
-    width: 16px;
-    height: 16px;
-    background: #d4af37; /* Gold Center */
-    border: 4px solid #F4CFE0; /* Rose Pink Border */
-    border-radius: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 0 0 5px #fcfaf7; /* White Halo */
+position: absolute;
+left: 50%;
+width: 16px;
+height: 16px;
+background: #d4af37; /* Gold Center */
+border: 4px solid #F4CFE0; /* Rose Pink Border */
+border-radius: 50%;
+transform: translateX(-50%);
+box-shadow: 0 0 0 5px #fcfaf7; /* White Halo */
 }
 
 /* --- TYPOGRAPHY --- */
 .event-time {
-    font-family: 'Montserrat', sans-serif;
-    color: #d4af37; /* Gold */
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    display: block;
+font-family: 'Montserrat', sans-serif;
+color: #d4af37; /* Gold */
+font-size: 13px;
+font-weight: 700;
+letter-spacing: 2px;
+text-transform: uppercase;
+margin-bottom: 10px;
+display: block;
 }
 
 .timeline-content-side h3 {
-    font-family: 'Playfair Display', serif;
-    color: #043927; /* Emerald */
-    font-size: 2.2rem;
-    margin: 0 0 15px 0;
-    line-height: 1.1;
+font-family: 'Playfair Display', serif;
+color: #043927; /* Emerald */
+font-size: 2.2rem;
+margin: 0 0 15px 0;
+line-height: 1.1;
 }
 
 .timeline-content-side p {
-    font-family: 'Georgia', serif;
-    font-size: 16px;
-    color: #666;
-    line-height: 1.6;
-    font-style: italic;
+font-family: 'Georgia', serif;
+font-size: 16px;
+color: #666;
+line-height: 1.6;
+font-style: italic;
 }
 
-/* --- ALTERNATING SIDES LOGIC (FIXED) --- */
+/* --- ALTERNATING SIDES LOGIC --- */
 
 /* NORMAL ROW (Text Left, Image Right) */
 .timeline-row.normal {
-    flex-direction: row;
+flex-direction: row;
 }
 .timeline-row.normal .timeline-content-side {
-    text-align: right; 
-}
-/* CHANGED: Align image to the LEFT to hug the center line */
-.timeline-row.normal .timeline-image-side {
-    justify-content: flex-start; 
-    padding-left: 30px; /* Small gap from line */
+text-align: right; /* Align text towards center */
 }
 
 /* REVERSE ROW (Image Left, Text Right) */
 .timeline-row.reverse {
-    flex-direction: row-reverse;
+flex-direction: row-reverse;
 }
 .timeline-row.reverse .timeline-content-side {
-    text-align: left; 
-}
-/* CHANGED: Align image to the RIGHT to hug the center line */
-.timeline-row.reverse .timeline-image-side {
-    justify-content: flex-end; 
-    padding-right: 30px; /* Small gap from line */
+text-align: left; /* Align text towards center */
 }
 
+/* FLOATING ANIMATION */
+@keyframes floatIcon {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+
+/* iPhone 15 Plus Fix: Nudge the RSVP up on mobile screens */
 @media (max-width: 768px) {
-    #scroll-container {
-        bottom: 90px !important; 
-        right: 25px !important;
-    }
-
-    #entourage p {
-        font-size: 16px !important; 
-        line-height: 1.4 !important;
-        margin-top: 5px !important;
-        padding: 0 15px; 
-    }
-
-    #entourage h2 {
-        font-size: 42px !important;
-    }
-    #dress-code div[style*="display: grid"] {
-        grid-template-columns: 1fr !important; 
-        gap: 40px !important;
-        padding: 0 10px;
-    }
-
-    #dress-code img {
-        max-height: 250px !important; 
-    }
-
-    #dress-code div[style*="flex-wrap: wrap"] {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important; 
-        gap: 30px 10px !important;
-        justify-items: center;
-        max-width: 300px;
-        margin: 0 auto;
-    }
-
-    #dress-code div[style*="display: flex; align-items: center; gap: 12px"] {
-        flex-direction: column !important; 
-        text-align: center;
-        gap: 8px !important;
-    }
-
-    /* TIMELINE MOBILE OVERRIDES */
-    .timeline-container::before {
-        left: 20px; 
-    }
-    
-    .timeline-row, 
-    .timeline-row.reverse {
-        flex-direction: column-reverse; 
-        margin-bottom: 60px;
-        align-items: flex-start;
-    }
-    
-    .timeline-content-side, 
-    .timeline-image-side {
-        width: 100%;
-        text-align: left !important;
-        padding-left: 50px; /* Make room for line */
-        padding-right: 0;   /* Reset right padding */
-    }
-    
-    /* Reset the justification so images align left on mobile */
-    .timeline-row.normal .timeline-image-side,
-    .timeline-row.reverse .timeline-image-side {
-        justify-content: flex-start;
-        padding-left: 50px;
-        padding-right: 0;
-        margin-bottom: 15px;
-    }
-    
-    .timeline-image-side img {
-        max-width: 100px; 
-    }
-    
-    .center-dot {
-        left: 20px; 
-    }
+/* Your existing scroll container fix */
+#scroll-container {
+bottom: 90px !important; 
+right: 25px !important;
 }
- 
+
+/* Fix for the Entourage names cutting off */
+#entourage p {
+/* Dropping this to 15px/16px gives the long names room to breathe */
+font-size: 16px !important; 
+line-height: 1.4 !important;
+margin-top: 5px !important;
+padding: 0 15px; /* Keeps text from hitting the very edge of the phone */
+}
+
+/* Optional: Shrink the 'The Entourage' header slightly for mobile */
+#entourage h2 {
+font-size: 42px !important;
+}
+#dress-code div[style*="display: grid"] {
+grid-template-columns: 1fr !important; /* Stack images one by one */
+gap: 40px !important;
+padding: 0 10px;
+}
+
+#dress-code img {
+max-height: 250px !important; /* Makes images slightly larger on mobile */
+}
+
+/* 2. Aligns the Celebration Color Palette */
+#dress-code div[style*="flex-wrap: wrap"] {
+display: grid !important;
+grid-template-columns: 1fr 1fr !important; /* Neatly aligns circles 2x2 */
+gap: 30px 10px !important;
+justify-items: center;
+max-width: 300px;
+margin: 0 auto;
+}
+
+/* 3. Centers the text under each color circle */
+#dress-code div[style*="display: flex; align-items: center; gap: 12px"] {
+flex-direction: column !important; /* Puts label under the circle */
+text-align: center;
+gap: 8px !important;
+}
+
+.timeline-container::before {
+left: 20px; /* Move line to far left */
+}
+
+.timeline-row, 
+.timeline-row.reverse {
+flex-direction: column-reverse; /* Text bottom, Image top */
+margin-bottom: 60px;
+align-items: flex-start;
+}
+
+.timeline-content-side, 
+.timeline-image-side {
+width: 100%;
+text-align: left !important;
+padding-left: 50px; /* Make room for line */
+}
+
+.timeline-image-side {
+justify-content: flex-start;
+margin-bottom: 15px;
+}
+
+.timeline-image-side img {
+max-width: 100px; /* Smaller icons on mobile */
+}
+
+.center-dot {
+left: 20px; /* Move dot to line */
+}
+}
+
 /* This locks the site vertically and prevents side-scrolling */
 body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow-x: hidden !important; /* The 'Magic' Line */
-    position: relative;
+margin: 0;
+padding: 0;
+width: 100%;
+overflow-x: hidden !important; /* The 'Magic' Line */
+position: relative;
 }
 
 #main-site {
-    width: 100%;
-    overflow-x: hidden !important;
+width: 100%;
+overflow-x: hidden !important;
 }
 
 #months, #days, #hours, #minutes, #seconds {
-    display: inline-block;
-    white-space: nowrap !important;
-    hyphens: none !important;
-    -webkit-hyphens: none !important;
+display: inline-block;
+white-space: nowrap !important;
+hyphens: none !important;
+-webkit-hyphens: none !important;
 }
 
 /* Makes the names easier to read on mobile screens */
@@ -447,12 +446,12 @@ border-color: var(--gold);
 /* --- ENVELOPE EXIT ANIMATION --- */
 /* This specific combination overrides the 0.6s base transition */
 #envelope-wrapper.wrapper-exit {
-    opacity: 0 !important;
-    transform: scale(1.15) !important;
-    pointer-events: none;
-    
-    /* Set this to 0.8s (or your preferred duration) */
-    transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) !important;
+opacity: 0 !important;
+transform: scale(1.15) !important;
+pointer-events: none;
+
+/* Set this to 0.8s (or your preferred duration) */
+transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
 /* --- THE SLIDE ANIMATION --- */
@@ -884,100 +883,100 @@ The countdown to forever...
 </section>
 
 <section id="dress-code" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #043927; padding: 60px 20px;">
-    
-    <div class="reveal-on-scroll" style="width: 100%; max-width: 650px; background: #ffffff; padding: 50px 40px; box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5); border-radius: 4px; text-align: center;">
-        
-        <h2 style="font-family: 'Pinyon Script', cursive; font-size: clamp(45px, 7vw, 65px); color: #043927; margin: 0 0 40px 0; line-height: 1;">Dress Code</h2>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px 20px; text-align: center; margin-bottom: 50px;">
-            
-            <div style="display: flex; flex-direction: column; align-items: center;">
-                <p style="font-family: 'Montserrat', sans-serif; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; color: #043927; font-weight: 800; margin: 0 0 15px 0;">Ninong</p>
-                <div style="width: 100%; height: 210px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
-                    <img src="ninong.png" alt="Ninong" style="max-width: 100%; max-height: 100%; object-fit: contain;">
-                </div>
-                <p style="font-family: 'Georgia', serif; font-size: 12px; color: #666; margin: 0 0 12px 0;">Barong Tagalog</p>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <div style="width: 18px; height: 18px; background: #f5f2e8; border: 1px solid #eee; border-radius: 50%;"></div>
-                    <span style="font-family: 'Montserrat'; font-size: 8px; color: #888; font-weight: 700; letter-spacing: 1px;">ECRU / CREAM</span>
-                </div>
-            </div>
+<div class="reveal-on-scroll" style="width: 100%; max-width: 650px; background: #ffffff; padding: 50px 40px; box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5); border-radius: 4px; text-align: center;">
 
-            <div style="display: flex; flex-direction: column; align-items: center;">
-                <p style="font-family: 'Montserrat', sans-serif; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; color: #043927; font-weight: 800; margin: 0 0 15px 0;">Ninang</p>
-                <div style="width: 100%; height: 210px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
-                    <img src="ninang.png" alt="Ninang" style="max-width: 100%; max-height: 100%; object-fit: contain;">
-                </div>
-                <p style="font-family: 'Georgia', serif; font-size: 12px; color: #666; margin: 0 0 12px 0;">Formal Attire, Gown or Long Gown</p>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <div style="display: flex; gap: 4px;">
-                        <div style="width: 18px; height: 18px; background: #f5f2e8; border: 1px solid #eee; border-radius: 50%;"></div>
-                        <div style="width: 18px; height: 18px; background: #FFFDD0; border: 1px solid #eee; border-radius: 50%;"></div>
-                        <div style="width: 18px; height: 18px; background: #d4af37; border-radius: 50%;"></div>
-                    </div>
-                    <span style="font-family: 'Montserrat'; font-size: 8px; color: #888; font-weight: 700; letter-spacing: 1px;">ECRU / CREAM / GOLD</span>
-                </div>
-            </div>
+<h2 style="font-family: 'Pinyon Script', cursive; font-size: clamp(45px, 7vw, 65px); color: #043927; margin: 0 0 40px 0; line-height: 1;">Dress Code</h2>
 
-            <div style="display: flex; flex-direction: column; align-items: center;">
-                <p style="font-family: 'Montserrat', sans-serif; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; color: #043927; font-weight: 800; margin: 0 0 15px 0;">Groomsmen</p>
-                <div style="width: 100%; height: 210px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
-                    <img src="g.png" alt="Groomsmen" style="max-width: 100%; max-height: 100%; object-fit: contain;">
-                </div>
-                <p style="font-family: 'Georgia', serif; font-size: 12px; color: #666; margin: 0 0 12px 0;">Barong Tagalog with Emerald Green Inner Shirt</p>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <div style="display: flex; gap: 4px;">
-                        <div style="width: 18px; height: 18px; background: #f5f2e8; border: 1px solid #eee; border-radius: 50%;"></div>
-                        <div style="width: 18px; height: 18px; background: #043927; border-radius: 50%;"></div>
-                    </div>
-                    <span style="font-family: 'Montserrat'; font-size: 8px; color: #043927; font-weight: 700; letter-spacing: 1px;">ECRU AND EMERALD GREEN</span>
-                </div>
-            </div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px 20px; text-align: center; margin-bottom: 50px;">
 
-            <div style="display: flex; flex-direction: column; align-items: center;">
-                <p style="font-family: 'Montserrat', sans-serif; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; color: #043927; font-weight: 800; margin: 0 0 15px 0;">Bridesmaids</p>
-                <div style="width: 100%; height: 210px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
-                    <img src="b.png" alt="Bridesmaids" style="max-width: 100%; max-height: 100%; object-fit: contain;">
-                </div>
-                <p style="font-family: 'Georgia', serif; font-size: 12px; color: #666; margin: 0 0 12px 0;">Emerald Green Long Gown</p>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <div style="width: 18px; height: 18px; background: #043927; border-radius: 50%;"></div>
-                    <span style="font-family: 'Montserrat'; font-size: 8px; color: #043927; font-weight: 700; letter-spacing: 1px;">EMERALD GREEN</span>
-                </div>
-            </div>
+<div style="display: flex; flex-direction: column; align-items: center;">
+<p style="font-family: 'Montserrat', sans-serif; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; color: #043927; font-weight: 800; margin: 0 0 15px 0;">Ninong</p>
+<div style="width: 100%; height: 210px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+<img src="ninong.png" alt="Ninong" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+</div>
+<p style="font-family: 'Georgia', serif; font-size: 12px; color: #666; margin: 0 0 12px 0;">Barong Tagalog</p>
+<div style="display: flex; align-items: center; gap: 8px;">
+<div style="width: 18px; height: 18px; background: #f5f2e8; border: 1px solid #eee; border-radius: 50%;"></div>
+<span style="font-family: 'Montserrat'; font-size: 8px; color: #888; font-weight: 700; letter-spacing: 1px;">ECRU / CREAM</span>
+</div>
+</div>
 
-        </div>
+<div style="display: flex; flex-direction: column; align-items: center;">
+<p style="font-family: 'Montserrat', sans-serif; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; color: #043927; font-weight: 800; margin: 0 0 15px 0;">Ninang</p>
+<div style="width: 100%; height: 210px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+<img src="ninang.png" alt="Ninang" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+</div>
+<p style="font-family: 'Georgia', serif; font-size: 12px; color: #666; margin: 0 0 12px 0;">Formal Attire, Gown or Long Gown</p>
+<div style="display: flex; align-items: center; gap: 8px;">
+<div style="display: flex; gap: 4px;">
+<div style="width: 18px; height: 18px; background: #f5f2e8; border: 1px solid #eee; border-radius: 50%;"></div>
+<div style="width: 18px; height: 18px; background: #FFFDD0; border: 1px solid #eee; border-radius: 50%;"></div>
+<div style="width: 18px; height: 18px; background: #d4af37; border-radius: 50%;"></div>
+</div>
+<span style="font-family: 'Montserrat'; font-size: 8px; color: #888; font-weight: 700; letter-spacing: 1px;">ECRU / CREAM / GOLD</span>
+</div>
+</div>
 
-        <div style="border-top: 1px solid #eee; padding-top: 35px;">
-            <p style="font-family: 'Montserrat', sans-serif; font-size: 17px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 900; margin-bottom: 25px;">Our Celebration Colors</p>
-            
-            <div style="display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-bottom: 25px;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 45px; height: 45px; background: #043927; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
-                    <span style="font-size: 10px; font-family: 'Montserrat'; color: #043927; font-weight: 700; letter-spacing: 1.5px;">EMERALD</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 45px; height: 45px; background: #F4CFE0; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
-                    <span style="font-size: 10px; font-family: 'Montserrat'; color: #F4CFE0; font-weight: 700; letter-spacing: 1.5px;">ROSE</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 45px; height: 45px; background: #d4af37; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
-                    <span style="font-size: 10px; font-family: 'Montserrat'; color: #888; font-weight: 700; letter-spacing: 1.5px;">GOLD</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 45px; height: 45px; background: #f5f2e8; border: 1px solid #eee; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
-                    <span style="font-size: 10px; font-family: 'Montserrat'; color: #888; font-weight: 700; letter-spacing: 1.5px;">ECRU</span>
-                </div>
-            </div>
+<div style="display: flex; flex-direction: column; align-items: center;">
+<p style="font-family: 'Montserrat', sans-serif; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; color: #043927; font-weight: 800; margin: 0 0 15px 0;">Groomsmen</p>
+<div style="width: 100%; height: 210px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+<img src="g.png" alt="Groomsmen" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+</div>
+<p style="font-family: 'Georgia', serif; font-size: 12px; color: #666; margin: 0 0 12px 0;">Barong Tagalog with Emerald Green Inner Shirt</p>
+<div style="display: flex; align-items: center; gap: 8px;">
+<div style="display: flex; gap: 4px;">
+<div style="width: 18px; height: 18px; background: #f5f2e8; border: 1px solid #eee; border-radius: 50%;"></div>
+<div style="width: 18px; height: 18px; background: #043927; border-radius: 50%;"></div>
+</div>
+<span style="font-family: 'Montserrat'; font-size: 8px; color: #043927; font-weight: 700; letter-spacing: 1px;">ECRU AND EMERALD GREEN</span>
+</div>
+</div>
 
-            <p style="font-family: 'Georgia', serif; font-style: italic; font-size: 13px; color: #999; line-height: 1.6; max-width: 480px; margin: 0 auto;">
-                We invite our guests to celebrate with us in this color 
-            </p>
-        </div>
-    </div>
+<div style="display: flex; flex-direction: column; align-items: center;">
+<p style="font-family: 'Montserrat', sans-serif; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; color: #043927; font-weight: 800; margin: 0 0 15px 0;">Bridesmaids</p>
+<div style="width: 100%; height: 210px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+<img src="b.png" alt="Bridesmaids" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+</div>
+<p style="font-family: 'Georgia', serif; font-size: 12px; color: #666; margin: 0 0 12px 0;">Emerald Green Long Gown</p>
+<div style="display: flex; align-items: center; gap: 8px;">
+<div style="width: 18px; height: 18px; background: #043927; border-radius: 50%;"></div>
+<span style="font-family: 'Montserrat'; font-size: 8px; color: #043927; font-weight: 700; letter-spacing: 1px;">EMERALD GREEN</span>
+</div>
+</div>
+
+</div>
+
+<div style="border-top: 1px solid #eee; padding-top: 35px;">
+<p style="font-family: 'Montserrat', sans-serif; font-size: 17px; letter-spacing: 3px; text-transform: uppercase; color: #043927; font-weight: 900; margin-bottom: 25px;">Our Celebration Colors</p>
+
+<div style="display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-bottom: 25px;">
+<div style="display: flex; align-items: center; gap: 12px;">
+<div style="width: 45px; height: 45px; background: #043927; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
+<span style="font-size: 10px; font-family: 'Montserrat'; color: #043927; font-weight: 700; letter-spacing: 1.5px;">EMERALD</span>
+</div>
+<div style="display: flex; align-items: center; gap: 12px;">
+<div style="width: 45px; height: 45px; background: #F4CFE0; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
+<span style="font-size: 10px; font-family: 'Montserrat'; color: #F4CFE0; font-weight: 700; letter-spacing: 1.5px;">ROSE</span>
+</div>
+<div style="display: flex; align-items: center; gap: 12px;">
+<div style="width: 45px; height: 45px; background: #d4af37; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
+<span style="font-size: 10px; font-family: 'Montserrat'; color: #888; font-weight: 700; letter-spacing: 1.5px;">GOLD</span>
+</div>
+<div style="display: flex; align-items: center; gap: 12px;">
+<div style="width: 45px; height: 45px; background: #f5f2e8; border: 1px solid #eee; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
+<span style="font-size: 10px; font-family: 'Montserrat'; color: #888; font-weight: 700; letter-spacing: 1.5px;">ECRU</span>
+</div>
+</div>
+
+<p style="font-family: 'Georgia', serif; font-style: italic; font-size: 13px; color: #999; line-height: 1.6; max-width: 480px; margin: 0 auto;">
+We invite our guests to celebrate with us in this color 
+</p>
+</div>
+</div>
 </section>
 
-    
+
 <section id="entourage" style="padding: 100px 20px; background-color: #ffffff; text-align: center;">
 
 <div class="reveal-on-scroll" style="margin-bottom: 80px;">
@@ -1082,72 +1081,63 @@ The countdown to forever...
 </section>
 
 <section id="timeline" class="reveal-on-scroll" style="background-color: #fcfaf7; padding: 100px 20px;">
-    
-    <div style="text-align: center; margin-bottom: 80px;">
-        <h2 style="font-family: 'Pinyon Script', cursive; color: #043927; font-size: clamp(50px, 8vw, 75px); margin: 0; line-height: 1;">The Celebration</h2>
-        <div style="width: 1px; height: 40px; background: #d4af37; margin: 20px auto;"></div>
-        <p style="font-family: 'Montserrat'; font-size: 11px; letter-spacing: 3px; color: #d4af37; text-transform: uppercase;">Order of Events</p>
-    </div>
-    
-    <div class="timeline-container">
-        
-        <div class="timeline-row normal">
-            <div class="timeline-content-side">
-                <span class="event-time">01:30 PM</span>
-                <h3>The Ceremony</h3>
-                <p>Santuario de San Antonio Parish<br>McKinley Rd, Makati</p>
-            </div>
-            
-            <div class="center-dot"></div>
-            
-            <div class="timeline-image-side">
-                <img src="church.png" alt="Church Ceremony">
-            </div>
-        </div>
 
-        <div class="timeline-row reverse">
-            <div class="timeline-content-side">
-                <span class="event-time">03:30 PM</span>
-                <h3>Cocktail Hour</h3>
-                <p>The Blue Leaf Foyer<br>Light bites & conversations</p>
-            </div>
-            
-            <div class="center-dot"></div>
-            
-            <div class="timeline-image-side">
-                <img src="cocktail.png" alt="Cocktail Hour">
-            </div>
-        </div>
+<div style="text-align: center; margin-bottom: 80px;">
+<h2 style="font-family: 'Pinyon Script', cursive; color: #043927; font-size: clamp(50px, 8vw, 75px); margin: 0; line-height: 1;">The Celebration</h2>
+<p style="font-family: 'Montserrat'; font-size: 11px; letter-spacing: 3px; color: #d4af37; text-transform: uppercase; margin-top: 15px;">Order of Events</p>
+</div>
 
-        <div class="timeline-row normal">
-            <div class="timeline-content-side">
-                <span class="event-time">04:30 PM</span>
-                <h3>Dinner & Reception</h3>
-                <p>The Blue Leaf Main Hall<br>Grand Entrance & Dinner</p>
-            </div>
-            
-            <div class="center-dot"></div>
-            
-            <div class="timeline-image-side">
-                <img src="reception.png" alt="Dinner Reception">
-            </div>
-        </div>
+<div class="timeline-container">
 
-        <div class="timeline-row reverse">
-            <div class="timeline-content-side">
-                <span class="event-time">07:00 PM</span>
-                <h3>The After Party</h3>
-                <p>Dancing Under the Stars<br>Let's celebrate!</p>
-            </div>
-            
-            <div class="center-dot"></div>
-            
-            <div class="timeline-image-side">
-                <img src="party.png" alt="After Party">
-            </div>
-        </div>
+<div class="timeline-row normal">
+<div class="timeline-content-side">
+<span class="event-time">01:30 PM</span>
+<h3>The Ceremony</h3>
+<p>Santuario de San Antonio Parish<br>McKinley Rd, Makati</p>
+</div>
+<div class="center-dot"></div>
+<div class="timeline-image-side">
+<img src="church.png" alt="Church">
+</div>
+</div>
 
-    </div>
+<div class="timeline-row reverse">
+<div class="timeline-content-side">
+<span class="event-time">03:30 PM</span>
+<h3>Cocktail Hour</h3>
+<p>The Blue Leaf Foyer<br>A time for toasts & conversations</p>
+</div>
+<div class="center-dot"></div>
+<div class="timeline-image-side">
+<img src="icon-toast.png" alt="Toast">
+</div>
+</div>
+
+<div class="timeline-row normal">
+<div class="timeline-content-side">
+<span class="event-time">04:30 PM</span>
+<h3>Dinner & Reception</h3>
+<p>The Blue Leaf Main Hall<br>Grand Entrance of the Couple</p>
+</div>
+<div class="center-dot"></div>
+<div class="timeline-image-side">
+<img src="icon-dinner.png" alt="Dinner">
+</div>
+</div>
+
+<div class="timeline-row reverse">
+<div class="timeline-content-side">
+<span class="event-time">07:00 PM</span>
+<h3>The After Party</h3>
+<p>Dancing Under the Stars<br>Drinks & Late Night Snacks</p>
+</div>
+<div class="center-dot"></div>
+<div class="timeline-image-side">
+<img src="icon-music.png" alt="Music">
+</div>
+</div>
+
+</div>
 </section>
 
 <section style="padding: 100px 20px; background-color: #fdf0f5; color: #043927; text-align: center;">
@@ -1199,130 +1189,227 @@ const token = urlParams.get('id');
 let guestData = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // FORCE SEAL TO BE CLICKABLE
-    const sealWrap = document.querySelector('.seal-bob-wrapper');
-    if(sealWrap) sealWrap.style.zIndex = "2000"; 
+// 1. GUEST CHECK
+if (token) checkGuestStatus();
+else {
+const lbl = document.getElementById('envelope-label');
+if (lbl) {
+lbl.innerHTML = `With love, to <span>Guest</span>`;
+lbl.classList.add('reveal-active');
+}
 
-    if (token) {
-        checkGuestStatus();
-    } else {
-        const lbl = document.getElementById('envelope-label');
-        if (lbl) { lbl.innerHTML = `With love, to <span>Guest</span>`; lbl.classList.add('reveal-active'); }
-    }
-    
-    loadEntourage();
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
+}
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+// 2. THE FIX: Wake up the invisible sections
+const revealElements = document.querySelectorAll('.reveal-on-scroll');
+revealElements.forEach(el => observer.observe(el));
+
+// 3. Keep your entourage loading
+loadEntourage();
 });
 
 function checkGuestStatus() {
-    const lbl = document.getElementById('envelope-label');
-    fetch(`${webAppUrl}?id=${encodeURIComponent(token)}`)
-    .then(res => res.json())
-    .then(data => {
-        if (data.error) {
-            lbl.innerHTML = "Guest not found";
-            lbl.classList.add('reveal-active');
-            return;
-        }
-        // Normalize name field
-        guestData = { ...data, name: data.name || "Guest" };
-        lbl.innerHTML = `With love, to <span>${guestData.name}</span>`;
-        lbl.classList.add('reveal-active');
-        
-        document.getElementById('loading')?.classList.add('hidden');
-        data.isDone ? showDoneView(guestData) : showMainForm();
-    })
-    .catch(err => { lbl.innerHTML = "Welcome"; lbl.classList.add('reveal-active'); });
+fetch(`${webAppUrl}?id=${encodeURIComponent(token)}`)
+.then(res => res.json())
+.then(data => {
+guestData = data;
+if (data && data.name) {
+const label = document.getElementById('envelope-label');
+label.innerHTML = `With love, to <span>${data.name}</span>`;
+label.classList.add('reveal-active');
+data.isDone ? showDoneView(data) : showMainForm();
+}
+}).catch(err => console.error(err));
 }
 
 function openInvitation() {
-    document.getElementById('envelope-wrapper').classList.add('open');
-    const seal = document.getElementById('seal');
-    if(seal) { seal.style.opacity = "0"; seal.style.pointerEvents = "none"; }
-}
-
-function showMainForm() {
-    const content = document.getElementById('content');
-    content.classList.remove('hidden');
-    content.innerHTML = `
-        <div class="rsvp-card">
-            <h2>Hi ${guestData.name},</h2>
-            <label>Will you attend?</label>
-            <select id="attending-select" onchange="togglePlusOne(true)">
-                <option value="Yes">Yes, I'll be there!</option>
-                <option value="No">No, I can't make it</option>
-            </select>
-            <div id="p1-area"></div>
-            <label>Email Address</label>
-            <input type="email" id="guest-email" value="${guestData.email || ''}">
-            <label>Message to the couple</label>
-            <textarea id="guest-note" style="width:100%; height:100px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
-            <button onclick="submitRSVP()" id="submit-btn">Confirm RSVP</button>
-        </div>`;
-    togglePlusOne(true);
-}
-
-function togglePlusOne(show) {
-    const area = document.getElementById('p1-area');
-    const val = document.getElementById('attending-select').value;
-    if (val === "Yes") {
-        area.innerHTML = `<label>Plus One Name</label><input type="text" id="plus-one-name" value="${guestData.plusOneName || ''}">`;
-    } else { area.innerHTML = ''; }
-}
-
-function loadEntourage() {
-    fetch(`${webAppUrl}?action=getEntourage`)
-    .then(res => res.json())
-    .then(data => {
-        Object.keys(data).forEach(id => {
-            const el = document.getElementById(id);
-            if(el) {
-                el.innerHTML = data[id].split(',').map(n => n.trim()).join('<br>');
-                el.style.opacity = "1";
-                el.closest('.reveal-on-scroll')?.classList.add('is-visible');
-            }
-        });
-    });
-}
-
-function submitRSVP() {
-    const btn = document.getElementById('submit-btn');
-    btn.innerHTML = "Saving..."; btn.disabled = true;
-    const payload = {
-        token: token,
-        name: guestData.name,
-        email: document.getElementById('guest-email').value,
-        attending: document.getElementById('attending-select').value,
-        plusOneName: document.getElementById('plus-one-name')?.value || "None",
-        note: document.getElementById('guest-note').value
-    };
-    fetch(webAppUrl, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) })
-    .then(() => { guestData = { ...guestData, ...payload }; showDoneView(guestData); });
-}
-
-function showDoneView(data) {
-    const content = document.getElementById('content');
-    content.classList.remove('hidden');
-    content.innerHTML = `<div class="rsvp-card"><h2>Thank you!</h2><p>RSVP recorded for ${data.name}.</p><button onclick="showMainForm()">Edit</button></div>`;
+document.getElementById('envelope-wrapper').classList.add('open');
+const seal = document.getElementById('seal');
+seal.style.opacity = "0";
+seal.style.pointerEvents = "none";
 }
 
 function handleMusic(play, event) {
-    if(event) { event.preventDefault(); event.stopPropagation(); }
-    if(play) { document.getElementById('bg-music')?.play(); }
-    document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
-    setTimeout(() => {
-        document.getElementById('main-site').style.display = 'block';
-        document.body.classList.add('show-site');
-        document.body.style.overflow = 'auto'; 
-    }, 100);
+if (event) {
+event.preventDefault();
+event.stopPropagation();
 }
-// Countdown and Timer logic remains same...
+
+if (play) {
+var audio = document.getElementById('bg-music');
+
+// 1. SET THE START TIME (in seconds)
+audio.currentTime = 4; 
+
+audio.volume = 1.0; 
+
+var playPromise = audio.play();
+if (playPromise !== undefined) {
+playPromise.then(_ => { console.log("Audio started at 4s!"); })
+.catch(error => { console.error("Playback failed:", error); });
+}
+}
+
+// ... (rest of your animation code remains the same)
+// 1. Start the exit animation immediately (this is the .6s CSS fade)
+document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
+
+// 2. THE REVEAL: Wait only 100ms (.1s) before Mariel & Jasper start appearing
+setTimeout(() => {
+document.getElementById('main-site').style.display = 'block';
+document.body.classList.add('show-site');
+document.body.style.overflow = 'auto'; 
+document.documentElement.style.overflow = 'auto';
+}, 100);
+
+// 3. THE CLEANUP: Wait 600ms (.6s) to hide the envelope once the fade is done
+setTimeout(() => {
+document.getElementById('envelope-wrapper').style.display = "none";
+}, 800);
+} // Ensure this bracket closes the handleMusic function
+
+function showMainForm() {
+const content = document.getElementById('content');
+content.classList.remove('hidden');
+const canP1 = String(guestData.allowPlusOne).toLowerCase() === "true";
+content.innerHTML = `
+          <div class="rsvp-card">
+              <h2>Hi ${guestData.name},</h2>
+              <label>Will you attend?</label>
+              <select id="attending-select" onchange="togglePlusOne(${canP1})">
+                  <option value="Yes">Yes, I'll be there!</option>
+                  <option value="No">No, I can't make it</option>
+              </select>
+              <div id="p1-area"></div>
+              <label>Email Address</label>
+              <input type="email" id="guest-email" value="${guestData.email || ''}">
+              <label>Message to the couple</label>
+              <textarea id="guest-note" style="width:100%; height:100px; padding:10px; border-radius:5px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
+              <button onclick="submitRSVP()" id="submit-btn">Confirm RSVP</button>
+          </div>`;
+togglePlusOne(canP1);
+}
+
+function togglePlusOne(canP1) {
+const area = document.getElementById('p1-area');
+const attending = document.getElementById('attending-select').value;
+if (attending === "Yes" && canP1) {
+area.innerHTML = `<label>Bringing a plus one?</label><select id="bringing-p1" onchange="toggleP1Name()"><option value="No">No</option><option value="Yes">Yes</option></select><div id="p1-name-wrapper"></div>`;
+} else { area.innerHTML = ''; }
+}
+
+function toggleP1Name() {
+const wrapper = document.getElementById('p1-name-wrapper');
+if (document.getElementById('bringing-p1').value === "Yes") {
+wrapper.innerHTML = '<label>Plus One Name</label><input type="text" id="plus-one-name">';
+} else { wrapper.innerHTML = ''; }
+}
+
+function submitRSVP() {
+const btn = document.getElementById('submit-btn');
+btn.innerHTML = "Saving..."; btn.disabled = true;
+const p1NameInput = document.getElementById('plus-one-name');
+const payload = {
+token: token, name: guestData.name,
+email: document.getElementById('guest-email').value,
+attending: document.getElementById('attending-select').value,
+plusOneName: p1NameInput ? p1NameInput.value : "None",
+note: document.getElementById('guest-note').value
+};
+fetch(webAppUrl, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) }).then(() => {
+showDoneView({ ...guestData });
+});
+}
+
+function showDoneView(data) {
+const content = document.getElementById('content');
+content.classList.remove('hidden');
+content.innerHTML = `
+          <div class="rsvp-card" style="text-align:center;">
+              <h2>Thank you!</h2>
+              <p>RSVP recorded for ${data.name}.</p>
+              <button onclick="showMainForm()">Edit Response</button>
+          </div>`;
+}
+
+// SMART SCROLL REVEAL OBSERVER (Fix for multiple elements)
+const observerOptions = { threshold: 0.1 }; 
+
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.classList.add('is-visible');
+}
+});
+}, observerOptions);
+
+
+// COUNTDOWN LOGIC
+
+
+function loadEntourage() {
+console.log("--- ENTOURAGE FETCH STARTING ---");
+console.log("Using URL:", webAppUrl);
+
+fetch(`${webAppUrl}?action=getEntourage`)
+.then(res => res.json())
+.then(data => {
+console.log("SUCCESS! Data received:", data);
+
+Object.keys(data).forEach(roleID => {
+const el = document.getElementById(roleID);
+if (el) {
+el.innerHTML = data[roleID].split(',').map(n => n.trim()).join('<br>');
+el.style.opacity = "1";
+} else {
+console.warn("Spreadsheet has '" + roleID + "' but no HTML ID matches.");
+}
+});
+// Force the scroll reveal to see the new names
+window.dispatchEvent(new Event('scroll'));
+})
+.catch(err => console.error("FETCH FAILED. Error:", err));
+}
+
+// THE LOGIC
+function updateCountdown() {
+const wedding = new Date("November 6, 2027 14:00:00").getTime();
+const now = new Date().getTime();
+const diff = wedding - now;
+
+if (diff <= 0) return;
+
+// Use consistent variable names
+const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.44));
+const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+const setDisplay = (id, val) => {
+const el = document.getElementById(id);
+if (el) {
+// This Math.max ensures no negative numbers/dashes
+el.textContent = Math.max(0, val).toString();
+}
+};
+
+// Update these to match the math variables above
+setDisplay("months", months);
+setDisplay("days", days);
+setDisplay("hours", hours);
+setDisplay("minutes", minutes);
+setDisplay("seconds", seconds);
+}
+
+// THE TRIGGER (Safe and Separate)
+document.addEventListener('DOMContentLoaded', () => {
+console.log("Countdown starting...");
+setInterval(updateCountdown, 1000);
+updateCountdown();
+});
+
+
 </script>
 </body>
 </html>
