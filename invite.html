@@ -199,21 +199,80 @@ text-align: center;
 gap: 8px !important;
 }
 
-.timeline-content-side, 
+.timeline-container {
+        padding: 40px 5px !important; 
+        width: 100% !important;
+    }
+
+    /* 2. THE LINE: Stay perfectly in the center */
+    .timeline-container::before {
+        left: 50% !important;
+        transform: translateX(-50%);
+    }
+
+    /* 3. THE SIDES: Force them to be exactly half the screen */
+    .timeline-content-side, 
     .timeline-image-side {
-        width: 100%;
-        text-align: left !important;
-        padding-left: 50px !important;
-        padding-right: 0 !important;
+        width: 50% !important;
+        box-sizing: border-box; /* Ensures padding doesn't break the layout */
     }
-    .timeline-row.normal .timeline-image-side,
-    .timeline-row.reverse .timeline-image-side {
-        justify-content: flex-start;
-        padding-left: 50px !important;
-    }
+
+    /* 4. SHRINK THE IMAGES significantly */
     .timeline-image-side img {
-        max-width: 100px;
+        max-width: 70px !important; /* Much smaller to fit half-screen */
+        max-height: 70px !important;
     }
+
+    /* 5. SHRINK THE TEXT to prevent wrapping issues */
+    .timeline-content-side h3 {
+        font-size: 1.1rem !important; /* Smaller header */
+        margin-bottom: 5px !important;
+    }
+    .timeline-content-side p {
+        font-size: 0.7rem !important; /* Smaller body text */
+        line-height: 1.3 !important;
+    }
+    .event-time {
+        font-size: 9px !important; /* Tiny time label */
+    }
+
+    /* 6. TIGHTEN THE GAPS (Crucial for the split look) */
+    
+    /* Normal Row (Text Left, Image Right) */
+    .timeline-row.normal .timeline-content-side {
+        padding-right: 15px !important; /* Only 15px gap from line */
+        text-align: right !important;
+    }
+    .timeline-row.normal .timeline-image-side {
+        padding-left: 15px !important;
+        justify-content: flex-start !important;
+    }
+
+    /* Reverse Row (Image Left, Text Right) */
+    .timeline-row.reverse .timeline-content-side {
+        padding-left: 15px !important;
+        text-align: left !important;
+    }
+    .timeline-row.reverse .timeline-image-side {
+        padding-right: 15px !important;
+        justify-content: flex-end !important;
+    }
+
+    /* 7. CENTER DOT */
+    .center-dot {
+        width: 12px !important; /* Slightly smaller dot */
+        height: 12px !important;
+        border-width: 2px !important;
+        left: 50% !important;
+    }
+
+    /* --- YOUR EXISTING MOBILE FIXES BELOW (Preserved) --- */
+    #scroll-container { bottom: 90px !important; right: 25px !important; }
+    #entourage p { font-size: 14px !important; padding: 0 5px; }
+    #entourage h2 { font-size: 38px !important; }
+    #dress-code div[style*="display: grid"] { grid-template-columns: 1fr !important; gap: 30px !important; }
+    #dress-code img { max-height: 200px !important; }
+    #dress-code div[style*="flex-wrap: wrap"] { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 20px 10px !important; justify-items: center; max-width: 300px; margin: 0 auto; }
 }
 
 /* This locks the site vertically and prevents side-scrolling */
