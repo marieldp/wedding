@@ -927,14 +927,15 @@ Scroll to RSVP
         overflow: hidden; 
         position: relative;">
 
-       <img src="flower.png" alt="Floral Top" style="
+<img src="flower.png" alt="Floral Top" style="
     position: absolute;
-    top: -20px; /* Reduced from -45px to prevent over-clipping on small screens */
+    /* This scales the offset: smaller on mobile, larger on laptop */
+    top: -4vw; 
     left: 0;
     width: 100%;
     height: auto;
     display: block;
-    transform: rotate(180deg) scale(1.05); /* Slightly less scale for better mobile fit */
+    transform: rotate(180deg) scale(1.05); 
     z-index: 5;
     pointer-events: none;">
 
@@ -1031,9 +1032,10 @@ Scroll to RSVP
             </div>
             
         </div> 
-        <img src="flower.png" alt="Floral Footer" style="
+<img src="flower.png" alt="Floral Footer" style="
     position: absolute;
-    bottom: -20px; /* Reduced from -45px to prevent over-clipping on small screens */
+    /* This scales the offset: smaller on mobile, larger on laptop */
+    bottom: -4vw; 
     left: 0;
     width: 100%;
     height: auto;
