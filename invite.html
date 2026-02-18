@@ -1347,22 +1347,23 @@ Scroll to RSVP
     right: 30px; 
     width: 50px; 
     height: 50px; 
-    background-color: #d4af37; /* Starts Gold because music starts playing via handleMusic */
+    background-color: #043927; 
     border: 1px solid #d4af37; 
     border-radius: 50%; 
     cursor: pointer; 
-    z-index: 9999; 
-    display: flex; 
+    z-index: 10000; 
+    display: none; /* Hidden until handleMusic is called */
     align-items: center; 
     justify-content: center;
-    color: #043927;
-    font-size: 20px;
+    color: #d4af37;
+    font-size: 18px;
     opacity: 0; 
-    pointer-events: none; 
-    transition: all 0.5s ease;
+    transition: opacity 0.5s ease, background-color 0.3s ease;
     outline: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 ">
-    <span id="musicIcon">||</span> </button> 
+    <span id="musicIcon">♪</span>
+</button>
 
 <script>
 const webAppUrl = "https://script.google.com/macros/s/AKfycbzrtwb3bnwahRGg94f6Eu3Qj1zsfGw3hga7Y5a23q293gI60mFJ818kGw5zbYtuKTBn/exec"; 
@@ -1416,6 +1417,8 @@ if (event) {
 event.preventDefault();
 event.stopPropagation();
 }
+// --- ADD THIS LINE BELOW ---
+document.getElementById('musicBtn').style.display = 'flex';
 
 if (play) {
 var audio = document.getElementById('bg-music');
@@ -1594,54 +1597,52 @@ updateCountdown();
 
 
 
-    // TOGGLE PLAY/PAUSE
+// 1. THE TOGGLE (For the floating button)
 function toggleMusic() {
-    var audio = document.getElementById("bg-music"); // Corrected ID
+    var audio = document.getElementById("bg-music");
     var btn = document.getElementById("musicBtn");
     var icon = document.getElementById("musicIcon");
 
     if (!audio.paused) {
         audio.pause();
         icon.innerHTML = "♪"; 
-        btn.style.backgroundColor = "#043927"; 
+        btn.style.backgroundColor = "#043927";
         btn.style.color = "#d4af37";
     } else {
         audio.play();
         icon.innerHTML = "||"; 
-        btn.style.backgroundColor = "#d4af37"; 
+        btn.style.backgroundColor = "#d4af37";
         btn.style.color = "#043927";
     }
 }
 
-// Scroll listener to show button and sync the icon state
-// Wrap everything in a listener to make sure the page is ready
-document.addEventListener("DOMContentLoaded", function() {
+// 2. THE SCROLL LISTENER (To show/hide button)
+window.addEventListener("scroll", function() {
     var btn = document.getElementById("musicBtn");
     var audio = document.getElementById("bg-music");
     var icon = document.getElementById("musicIcon");
 
-    window.addEventListener("scroll", function() {
-        // We'll show the button after only 200px of scrolling
-        if (window.pageYOffset > 200) { 
+    // Only run if the button has been "activated" by handleMusic
+    if (btn && btn.style.display === 'flex') {
+        if (window.scrollY > 300) { // Show after scrolling 300px
             btn.style.opacity = "1";
             btn.style.pointerEvents = "auto";
-            
-            // Re-sync icon state in case they started music via the envelope
-            if (audio && !audio.paused) {
+
+            // Check if music is playing to show the correct icon
+            if (!audio.paused) {
                 icon.innerHTML = "||";
-                btn.style.backgroundColor = "#d4af37"; // Gold
-                btn.style.color = "#043927"; // Emerald
+                btn.style.backgroundColor = "#d4af37";
+                btn.style.color = "#043927";
             } else {
                 icon.innerHTML = "♪";
-                btn.style.backgroundColor = "#043927"; // Emerald
-                btn.style.color = "#d4af37"; // Gold
+                btn.style.backgroundColor = "#043927";
+                btn.style.color = "#d4af37";
             }
         } else {
-            // Hide it when at the very top (Landing Page)
             btn.style.opacity = "0";
             btn.style.pointerEvents = "none";
         }
-    });
+    }
 });
 
 </script>
