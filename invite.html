@@ -1569,17 +1569,38 @@ function loadEntourage() {
     fetch(`${webAppUrl}?action=getEntourage`)
     .then(res => res.json())
     .then(data => {
-        console.log("SUCCESS! Data received:", data);
         Object.keys(data).forEach(roleID => {
             const el = document.getElementById(roleID);
             if (el) {
-                el.innerHTML = data[roleID].split(',').map(n => n.trim()).join('<br>');
+                let text = data[roleID].trim();
+
+                // 1. FOR LISTS (Bridesmaids, Groomsmen, etc.)
+                // This handles names separated by commas
+                if (text.includes(',')) {
+                    el.innerHTML = text.split(',').map(n => n.trim()).join('<br>');
+                } 
+                
+                // 2. FOR COUPLES (Parents, Candle, Veil, Cord)
+                // This catches the "&" and stacks the names so they don't hit the screen edge
+                else if (text.includes('&')) {
+                    let names = text.split('&');
+                    el.innerHTML = names[0].trim() + 
+                                   '<br><span style="color:#d4af37; font-size: 0.85em; display:block; margin: 4px 0;">&</span>' + 
+                                   names[1].trim();
+                }
+                
+                // 3. FOR SINGLE NAMES (Best Man, Maid of Honor)
+                else {
+                    el.innerHTML = text;
+                }
+
                 el.style.opacity = "1";
             }
         });
+        // Refresh scroll reveal so it sees the newly loaded names
         window.dispatchEvent(new Event('scroll'));
     })
-    .catch(err => console.error("FETCH FAILED. Error:", err));
+    .catch(err => console.error("FETCH FAILED:", err));
 }
 
 // THE COUNTDOWN LOGIC
