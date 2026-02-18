@@ -1429,43 +1429,43 @@ function openInvitation() {
     seal.style.pointerEvents = "none";
 }
 
-// --- UPDATED HANDLE MUSIC FUNCTION ---
 function handleMusic(play, event) {
     if (event) {
         event.preventDefault();
         event.stopPropagation();
     }
 
-    // 1. ACTIVATE THE BUTTON
     const mBtn = document.getElementById('musicBtn');
     const mIcon = document.getElementById('musicIcon');
     
+    // 1. Setup the button state immediately based on choice
     if (mBtn) {
-        // CRITICAL FIX: We set it to flex here.
-        mBtn.style.display = 'flex'; 
+        mBtn.style.display = 'flex'; // Make it exist
         
-        // IF THEY CHOSE YES: Set button to "Playing" state immediately
         if (play) {
-            mBtn.style.backgroundColor = "#d4af37"; // Gold
-            mBtn.style.color = "#043927"; // Dark Green
-            mIcon.classList.add("music-playing"); // START ANIMATION
+            // YES: Gold, Green Text, Pulsing
+            mBtn.style.backgroundColor = "#d4af37"; 
+            mBtn.style.color = "#043927";
+            mIcon.classList.add("pulsing"); 
+        } else {
+            // NO: Green, Gold Text, No Pulse
+            mBtn.style.backgroundColor = "#043927"; 
+            mBtn.style.color = "#d4af37";
+            mIcon.classList.remove("pulsing");
         }
     }
 
-    // 2. PLAY MUSIC LOGIC
+    // 2. Play Audio if YES
     if (play) {
         var audio = document.getElementById('bg-music');
         if (audio) {
             audio.currentTime = 4; 
             audio.volume = 1.0; 
-            var playPromise = audio.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => { console.error("Playback failed:", error); });
-            }
+            audio.play().catch(e => console.error("Playback failed:", e));
         }
     }
 
-    // 3. ANIMATION & REVEAL
+    // 3. Reveal Animation (Your original logic)
     document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
 
     setTimeout(() => {
@@ -1473,7 +1473,11 @@ function handleMusic(play, event) {
         document.body.classList.add('show-site');
         document.body.style.overflow = 'auto'; 
         document.documentElement.style.overflow = 'auto';
-        setupMusicObserver();
+        
+        // Trigger the scroll observer we added earlier
+        if (typeof setupMusicObserver === "function") {
+            setupMusicObserver(); 
+        }
     }, 100);
 
     setTimeout(() => {
@@ -1605,19 +1609,20 @@ function updateCountdown() {
 function toggleMusic() {
     var audio = document.getElementById("bg-music");
     var btn = document.getElementById("musicBtn");
+    var icon = document.getElementById("musicIcon");
 
     if (audio.paused) {
         // TURN ON
         audio.play();
-        btn.style.backgroundColor = "#d4af37"; // Gold Background
-        btn.style.color = "#043927"; // Green Icon
-        icon.classList.add("music-playing"); // START ANIMATION
+        btn.style.backgroundColor = "#d4af37"; // Gold
+        btn.style.color = "#043927"; // Green Text
+        icon.classList.add("pulsing"); // START PULSE
     } else {
         // TURN OFF
         audio.pause();
-        btn.style.backgroundColor = "#043927"; // Green Background
-        btn.style.color = "#d4af37"; // Gold Icon
-        icon.classList.remove("music-playing"); // STOP ANIMATION
+        btn.style.backgroundColor = "#043927"; // Green
+        btn.style.color = "#d4af37"; // Gold Text
+        icon.classList.remove("pulsing"); // STOP PULSE
     }
 }
 
