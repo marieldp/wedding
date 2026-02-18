@@ -1371,46 +1371,53 @@ const token = urlParams.get('id');
 let guestData = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-// 1. GUEST CHECK
-if (token) checkGuestStatus();
-else {
-const lbl = document.getElementById('envelope-label');
-if (lbl) {
-lbl.innerHTML = `With love, to <span>Guest</span>`;
-lbl.classList.add('reveal-active');
-}
+    // 1. GUEST CHECK
+    if (token) checkGuestStatus();
+    else {
+        const lbl = document.getElementById('envelope-label');
+        if (lbl) {
+            lbl.innerHTML = `With love, to <span>Guest</span>`;
+            lbl.classList.add('reveal-active');
+        }
+    }
 
-}
+    // 2. THE FIX: Wake up the invisible sections
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    if (typeof observer !== 'undefined') {
+        revealElements.forEach(el => observer.observe(el));
+    }
 
-// 2. THE FIX: Wake up the invisible sections
-const revealElements = document.querySelectorAll('.reveal-on-scroll');
-revealElements.forEach(el => observer.observe(el));
+    // 3. Keep your entourage loading
+    loadEntourage();
 
-// 3. Keep your entourage loading
-loadEntourage();
+    // 4. Start Countdown
+    console.log("Countdown starting...");
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
 });
 
 function checkGuestStatus() {
-fetch(`${webAppUrl}?id=${encodeURIComponent(token)}`)
-.then(res => res.json())
-.then(data => {
-guestData = data;
-if (data && data.name) {
-const label = document.getElementById('envelope-label');
-label.innerHTML = `With love, to <span>${data.name}</span>`;
-label.classList.add('reveal-active');
-data.isDone ? showDoneView(data) : showMainForm();
-}
-}).catch(err => console.error(err));
+    fetch(`${webAppUrl}?id=${encodeURIComponent(token)}`)
+    .then(res => res.json())
+    .then(data => {
+        guestData = data;
+        if (data && data.name) {
+            const label = document.getElementById('envelope-label');
+            label.innerHTML = `With love, to <span>${data.name}</span>`;
+            label.classList.add('reveal-active');
+            data.isDone ? showDoneView(data) : showMainForm();
+        }
+    }).catch(err => console.error(err));
 }
 
 function openInvitation() {
-document.getElementById('envelope-wrapper').classList.add('open');
-const seal = document.getElementById('seal');
-seal.style.opacity = "0";
-seal.style.pointerEvents = "none";
+    document.getElementById('envelope-wrapper').classList.add('open');
+    const seal = document.getElementById('seal');
+    seal.style.opacity = "0";
+    seal.style.pointerEvents = "none";
 }
 
+// --- UPDATED HANDLE MUSIC FUNCTION ---
 function handleMusic(play, event) {
     if (event) {
         event.preventDefault();
@@ -1422,7 +1429,8 @@ function handleMusic(play, event) {
     const mIcon = document.getElementById('musicIcon');
     
     if (mBtn) {
-        mBtn.style.display = 'flex'; // Put it in the layout
+        // CRITICAL FIX: We set it to flex here.
+        mBtn.style.display = 'flex'; 
         
         // IF THEY CHOSE YES: Set button to "Playing" state immediately
         if (play) {
@@ -1461,10 +1469,10 @@ function handleMusic(play, event) {
 }
 
 function showMainForm() {
-const content = document.getElementById('content');
-content.classList.remove('hidden');
-const canP1 = String(guestData.allowPlusOne).toLowerCase() === "true";
-content.innerHTML = `
+    const content = document.getElementById('content');
+    content.classList.remove('hidden');
+    const canP1 = String(guestData.allowPlusOne).toLowerCase() === "true";
+    content.innerHTML = `
          <div class="rsvp-card">
              <h2>Hi ${guestData.name},</h2>
              <label>Will you attend?</label>
@@ -1479,44 +1487,44 @@ content.innerHTML = `
              <textarea id="guest-note" style="width:100%; height:100px; padding:10px; border-radius:5px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
              <button onclick="submitRSVP()" id="submit-btn">Confirm RSVP</button>
          </div>`;
-togglePlusOne(canP1);
+    togglePlusOne(canP1);
 }
 
 function togglePlusOne(canP1) {
-const area = document.getElementById('p1-area');
-const attending = document.getElementById('attending-select').value;
-if (attending === "Yes" && canP1) {
-area.innerHTML = `<label>Bringing a plus one?</label><select id="bringing-p1" onchange="toggleP1Name()"><option value="No">No</option><option value="Yes">Yes</option></select><div id="p1-name-wrapper"></div>`;
-} else { area.innerHTML = ''; }
+    const area = document.getElementById('p1-area');
+    const attending = document.getElementById('attending-select').value;
+    if (attending === "Yes" && canP1) {
+        area.innerHTML = `<label>Bringing a plus one?</label><select id="bringing-p1" onchange="toggleP1Name()"><option value="No">No</option><option value="Yes">Yes</option></select><div id="p1-name-wrapper"></div>`;
+    } else { area.innerHTML = ''; }
 }
 
 function toggleP1Name() {
-const wrapper = document.getElementById('p1-name-wrapper');
-if (document.getElementById('bringing-p1').value === "Yes") {
-wrapper.innerHTML = '<label>Plus One Name</label><input type="text" id="plus-one-name">';
-} else { wrapper.innerHTML = ''; }
+    const wrapper = document.getElementById('p1-name-wrapper');
+    if (document.getElementById('bringing-p1').value === "Yes") {
+        wrapper.innerHTML = '<label>Plus One Name</label><input type="text" id="plus-one-name">';
+    } else { wrapper.innerHTML = ''; }
 }
 
 function submitRSVP() {
-const btn = document.getElementById('submit-btn');
-btn.innerHTML = "Saving..."; btn.disabled = true;
-const p1NameInput = document.getElementById('plus-one-name');
-const payload = {
-token: token, name: guestData.name,
-email: document.getElementById('guest-email').value,
-attending: document.getElementById('attending-select').value,
-plusOneName: p1NameInput ? p1NameInput.value : "None",
-note: document.getElementById('guest-note').value
-};
-fetch(webAppUrl, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) }).then(() => {
-showDoneView({ ...guestData });
-});
+    const btn = document.getElementById('submit-btn');
+    btn.innerHTML = "Saving..."; btn.disabled = true;
+    const p1NameInput = document.getElementById('plus-one-name');
+    const payload = {
+        token: token, name: guestData.name,
+        email: document.getElementById('guest-email').value,
+        attending: document.getElementById('attending-select').value,
+        plusOneName: p1NameInput ? p1NameInput.value : "None",
+        note: document.getElementById('guest-note').value
+    };
+    fetch(webAppUrl, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) }).then(() => {
+        showDoneView({ ...guestData });
+    });
 }
 
 function showDoneView(data) {
-const content = document.getElementById('content');
-content.classList.remove('hidden');
-content.innerHTML = `
+    const content = document.getElementById('content');
+    content.classList.remove('hidden');
+    content.innerHTML = `
          <div class="rsvp-card" style="text-align:center;">
              <h2>Thank you!</h2>
              <p>RSVP recorded for ${data.name}.</p>
@@ -1524,87 +1532,63 @@ content.innerHTML = `
          </div>`;
 }
 
-// SMART SCROLL REVEAL OBSERVER (Fix for multiple elements)
+// SMART SCROLL REVEAL OBSERVER
 const observerOptions = { threshold: 0.1 }; 
-
 const observer = new IntersectionObserver((entries) => {
-entries.forEach(entry => {
-if (entry.isIntersecting) {
-entry.target.classList.add('is-visible');
-}
-});
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+        }
+    });
 }, observerOptions);
 
-
-// COUNTDOWN LOGIC
-
-
 function loadEntourage() {
-console.log("--- ENTOURAGE FETCH STARTING ---");
-console.log("Using URL:", webAppUrl);
-
-fetch(`${webAppUrl}?action=getEntourage`)
-.then(res => res.json())
-.then(data => {
-console.log("SUCCESS! Data received:", data);
-
-Object.keys(data).forEach(roleID => {
-const el = document.getElementById(roleID);
-if (el) {
-el.innerHTML = data[roleID].split(',').map(n => n.trim()).join('<br>');
-el.style.opacity = "1";
-} else {
-console.warn("Spreadsheet has '" + roleID + "' but no HTML ID matches.");
-}
-});
-// Force the scroll reveal to see the new names
-window.dispatchEvent(new Event('scroll'));
-})
-.catch(err => console.error("FETCH FAILED. Error:", err));
+    console.log("--- ENTOURAGE FETCH STARTING ---");
+    fetch(`${webAppUrl}?action=getEntourage`)
+    .then(res => res.json())
+    .then(data => {
+        console.log("SUCCESS! Data received:", data);
+        Object.keys(data).forEach(roleID => {
+            const el = document.getElementById(roleID);
+            if (el) {
+                el.innerHTML = data[roleID].split(',').map(n => n.trim()).join('<br>');
+                el.style.opacity = "1";
+            }
+        });
+        window.dispatchEvent(new Event('scroll'));
+    })
+    .catch(err => console.error("FETCH FAILED. Error:", err));
 }
 
-// THE LOGIC
+// THE COUNTDOWN LOGIC
 function updateCountdown() {
-const wedding = new Date("November 6, 2027 14:00:00").getTime();
-const now = new Date().getTime();
-const diff = wedding - now;
+    const wedding = new Date("November 6, 2027 14:00:00").getTime();
+    const now = new Date().getTime();
+    const diff = wedding - now;
 
-if (diff <= 0) return;
+    if (diff <= 0) return;
 
-// Use consistent variable names
-const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.44));
-const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
-const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.44));
+    const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-const setDisplay = (id, val) => {
-const el = document.getElementById(id);
-if (el) {
-// This Math.max ensures no negative numbers/dashes
-el.textContent = Math.max(0, val).toString();
-}
-};
+    const setDisplay = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.textContent = Math.max(0, val).toString();
+        }
+    };
 
-// Update these to match the math variables above
-setDisplay("months", months);
-setDisplay("days", days);
-setDisplay("hours", hours);
-setDisplay("minutes", minutes);
-setDisplay("seconds", seconds);
+    setDisplay("months", months);
+    setDisplay("days", days);
+    setDisplay("hours", hours);
+    setDisplay("minutes", minutes);
+    setDisplay("seconds", seconds);
 }
 
-// THE TRIGGER (Safe and Separate)
-document.addEventListener('DOMContentLoaded', () => {
-console.log("Countdown starting...");
-setInterval(updateCountdown, 1000);
-updateCountdown();
-});
-
-
-
-
-// --- TOGGLE FUNCTION: CLICKING THE FLOATING BUTTON ---
+// --- UPDATED TOGGLE FUNCTION ---
 function toggleMusic() {
     var audio = document.getElementById("bg-music");
     var btn = document.getElementById("musicBtn");
@@ -1612,39 +1596,36 @@ function toggleMusic() {
 
     if (audio.paused) {
         audio.play();
-        icon.innerHTML = "||"; // Pause Icon
-        btn.style.backgroundColor = "#d4af37"; // Gold
-        btn.style.color = "#043927"; // Green
+        icon.innerHTML = "||"; 
+        btn.style.backgroundColor = "#d4af37"; 
+        btn.style.color = "#043927"; 
     } else {
         audio.pause();
-        icon.innerHTML = "♪"; // Play Icon
-        btn.style.backgroundColor = "#043927"; // Green
-        btn.style.color = "#d4af37"; // Gold
+        icon.innerHTML = "♪"; 
+        btn.style.backgroundColor = "#043927"; 
+        btn.style.color = "#d4af37"; 
     }
 }
 
-// --- SCROLL LISTENER: REVEALS BUTTON AFTER LANDING PAGE ---
+// --- UPDATED SCROLL LISTENER (THE FIX) ---
 window.addEventListener("scroll", function() {
     var btn = document.getElementById("musicBtn");
-
-    // 1. Safety Check: If button doesn't exist or isn't "activated" by handleMusic yet, stop.
-    if (!btn || getComputedStyle(btn).display === "none") {
+    
+    // 1. Safety Check: If button doesn't exist, stop.
+    // We check style.display because handleMusic sets it to 'flex'.
+    if (!btn || btn.style.display !== 'flex') {
         return;
     }
 
-    // 2. THE THRESHOLD:
-    // "window.innerHeight" is the height of your screen.
-    // We show the button once you scroll past 80% of the first screen.
+    // 2. THE THRESHOLD
     if (window.scrollY > (window.innerHeight * 0.8)) {
         btn.style.opacity = "1";
         btn.style.pointerEvents = "auto"; 
     } else {
-        // Hide it if they scroll back up to the very top
         btn.style.opacity = "0";
         btn.style.pointerEvents = "none";
     }
 });
-
 </script>
 </body>
 </html>
