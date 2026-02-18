@@ -1341,6 +1341,33 @@ Scroll to RSVP
     </div>
 </section>
 
+<audio id="bg-music" loop>
+    <source src="bgm.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn" onclick="toggleMusic()" style="
+    position: fixed; 
+    bottom: 30px; 
+    right: 30px; 
+    width: 50px; 
+    height: 50px; 
+    background-color: #d4af37; /* Starts Gold because music starts playing via handleMusic */
+    border: 1px solid #d4af37; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    z-index: 9999; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    color: #043927;
+    font-size: 20px;
+    opacity: 0; 
+    pointer-events: none; 
+    transition: all 0.5s ease;
+    outline: none;
+">
+    <span id="musicIcon">||</span> </button> 
+
 <script>
 const webAppUrl = "https://script.google.com/macros/s/AKfycbzrtwb3bnwahRGg94f6Eu3Qj1zsfGw3hga7Y5a23q293gI60mFJ818kGw5zbYtuKTBn/exec"; 
 const urlParams = new URLSearchParams(window.location.search);
@@ -1568,6 +1595,56 @@ setInterval(updateCountdown, 1000);
 updateCountdown();
 });
 
+
+
+
+    // TOGGLE PLAY/PAUSE
+function toggleMusic() {
+    var audio = document.getElementById("bg-music");
+    var btn = document.getElementById("musicBtn");
+    var icon = document.getElementById("musicIcon");
+
+    if (!audio.paused) {
+        // If music is playing, stop it
+        audio.pause();
+        icon.innerHTML = "♪"; 
+        btn.style.backgroundColor = "#043927"; // Emerald
+        btn.style.color = "#d4af37"; // Gold
+    } else {
+        // If music is stopped, play it
+        audio.play();
+        icon.innerHTML = "||"; 
+        btn.style.backgroundColor = "#d4af37"; // Gold
+        btn.style.color = "#043927"; // Emerald
+    }
+}
+
+// Scroll listener to show button after landing
+window.addEventListener("scroll", function() {
+    var btn = document.getElementById("musicBtn");
+    var icon = document.getElementById("musicIcon");
+    var audio = document.getElementById("bg-music");
+    var heroHeight = window.innerHeight;
+
+    if (window.scrollY > (heroHeight * 0.8)) {
+        btn.style.opacity = "1";
+        btn.style.pointerEvents = "auto";
+        
+        // SYNC CHECK: When the button appears, check if handleMusic started the audio
+        if (!audio.paused) {
+            icon.innerHTML = "||";
+            btn.style.backgroundColor = "#d4af37";
+            btn.style.color = "#043927";
+        } else {
+            icon.innerHTML = "♪";
+            btn.style.backgroundColor = "#043927";
+            btn.style.color = "#d4af37";
+        }
+    } else {
+        btn.style.opacity = "0";
+        btn.style.pointerEvents = "none";
+    }
+});
 
 </script>
 </body>
