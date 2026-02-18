@@ -1347,17 +1347,17 @@ Scroll to RSVP
     right: 30px; 
     width: 50px; 
     height: 50px; 
-    background-color: #043927; 
+    background-color: #043927; /* Default Green */
     border: 1px solid #d4af37; 
     border-radius: 50%; 
     cursor: pointer; 
     z-index: 10000; 
-    display: none; /* Hidden until handleMusic is called */
+    display: none; /* Hidden until site opens */
     align-items: center; 
     justify-content: center;
     color: #d4af37;
-    font-size: 18px;
-    opacity: 0; 
+    font-size: 20px;
+    opacity: 0; /* Invisible until scrolled */
     transition: opacity 0.5s ease, background-color 0.3s ease;
     outline: none;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
@@ -1413,45 +1413,53 @@ seal.style.pointerEvents = "none";
 }
 
 function handleMusic(play, event) {
-if (event) {
-event.preventDefault();
-event.stopPropagation();
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    // 1. ACTIVATE THE BUTTON
+    const mBtn = document.getElementById('musicBtn');
+    const mIcon = document.getElementById('musicIcon');
+    
+    if (mBtn) {
+        mBtn.style.display = 'flex'; // Put it in the layout
+        
+        // IF THEY CHOSE YES: Set button to "Playing" state immediately
+        if (play) {
+            mIcon.innerHTML = "||";
+            mBtn.style.backgroundColor = "#d4af37"; // Gold
+            mBtn.style.color = "#043927"; // Dark Green
+        }
+    }
+
+    // 2. PLAY MUSIC LOGIC
+    if (play) {
+        var audio = document.getElementById('bg-music');
+        if (audio) {
+            audio.currentTime = 4; 
+            audio.volume = 1.0; 
+            var playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => { console.error("Playback failed:", error); });
+            }
+        }
+    }
+
+    // 3. ANIMATION & REVEAL
+    document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
+
+    setTimeout(() => {
+        document.getElementById('main-site').style.display = 'block';
+        document.body.classList.add('show-site');
+        document.body.style.overflow = 'auto'; 
+        document.documentElement.style.overflow = 'auto';
+    }, 100);
+
+    setTimeout(() => {
+        document.getElementById('envelope-wrapper').style.display = "none";
+    }, 800);
 }
-// --- ADD THIS LINE BELOW ---
-document.getElementById('musicBtn').style.display = 'flex';
-
-if (play) {
-var audio = document.getElementById('bg-music');
-
-// 1. SET THE START TIME (in seconds)
-audio.currentTime = 4; 
-
-audio.volume = 1.0; 
-
-var playPromise = audio.play();
-if (playPromise !== undefined) {
-playPromise.then(_ => { console.log("Audio started at 4s!"); })
-.catch(error => { console.error("Playback failed:", error); });
-}
-}
-
-// ... (rest of your animation code remains the same)
-// 1. Start the exit animation immediately (this is the .6s CSS fade)
-document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
-
-// 2. THE REVEAL: Wait only 100ms (.1s) before Mariel & Jasper start appearing
-setTimeout(() => {
-document.getElementById('main-site').style.display = 'block';
-document.body.classList.add('show-site');
-document.body.style.overflow = 'auto'; 
-document.documentElement.style.overflow = 'auto';
-}, 100);
-
-// 3. THE CLEANUP: Wait 600ms (.6s) to hide the envelope once the fade is done
-setTimeout(() => {
-document.getElementById('envelope-wrapper').style.display = "none";
-}, 800);
-} // Ensure this bracket closes the handleMusic function
 
 function showMainForm() {
 const content = document.getElementById('content');
@@ -1597,51 +1605,42 @@ updateCountdown();
 
 
 
-// 1. THE TOGGLE (For the floating button)
+// --- TOGGLE FUNCTION (User clicks the floating button) ---
 function toggleMusic() {
     var audio = document.getElementById("bg-music");
     var btn = document.getElementById("musicBtn");
     var icon = document.getElementById("musicIcon");
 
-    if (!audio.paused) {
-        audio.pause();
-        icon.innerHTML = "♪"; 
-        btn.style.backgroundColor = "#043927";
-        btn.style.color = "#d4af37";
-    } else {
+    if (audio.paused) {
         audio.play();
-        icon.innerHTML = "||"; 
-        btn.style.backgroundColor = "#d4af37";
+        icon.innerHTML = "||";
+        btn.style.backgroundColor = "#d4af37"; // Gold
         btn.style.color = "#043927";
+    } else {
+        audio.pause();
+        icon.innerHTML = "♪";
+        btn.style.backgroundColor = "#043927"; // Green
+        btn.style.color = "#d4af37";
     }
 }
 
-// 2. THE SCROLL LISTENER (To show/hide button)
+// --- SCROLL LISTENER (Reveals button after Hero section) ---
 window.addEventListener("scroll", function() {
     var btn = document.getElementById("musicBtn");
-    var audio = document.getElementById("bg-music");
-    var icon = document.getElementById("musicIcon");
+    
+    // Safety check: if button isn't active yet, do nothing
+    if (!btn || btn.style.display !== 'flex') return;
 
-    // Only run if the button has been "activated" by handleMusic
-    if (btn && btn.style.display === 'flex') {
-        if (window.scrollY > 300) { // Show after scrolling 300px
-            btn.style.opacity = "1";
-            btn.style.pointerEvents = "auto";
-
-            // Check if music is playing to show the correct icon
-            if (!audio.paused) {
-                icon.innerHTML = "||";
-                btn.style.backgroundColor = "#d4af37";
-                btn.style.color = "#043927";
-            } else {
-                icon.innerHTML = "♪";
-                btn.style.backgroundColor = "#043927";
-                btn.style.color = "#d4af37";
-            }
-        } else {
-            btn.style.opacity = "0";
-            btn.style.pointerEvents = "none";
-        }
+    // SCROLL THRESHOLD:
+    // This number (500) determines when the button appears. 
+    // It means "after scrolling down 500 pixels".
+    if (window.scrollY > 500) {
+        btn.style.opacity = "1";
+        btn.style.pointerEvents = "auto";
+    } else {
+        // Hide if user scrolls back up to the Hero/Landing page
+        btn.style.opacity = "0";
+        btn.style.pointerEvents = "none";
     }
 });
 
