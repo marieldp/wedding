@@ -1600,37 +1600,36 @@ updateCountdown();
 
     // TOGGLE PLAY/PAUSE
 function toggleMusic() {
-    var audio = document.getElementById("bg-music");
+    var audio = document.getElementById("bg-music"); // Corrected ID
     var btn = document.getElementById("musicBtn");
     var icon = document.getElementById("musicIcon");
 
     if (!audio.paused) {
-        // If music is playing, stop it
         audio.pause();
         icon.innerHTML = "♪"; 
-        btn.style.backgroundColor = "#043927"; // Emerald
-        btn.style.color = "#d4af37"; // Gold
+        btn.style.backgroundColor = "#043927"; 
+        btn.style.color = "#d4af37";
     } else {
-        // If music is stopped, play it
         audio.play();
         icon.innerHTML = "||"; 
-        btn.style.backgroundColor = "#d4af37"; // Gold
-        btn.style.color = "#043927"; // Emerald
+        btn.style.backgroundColor = "#d4af37"; 
+        btn.style.color = "#043927";
     }
 }
 
-// Scroll listener to show button after landing
+// Scroll listener to show button and sync the icon state
 window.addEventListener("scroll", function() {
     var btn = document.getElementById("musicBtn");
     var icon = document.getElementById("musicIcon");
-    var audio = document.getElementById("bg-music");
+    var audio = document.getElementById("bg-music"); // Corrected ID
     var heroHeight = window.innerHeight;
 
     if (window.scrollY > (heroHeight * 0.8)) {
         btn.style.opacity = "1";
         btn.style.pointerEvents = "auto";
         
-        // SYNC CHECK: When the button appears, check if handleMusic started the audio
+        // This part checks if the music is ALREADY playing (from your handleMusic function)
+        // and updates the button's look automatically.
         if (!audio.paused) {
             icon.innerHTML = "||";
             btn.style.backgroundColor = "#d4af37";
