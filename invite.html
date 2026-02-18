@@ -1437,8 +1437,16 @@ function handleMusic(play, event) {
 
     const mBtn = document.getElementById('musicBtn');
     const mIcon = document.getElementById('musicIcon');
+    const audio = document.getElementById('bg-music');
+
+    // 1. ALWAYS PRE-SET THE TIME (The Fix)
+    if (audio) {
+        // This ensures that even if they click NO, 
+        // the next time they click play, it starts at 4s.
+        audio.currentTime = 4; 
+    }
     
-    // 1. Setup the button state immediately based on choice
+    // 2. Setup the button state
     if (mBtn) {
         mBtn.style.display = 'flex'; // Make it exist
         
@@ -1447,25 +1455,22 @@ function handleMusic(play, event) {
             mBtn.style.backgroundColor = "#d4af37"; 
             mBtn.style.color = "#043927";
             mIcon.classList.add("pulsing"); 
+            
+            // Actually play the audio
+            if (audio) {
+                audio.volume = 1.0; 
+                audio.play().catch(e => console.error("Playback failed:", e));
+            }
         } else {
             // NO: Green, Gold Text, No Pulse
             mBtn.style.backgroundColor = "#043927"; 
             mBtn.style.color = "#d4af37";
             mIcon.classList.remove("pulsing");
+            // We don't call .play(), but .currentTime is already set to 4 above!
         }
     }
 
-    // 2. Play Audio if YES
-    if (play) {
-        var audio = document.getElementById('bg-music');
-        if (audio) {
-            audio.currentTime = 4; 
-            audio.volume = 1.0; 
-            audio.play().catch(e => console.error("Playback failed:", e));
-        }
-    }
-
-    // 3. Reveal Animation (Your original logic)
+    // 3. Reveal Animation
     document.getElementById('envelope-wrapper').classList.add('wrapper-exit');
 
     setTimeout(() => {
@@ -1474,7 +1479,7 @@ function handleMusic(play, event) {
         document.body.style.overflow = 'auto'; 
         document.documentElement.style.overflow = 'auto';
         
-        // Trigger the scroll observer we added earlier
+        // Trigger the scroll observer
         if (typeof setupMusicObserver === "function") {
             setupMusicObserver(); 
         }
