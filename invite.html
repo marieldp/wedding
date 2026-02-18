@@ -1614,31 +1614,34 @@ function toggleMusic() {
 }
 
 // Scroll listener to show button and sync the icon state
-window.addEventListener("scroll", function() {
+// Wrap everything in a listener to make sure the page is ready
+document.addEventListener("DOMContentLoaded", function() {
     var btn = document.getElementById("musicBtn");
+    var audio = document.getElementById("bg-music");
     var icon = document.getElementById("musicIcon");
-    var audio = document.getElementById("bg-music"); // Corrected ID
-    var heroHeight = window.innerHeight;
 
-    if (window.scrollY > (heroHeight * 0.8)) {
-        btn.style.opacity = "1";
-        btn.style.pointerEvents = "auto";
-        
-        // This part checks if the music is ALREADY playing (from your handleMusic function)
-        // and updates the button's look automatically.
-        if (!audio.paused) {
-            icon.innerHTML = "||";
-            btn.style.backgroundColor = "#d4af37";
-            btn.style.color = "#043927";
+    window.addEventListener("scroll", function() {
+        // We'll show the button after only 200px of scrolling
+        if (window.pageYOffset > 200) { 
+            btn.style.opacity = "1";
+            btn.style.pointerEvents = "auto";
+            
+            // Re-sync icon state in case they started music via the envelope
+            if (audio && !audio.paused) {
+                icon.innerHTML = "||";
+                btn.style.backgroundColor = "#d4af37"; // Gold
+                btn.style.color = "#043927"; // Emerald
+            } else {
+                icon.innerHTML = "♪";
+                btn.style.backgroundColor = "#043927"; // Emerald
+                btn.style.color = "#d4af37"; // Gold
+            }
         } else {
-            icon.innerHTML = "♪";
-            btn.style.backgroundColor = "#043927";
-            btn.style.color = "#d4af37";
+            // Hide it when at the very top (Landing Page)
+            btn.style.opacity = "0";
+            btn.style.pointerEvents = "none";
         }
-    } else {
-        btn.style.opacity = "0";
-        btn.style.pointerEvents = "none";
-    }
+    });
 });
 
 </script>
