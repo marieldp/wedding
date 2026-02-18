@@ -1347,20 +1347,19 @@ Scroll to RSVP
     right: 30px; 
     width: 50px; 
     height: 50px; 
-    background-color: #043927; /* Default Green */
+    background-color: #043927; 
     border: 1px solid #d4af37; 
     border-radius: 50%; 
+    z-index: 99999; /* High Z-index ensures it's on top */
     cursor: pointer; 
-    z-index: 10000; 
-    display: none; /* Hidden until site opens */
+    display: none; /* Hidden by default */
     align-items: center; 
     justify-content: center;
     color: #d4af37;
     font-size: 20px;
-    opacity: 0; /* Invisible until scrolled */
-    transition: opacity 0.5s ease, background-color 0.3s ease;
-    outline: none;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    opacity: 0; /* Starts transparent */
+    transition: opacity 0.5s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 ">
     <span id="musicIcon">♪</span>
 </button>
@@ -1605,7 +1604,7 @@ updateCountdown();
 
 
 
-// --- TOGGLE FUNCTION (User clicks the floating button) ---
+// --- TOGGLE FUNCTION: CLICKING THE FLOATING BUTTON ---
 function toggleMusic() {
     var audio = document.getElementById("bg-music");
     var btn = document.getElementById("musicBtn");
@@ -1613,32 +1612,34 @@ function toggleMusic() {
 
     if (audio.paused) {
         audio.play();
-        icon.innerHTML = "||";
+        icon.innerHTML = "||"; // Pause Icon
         btn.style.backgroundColor = "#d4af37"; // Gold
-        btn.style.color = "#043927";
+        btn.style.color = "#043927"; // Green
     } else {
         audio.pause();
-        icon.innerHTML = "♪";
+        icon.innerHTML = "♪"; // Play Icon
         btn.style.backgroundColor = "#043927"; // Green
-        btn.style.color = "#d4af37";
+        btn.style.color = "#d4af37"; // Gold
     }
 }
 
-// --- SCROLL LISTENER (Reveals button after Hero section) ---
+// --- SCROLL LISTENER: REVEALS BUTTON AFTER LANDING PAGE ---
 window.addEventListener("scroll", function() {
     var btn = document.getElementById("musicBtn");
-    
-    // Safety check: if button isn't active yet, do nothing
-    if (!btn || btn.style.display !== 'flex') return;
 
-    // SCROLL THRESHOLD:
-    // This number (500) determines when the button appears. 
-    // It means "after scrolling down 500 pixels".
-    if (window.scrollY > 500) {
+    // 1. Safety Check: If button doesn't exist or isn't "activated" by handleMusic yet, stop.
+    if (!btn || getComputedStyle(btn).display === "none") {
+        return;
+    }
+
+    // 2. THE THRESHOLD:
+    // "window.innerHeight" is the height of your screen.
+    // We show the button once you scroll past 80% of the first screen.
+    if (window.scrollY > (window.innerHeight * 0.8)) {
         btn.style.opacity = "1";
-        btn.style.pointerEvents = "auto";
+        btn.style.pointerEvents = "auto"; 
     } else {
-        // Hide if user scrolls back up to the Hero/Landing page
+        // Hide it if they scroll back up to the very top
         btn.style.opacity = "0";
         btn.style.pointerEvents = "none";
     }
