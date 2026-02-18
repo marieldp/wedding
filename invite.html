@@ -1567,9 +1567,9 @@ function showMainForm() {
                  <option value="No">No, I can't make it</option>
              </select>
              <div id="p1-area"></div>
-             <label>Email Address</label>
+             <label>Email Address (for Confirmation)</label>
              <input type="email" id="guest-email" value="${guestData.email || ''}">
-             <label>Message to the couple</label>
+             <label>Have a message to the couple?</label>
              <textarea id="guest-note" style="width:100%; height:100px; padding:10px; border-radius:5px; border:1px solid #ddd;">${guestData.note || ''}</textarea>
              <button onclick="submitRSVP()" id="submit-btn">Confirm RSVP</button>
          </div>`;
