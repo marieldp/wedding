@@ -1461,6 +1461,7 @@ function handleMusic(play, event) {
         document.body.classList.add('show-site');
         document.body.style.overflow = 'auto'; 
         document.documentElement.style.overflow = 'auto';
+        setupMusicObserver();
     }, 100);
 
     setTimeout(() => {
@@ -1607,25 +1608,34 @@ function toggleMusic() {
     }
 }
 
-// --- UPDATED SCROLL LISTENER (THE FIX) ---
-window.addEventListener("scroll", function() {
+function setupMusicObserver() {
+    // 1. Target the Button
     var btn = document.getElementById("musicBtn");
     
-    // 1. Safety Check: If button doesn't exist, stop.
-    // We check style.display because handleMusic sets it to 'flex'.
-    if (!btn || btn.style.display !== 'flex') {
-        return;
-    }
+    // 2. Target the Hero Section (The first big photo)
+    // We select the first <section> inside #main-site
+    var heroSection = document.querySelector('#main-site > section:first-of-type');
 
-    // 2. THE THRESHOLD
-    if (window.scrollY > (window.innerHeight * 0.8)) {
-        btn.style.opacity = "1";
-        btn.style.pointerEvents = "auto"; 
-    } else {
-        btn.style.opacity = "0";
-        btn.style.pointerEvents = "none";
-    }
-});
+    if (!btn || !heroSection) return;
+
+    // 3. Create the Observer
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            // If Hero Section is NOT intersecting (it's off screen), SHOW button
+            if (!entry.isIntersecting) {
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            } else {
+                // If Hero Section IS visible, HIDE button
+                btn.style.opacity = "0";
+                btn.style.pointerEvents = "none";
+            }
+        });
+    }, { threshold: 0.1 }); // Trigger when 10% of hero is left
+
+    // 4. Start Watching
+    observer.observe(heroSection);
+}
 </script>
 </body>
 </html>
